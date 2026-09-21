@@ -7,6 +7,24 @@ records why so nobody proposes it again.
 
 **Started:** 2026-09-21.
 
+**Night protocol acknowledged 2026-09-21 02:20.**
+
+## Definition of done for this session
+
+| # | Item | How it is verified | State |
+|---|---|---|---|
+| 1 | Why the ad idea is dead, cited | `docs/why-not-ads.md` | DONE |
+| 1b | Sift's own market/competitive verdict, cited | `docs/market-research.md` | pending |
+| 2 | Spec and plan for the MVP | `docs/spec.md`, `docs/plan.md` | plan DONE, spec pending |
+| 3 | `sift` schema applied, RLS on, tested | SQL against Project B + `lib/schema.test.ts` | DONE (4 tables, RLS on, 0 policies) |
+| 4 | PubMed client + ranking, fixture-tested, proven on >= 2 fields | `npm test` | client DONE; ranking pending |
+| 5 | iOS app + widget build and test headlessly | `xcodebuild ... test` | DONE - 49 tests, 0 failures, appex embedded |
+| 5b | Widget shows a real feed from the API | simulator + `/api/feed` | pending |
+| 6 | Web/API deployed, health + monitor | `curl https://sift.kalpkan.com/api/health` | pending (0 of 2 deploys used) |
+| 7 | STATUS.md accurate, RESUME.md written | this file, `docs/RESUME.md` | DONE |
+| 8 | Reviewer + verifier passed | their reports | pending |
+
+
 ---
 
 ## Needs Kalp
