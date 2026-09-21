@@ -141,6 +141,7 @@
 				/* Project level so every target inherits them: without both of these the .appex
 				   refuses to install on the simulator ("bundleVersion must be set in placeholder
 				   attributes"). */
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				MARKETING_VERSION = 1.0;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -152,6 +153,7 @@
 		A0000111 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				MARKETING_VERSION = 1.0;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -194,7 +196,10 @@
 				INFOPLIST_FILE = SiftWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Sift;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kalpkan.sift.widget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				/* Not $(TARGET_NAME): the target is SiftWidgetExtension but the product
+				   must be SiftWidget.appex to match the PBXFileReference the embed
+				   phase copies. */
+				PRODUCT_NAME = SiftWidget;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -208,7 +213,10 @@
 				INFOPLIST_FILE = SiftWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Sift;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kalpkan.sift.widget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				/* Not $(TARGET_NAME): the target is SiftWidgetExtension but the product
+				   must be SiftWidget.appex to match the PBXFileReference the embed
+				   phase copies. */
+				PRODUCT_NAME = SiftWidget;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
