@@ -9,12 +9,26 @@ little for seeing them. Research that night killed it. Keeping the reasons here 
 | # | Rule | Exact words | Source |
 |---|---|---|---|
 | 1 | Apple bans display ads in widgets | "Display advertising should be limited to your main app binary, and should not be included in extensions, App Clips, widgets, notifications, keyboards, watchOS apps, etc." | App Store Review Guidelines §2.5.18, developer.apple.com/app-store/review/guidelines/ (accessed 2026-09-21) |
-| 2 | Google Play bans ads outside the serving app, naming widgets | "Ads may only be displayed inside of the app serving them… This includes overlays, companion functionality, and widgetized ad units." | Google Play Ads / Disruptive Ads policy, support.google.com/googleplay/android-developer/answer/9857753 (accessed 2026-09-21) |
+| 2 | Google Play bans ads outside the serving app, **naming this exact product** | "Ads may only be displayed inside of the app serving them and must not interfere with other apps, ads, or the operation of the device... **This includes overlays, companion functionality, and widgetized ad units.**" | Google Play Ads / Disruptive Ads policy, support.google.com/googleplay/android-developer/answer/9857753 (accessed 2026-09-21) |
+| 2b | Apple bans ads in *extensions* too, independently of 2.5.18 (a widget is an app extension) | "...and the extensions may not include marketing, advertising, or in-app purchases." | App Store Review Guidelines §4.4 (updated 2026-06-08) |
+| 2c | Apple bans inflating impressions and ad-first apps | "Artificially increasing the number of impressions or click-throughs of ads, as well as apps that are designed predominantly for the display of ads." | App Store Review Guidelines §3.2.2(iii) |
 | 3 | AdMob bans monetising pay-to-view apps at all | "Google ads may not be placed on apps that promise payment or incentives to users who click on or view ads." | AdMob behavioural policies, support.google.com/admob/answer/2753860 (accessed 2026-09-21) |
 | 4 | Google Play bans monetising the lock screen | "Unless the exclusive purpose of the app is that of a lockscreen, apps may not introduce ads or features that monetize the locked display of a device." | Same Google Play Ads policy page |
 
-Technically it is also dead on Android: home-screen widgets are `RemoteViews`, which cannot
-host a `WebView`, so the Google Mobile Ads SDK physically cannot render in one.
+Technically it is also dead before policy is even reached:
+
+- **No ad SDK can render in a widget on either OS.** iOS widgets render a *pre-archived*
+  SwiftUI snapshot — "the system can't run your code or update data bindings at the time it
+  renders your widget" — so there is no live view hierarchy for an SDK to draw into. Android
+  widgets are `RemoteViews`, whose supported-view list is a closed whitelist that excludes
+  `WebView` and states "Descendants of these classes are not supported."
+- **Neither OS will tell you a widget was seen.** There is no impression, visibility or
+  on-screen callback anywhere in WidgetKit, and `AppWidgetProvider` has none either. The
+  product's core promise — "every time you see the ad you get paid" — is unmeasurable by
+  construction.
+- **A widget render would not count as a viewable impression anyway.** The MRC mobile standard
+  requires the pixels be in "a fully downloaded, opened, initialized application." A home
+  screen is not that.
 
 ## The money was never there either
 

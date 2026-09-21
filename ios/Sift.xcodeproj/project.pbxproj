@@ -1,0 +1,252 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A0000001 /* Sift */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A0000006); path = Sift; sourceTree = "<group>"; };
+		A0000002 /* SiftWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A0000003); path = SiftWidget; sourceTree = "<group>"; };
+		A0000004 /* SiftTests */ = {isa = PBXFileSystemSynchronizedRootGroup; path = SiftTests; sourceTree = "<group>"; };
+		A0000005 /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Shared; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		/* Without this, SiftWidget/Info.plist inside the synchronized folder would be copied in as a
+		   bundle resource as well as being used as INFOPLIST_FILE, which fails the build. */
+		A0000003 = {isa = PBXFileSystemSynchronizedBuildFileExceptionSet; membershipExceptions = (Info.plist, ); target = A0000051; };
+		A0000006 = {isa = PBXFileSystemSynchronizedBuildFileExceptionSet; membershipExceptions = (Info.plist, ); target = A0000050; };
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A0000010 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A0000011 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A0000012 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A0000020 = {isa = PBXGroup; children = (A0000005, A0000001, A0000002, A0000004, A0000030); sourceTree = "<group>"; };
+		A0000030 /* Products */ = {isa = PBXGroup; children = (A0000040, A0000041, A0000042); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A0000050 /* Sift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0000060;
+			buildPhases = (A0000070, A0000010, A0000080, A0000200);
+			buildRules = ();
+			dependencies = (A0000300);
+			/* The one Shared group is listed by all three targets, so models and logic compile into
+			   each module directly -- no framework target, no cross-module import needed. */
+			fileSystemSynchronizedGroups = (A0000005, A0000001);
+			name = Sift;
+			productName = Sift;
+			productReference = A0000040;
+			productType = "com.apple.product-type.application";
+		};
+		A0000051 /* SiftWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0000061;
+			buildPhases = (A0000071, A0000011, A0000081);
+			buildRules = ();
+			dependencies = ();
+			fileSystemSynchronizedGroups = (A0000005, A0000002);
+			name = SiftWidgetExtension;
+			productName = SiftWidget;
+			productReference = A0000041;
+			productType = "com.apple.product-type.app-extension";
+		};
+		A0000052 /* SiftTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0000062;
+			buildPhases = (A0000072, A0000012, A0000082);
+			buildRules = ();
+			dependencies = (A0000301);
+			fileSystemSynchronizedGroups = (A0000005, A0000004);
+			name = SiftTests;
+			productName = SiftTests;
+			productReference = A0000042;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A0000090 = {
+			isa = PBXProject;
+			attributes = {BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 2640; LastUpgradeCheck = 2640; };
+			buildConfigurationList = A0000100;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (en, Base);
+			mainGroup = A0000020;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A0000030;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (A0000050, A0000051, A0000052);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A0000080 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A0000081 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A0000082 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A0000070 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A0000071 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A0000072 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		/* dstSubfolderSpec 13 == PlugIns; this is what puts SiftWidget.appex inside Sift.app. */
+		A0000200 = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (A0000210);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXBuildFile section */
+		A0000210 = {isa = PBXBuildFile; fileRef = A0000041; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXTargetDependency section */
+		A0000300 = {isa = PBXTargetDependency; target = A0000051; targetProxy = A0000310; };
+		A0000301 = {isa = PBXTargetDependency; target = A0000050; targetProxy = A0000311; };
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		A0000310 = {isa = PBXContainerItemProxy; containerPortal = A0000090; proxyType = 1; remoteGlobalIDString = A0000051; remoteInfo = SiftWidgetExtension; };
+		A0000311 = {isa = PBXContainerItemProxy; containerPortal = A0000090; proxyType = 1; remoteGlobalIDString = A0000050; remoteInfo = Sift; };
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A0000040 /* Sift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0000041 /* SiftWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SiftWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0000042 /* SiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin XCBuildConfiguration section */
+		A0000110 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				/* Project level so every target inherits them: without both of these the .appex
+				   refuses to install on the simulator ("bundleVersion must be set in placeholder
+				   attributes"). */
+				CURRENT_PROJECT_VERSION = 1;
+				MARKETING_VERSION = 1.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A0000111 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				MARKETING_VERSION = 1.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		A0000120 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_FILE = Sift/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kalpkan.sift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A0000130 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_FILE = Sift/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kalpkan.sift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A0000121 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SiftWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Sift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kalpkan.sift.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A0000131 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SiftWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Sift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kalpkan.sift.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A0000122 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kalpkan.sift.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sift.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Sift";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A0000132 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kalpkan.sift.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sift.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Sift";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A0000100 = {isa = XCConfigurationList; buildConfigurations = (A0000110, A0000111); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		A0000060 = {isa = XCConfigurationList; buildConfigurations = (A0000120, A0000130); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		A0000061 = {isa = XCConfigurationList; buildConfigurations = (A0000121, A0000131); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		A0000062 = {isa = XCConfigurationList; buildConfigurations = (A0000122, A0000132); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+/* End XCConfigurationList section */
+	};
+	rootObject = A0000090;
+}
