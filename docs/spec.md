@@ -64,6 +64,28 @@ vision-restoration result). So an untagged paper must score **neutral, never pen
 engineering topics have to lean on journal tier and human-subject cues instead. If the ranker
 is going to fail anywhere, it will fail here first.
 
+## Scope revision, 2026-09-21 (after the competitive sweep)
+
+The market research came back against this being a product: the identical app already ships
+twice with 0 and 17 ratings, the closest competitor shut down with millions of users, and the
+individual paying segment is shrinking (Research Solutions' consumer ARR **-5.6% YoY** while
+B2B grew +14.1%). See `market-research.md` §2.3-§2.6.
+
+That does not change what v1 *is* — it is built, it works, and it is a good portfolio piece.
+It changes **what comes next**, and the answer is not more app:
+
+1. **The next experiment is an email list, not a feature.** Pick one narrow field where Kalp
+   has real judgement, send two papers a week to 15-20 people in his lab and department, and
+   measure replies and click-throughs. That tests the only thing that could be the product —
+   the filter — with no code and no App Store. The widget stays as the demo surface and the
+   case study.
+2. **Source it from arXiv if abstracts are ever shown.** arXiv's metadata is CC0 and its
+   Terms of Use explicitly permit "a mobile app that notifies users about e-prints". PubMed,
+   Crossref and OpenAlex all disclaim any right to license abstracts onward. Titles are clean
+   everywhere; abstracts are clean only on arXiv. The planned P1 `efetch` step is therefore a
+   legal question, not just an engineering one.
+3. **Do not pay for an LLM ranker** until the email list shows the filter has value.
+
 ## Done means
 
 1. `npm test`, `npm run lint`, `npm run build`, `bash scripts/check-migrations.sh` — all green.

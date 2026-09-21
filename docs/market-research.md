@@ -192,6 +192,22 @@ Note the squeeze, because it is the cleanest way to see the problem: **where the
 small enough for a widget to help, the filtering isn't worth paying for; where it is large
 enough to hurt, a 1–3 item widget with no triage is the wrong shape.**
 
+**The paying segment is shrinking, measurably.** Research Solutions (NASDAQ: RSSS), which
+owns scite, reported FY2026 results on 2026-09-09: consumer/individual ARR **$6.34M, down
+5.6% year on year** (down 7.5% in Q3), while its B2B line grew **+14.1%**. scite itself was
+acquired for **$13.72M** with roughly **21,000 paying individuals** (SEC 8-K, 2023-11-27) —
+about $650 per paying user, for a citation-analysis tool far more load-bearing than a feed.
+Meanwhile institutions pay **$70,000–$1,000,000 per database per year** (Brundy & Thornton
+2024, *JeSLIB* 13(2):e959, from FOI'd library contracts). **The money in this market is
+institutional and it is moving further that way, not toward individuals.**
+
+Competitor consumer pricing clusters at **$10–20/month with 40–50% academic discounts**, or
+free for academics outright (ResearchRabbit free forever; Zeta Alpha free for academics). Both
+existing widget competitors price *below* that cluster — $20–35/year — and still have 0 and 17
+ratings. And the AI-native entrants needed capital, not subscriptions, to exist: Elicit took
+$30M+, Consensus $45M. Meta.org, free and funded by the Chan Zuckerberg Initiative, was shut
+down in 2022 anyway.
+
 What survives is real but smaller than "a startup":
 
 - **It is a genuinely good portfolio project.** A hand-written Xcode project, a WidgetKit
