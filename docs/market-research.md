@@ -3,13 +3,13 @@
 **Written 2026-09-21.** Two verdicts in one document, because the second only exists as a
 consequence of the first.
 
-> **A note on completeness, up front.** The ad-widget verdict (§1) is thoroughly sourced:
-> five research agents spent the night on it and every claim below carries a primary citation.
-> The Sift verdict (§2) is **not** equally sourced. The session's web-search budget (200
-> queries) was exhausted on the ad question before Sift's competitive landscape could be
-> checked. What follows separates what was **measured**, what is **general knowledge**, and
-> what is **not verified** — and §2.4 lists exactly what to check first next session. Nothing
-> here is filled in from plausible-sounding inference.
+> **A note on method.** Both verdicts are sourced from primary material gathered on
+> 2026-09-21. The ad-widget verdict (§1) rests on platform policy text, SEC filings and
+> thirteen years of shipped products. The Sift verdict (§2) rests on an App Store sweep
+> (~700 apps), direct API calls, the Wayback Machine, and the bibliometrics and
+> media-effects literature. §2.2 is measured by this session directly and is re-runnable.
+> §2.8 lists what could **not** be verified — nothing in this document is filled in from
+> plausible-sounding inference.
 
 ---
 
@@ -55,7 +55,7 @@ category survived by paying users to see ads. Not one.
 
 ---
 
-## 2. Sift: **Feasible to build. Unproven as a product.**
+## 2. Sift: **Buildable and legal. Not viable as a product.**
 
 ### 2.1 What changed, and it is the whole reason this is a different conversation
 
