@@ -1,116 +1,136 @@
-# portfolio-template
+# Sift
 
-The starting point for every new hosted project on **kalpkan.com**. Press "Use this template" (or run the one command below) and you get a working Next.js site that already knows how to talk to the shared Supabase database, report its health, send analytics to the one PostHog project, and say "part of kalpkan.com" in its footer. You then only write the app itself.
+PubMed publishes about **280 papers a week on neuromodulation alone**. Sift reads that list and
+puts the three that matter on your iPhone's Lock Screen.
 
-What is inside:
+This repo is the server and the web app. The iPhone app and widget live in `ios/`.
+
+---
+
+## The one thing worth understanding
+
+Fetching papers is not the product. PubMed's own email alerts already do it, for free, and have
+for twenty years. **The product is the filter**, and it has two halves:
+
+1. **A hand-tuned query per topic** (`scripts/seed-topics.mjs`). PubMed silently expands a bare
+   word like `neuromodulation` into every MeSH heading and pharmacological action it can find —
+   including `"neurotransmitter agents"[Pharmacological Action]`, which is why the naive query
+   returns 280 papers a week, most of them pharmacology. Writing the query out by hand cuts that
+   to 109. That is a 2.6x improvement before any code runs. Topics are therefore **curated by
+   Kalp, not typed by users**; one person tuning five queries beats ten thousand people typing
+   one each.
+
+2. **A ranker** (`lib/ranking.ts`). It scores each paper on four free signals — publication type,
+   recency, journal, and title shape — and returns *reasons* alongside the score, which the web
+   page and this README both treat as a first-class feature rather than debug output.
+
+`lib/ranking.ts` opens with an honest account of how good the ranking actually is and where it
+fails. Read that before trusting it.
+
+## What is here
 
 | Piece | File | What it does |
 |---|---|---|
-| Next.js 16 (App Router, TypeScript, Tailwind 4) | `app/` | The site. `app/page.tsx` is the placeholder home page to replace. |
-| Supabase client, scoped to this app's own schema | `lib/supabase.ts`, `lib/env.ts` | `getSupabase()` returns a client whose every query goes to the schema named by `NEXT_PUBLIC_APP_SCHEMA`, never to another app's tables. Returns `null` when the three Supabase names are unset, so the site runs without a database. |
-| Placeholder database types | `lib/database.types.ts` | Replace with generated types once the schema exists (step 4 below). |
-| Migration 0001 | `supabase/migrations/0001_create_schema.sql` | Creates the schema, grants it to the API roles, sets default privileges, adds a `select 1` function for the health route. Uses the placeholder `__APP__` until you rename it. |
-| Health route | `app/api/health/route.ts`, `lib/health.ts` | `GET /api/health` → `{ ok, service, db: "ok" \| "skipped" \| "error", time }`. Runs `select 1` against the schema when the Supabase env is present. The hub's status badge and UptimeRobot read this. |
-| PostHog analytics | `next.config.ts`, `lib/posthog.ts`, `lib/track.ts`, `lib/events.ts`, `components/PostHogProvider.tsx` | Exactly the hub's wiring: first-party `/ingest` proxy, cookieless, autocapture on, replay with inputs masked, silent no-op without a key. `lib/events.ts` has the TODO for your 2 to 4 custom events. |
-| Footer | `components/Footer.tsx` | "part of kalpkan.com" linking to https://kalpkan.com, plus the app name and a link to `/api/health`. |
-| Tests, lint, CI | `lib/*.test.ts`, `components/*.test.tsx`, `.github/workflows/ci.yml` | vitest + ESLint + `scripts/check-migrations.sh` + `next build` on every push. |
-| Settings | `.env.example` | The five names (plus optional `NEXT_PUBLIC_APP_NAME`), no values. |
+| PubMed client | `lib/pubmed.ts` | `searchRecent` / `fetchSummaries`, a tolerant `pubdate` parser, and one serialising gate that keeps every call under NCBI's 3 req/s limit. No API key, no account. |
+| **The ranker** | `lib/ranking.ts`, `lib/journals.ts` | `scorePaper(paper, context) -> { score, reasons }`. Pure, deterministic, and weighted from two measured publication-type distributions. |
+| Feed pipeline | `lib/feed.ts` | Fetch → upsert → rank → serve, plus the 6-hour cache rule. Written against a `FeedStore` interface so the whole loop is unit-tested with no database and no network. |
+| Store | `lib/supabase-store.ts`, `lib/supabase-admin.ts` | The `sift` schema over PostgREST, with the **service-role** key. Server-only; throws if it is ever evaluated in a browser. |
+| API | `app/api/{feed,topics,refresh,health}/route.ts` | See below. |
+| Web | `app/page.tsx`, `app/t/[slug]/page.tsx` | A journal's table of contents, not a dashboard. |
+| Schema | `supabase/migrations/0002_sift_core.sql` | `topics`, `papers`, `topic_papers`, `refresh_runs`. RLS on everywhere, **no policies at all**. |
+| Fixtures | `tests/fixtures/pubmed/`, `scripts/capture-fixtures.mjs` | Real recorded NCBI responses. **No test touches the network.** |
+| Evaluation | `docs/eval/` | 53 real papers for Kalp to label, so the ranker can be scored against something other than its own tests. |
 
-## Start a new project from this template
+## The API
 
-Everything below is copy-paste. `<app>` is the short lowercase name of the new project (`hoops`, `plantit`, ...); it is the GitHub repo name, the Vercel project name, the Supabase schema name and the subdomain, all the same word.
-
-1. **Create the repo and clone it** (the `--template` flag copies this repo's files with a fresh history):
-   ```bash
-   gh repo create KalpKan/<app> --template KalpKan/portfolio-template --public --clone
-   cd <app> && npm install
-   ```
-2. **Name it.** Replace the placeholder schema name in the migration, and put the same word in `.env.local` for local runs:
-   ```bash
-   sed -i '' 's/__APP__/<app>/g' supabase/migrations/*.sql
-   grep -rn __APP__ supabase/ || echo "clean"
-   cp .env.example .env.local     # then fill NEXT_PUBLIC_APP_SCHEMA=<app>; leave the rest empty for now
-   ```
-   Also change `"name"` in `package.json` and the title text in `app/page.tsx`.
-3. **Create the schema in Supabase Project B** (only if the app needs a database; skip to step 5 otherwise). Follow the runbook **"Add a schema to Supabase Project B"** in `KalpKan/portfolio` → `skills/portfolio-ops/runbooks.md`: it applies `supabase/migrations/*.sql` through the Management API, then **exposes the schema** in Project Settings → Data API → Exposed schemas (the migration file explains why). Never create a new Supabase project; there are exactly two, forever.
-4. **Generate the database types** so queries are type-checked against the real tables:
-   ```bash
-   npx supabase@2 gen types typescript --project-id yzppfufqaekgaxcrsqxp --schema <app> > lib/database.types.ts
-   ```
-   (needs `SUPABASE_ACCESS_TOKEN` in the environment: `set -a; source ~/.config/portfolio-ops/secrets.env; set +a`). Then in `lib/supabase.ts` change `export type Schema = string` to `export type Schema = "<app>"`. Re-run this command after every migration.
-5. **Analytics events.** Open `lib/events.ts`, rename the example to the app's core action, and call it from the component that performs the action. Names are `snake_case`, past tense, 2 to 4 per app (`KalpKan/portfolio` → `docs/analytics.md`).
-6. **Check it locally:** `npm test && npm run lint && npm run build`, then `npm run dev` and open http://localhost:3000/api/health. With the Supabase names empty it says `"db":"skipped"`; with them filled in and the schema exposed it says `"db":"ok"`.
-7. **Deploy to Vercel** (see "How to deploy this" below), then **add the subdomain** with the runbook "Attach a domain to a Vercel project" (`<app>.kalpkan.com`).
-8. **Add it to the hub.** Add this to `projects.json` in `KalpKan/portfolio` (runbook "Add a project to `projects.json`"):
-   ```json
-   {
-     "slug": "<app>",
-     "name": "<App name>",
-     "tagline": "One sentence about what it does.",
-     "type": "app",
-     "status": "live",
-     "url": "https://<app>.kalpkan.com",
-     "repo": "https://github.com/KalpKan/<app>",
-     "healthUrl": "https://<app>.kalpkan.com/api/health",
-     "tags": ["Next.js", "Supabase"],
-     "hero": null
-   }
-   ```
-   Then add an UptimeRobot monitor on the `healthUrl` (runbook "Add an UptimeRobot monitor") and the app's row to `skills/portfolio-ops/SKILL.md` and `settings-map.md`.
-
-## How to run this
-
-You need Node 22 (`node -v`). Then, in the project folder:
-
-```bash
-npm install        # once, downloads the libraries
-npm run dev        # starts the site at http://localhost:3000; Ctrl+C stops it
-npm test           # runs the automatic checks (should say "passed")
-npm run build      # makes the production version; this is what Vercel runs
+```
+GET  /api/feed?topic=<slug>&limit=10   -> { topic, id, name, query, updatedAt, papers: [...] }
+GET  /api/topics                       -> { topics: [{ slug, name, description, kind, source }] }
+POST /api/refresh?topic=<slug>         -> forces a refresh. Bearer SIFT_REFRESH_TOKEN.
+GET  /api/health                       -> { ok, service, db, time }   (unchanged platform contract)
 ```
 
-No `.env.local` is needed to run it: without one the site works, the database is off (`/api/health` says `"db":"skipped"`), and analytics is off.
+`/api/feed` serves from Postgres and only calls PubMed when the topic's newest ranking is more
+than six hours old. If PubMed is down and there is a cached feed, it serves the stale feed —
+a widget showing last night's papers is a far better failure than an empty one.
 
-## How to deploy this
+Two things about the shape that are load-bearing:
 
-Vercel builds and hosts it for free (Hobby plan, non-commercial). Two ways:
+- **`papers[]` matches `ios/Shared/Paper.swift` field for field.** Renaming one breaks the widget
+  silently, so `lib/feed.test.ts` asserts the exact key set. Dates are full ISO 8601 with a zone,
+  because Swift's `.iso8601` strategy rejects a bare `2026-09-14`.
+- **`score` is quality only, in 0…1, with recency deliberately left out**, because the phone
+  blends its own recency term (`FeedRanking.swift`, weight 0.35, 3-day half-life) and would
+  otherwise count it twice. `orderScore` is the server's own quality+recency number, which is
+  what the feed is sorted by and what the web page displays.
 
-- **Dashboard (once per project):** https://vercel.com/new → Import the GitHub repo → team "Kk's projects" → Deploy. From then on every push to `main` deploys automatically.
-- **Command line:** `npx vercel@latest deploy --prod --yes --scope kks-projects-2edcb11a` from the project folder (the first run asks to create/link the project; answer with the `<app>` name).
+`POST /api/refresh` **fails closed**: with `SIFT_REFRESH_TOKEN` unset it answers 503 and refuses,
+rather than being an open endpoint anyone can use to hammer NCBI from our IP.
 
-After the first deploy, set the environment variables (next section) and redeploy once: `NEXT_PUBLIC_*` values are baked in at build time, so changing them without a redeploy changes nothing.
+## Security model
+
+Every `sift` table has row level security enabled and **no policies**. That is the whole story:
+an RLS-enabled table with no permissive policy returns zero rows to `anon`, so the public anon
+key (still used by `/api/health`) can read nothing. All access is server-side with
+`SUPABASE_SERVICE_ROLE_KEY`, which bypasses RLS. `lib/schema.test.ts` asserts that no policy
+exists, so adding one has to be deliberate.
+
+## How to run it
+
+Node 22.
+
+```bash
+npm install
+npm run dev     # http://localhost:3000
+npm test        # 216 tests, no network
+npm run lint
+npm run build
+bash scripts/check-migrations.sh
+```
+
+Without `.env.local` the site still runs: the pages say the database is not configured and
+`/api/health` reports `db: "skipped"`.
+
+To run against the real database, copy `.env.example` to `.env.local` and fill it in (values
+live in Vercel and in Supabase → project "platform" → Project Settings → API). Then seed:
+
+```bash
+node --env-file=.env.local scripts/seed-topics.mjs            # checks each query live, then writes
+node --env-file=.env.local scripts/seed-topics.mjs --dry-run  # just the counts
+```
+
+To re-record the PubMed fixtures (hits the live API, rate-limited, ~5 seconds):
+
+```bash
+node scripts/capture-fixtures.mjs
+```
 
 ## Where the settings live
 
-| Name | What it is | Where the real value lives |
-|---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase Project B's URL (`https://yzppfufqaekgaxcrsqxp.supabase.co`) | Vercel → your project → Settings → Environment Variables (Production + Preview) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Project B's public `anon` key (safe in the browser; row-level security protects data) | same |
-| `NEXT_PUBLIC_APP_SCHEMA` | This app's schema name, `<app>` | same |
-| `NEXT_PUBLIC_APP_NAME` | Optional display name for the footer and `/api/health` | same |
-| `NEXT_PUBLIC_POSTHOG_KEY` | The public `phc_` token of the "Kalp portfolio" PostHog project | same (add with `--type config` when using the CLI, see docs/analytics.md in the hub) |
-| `NEXT_PUBLIC_POSTHOG_HOST` | Always `/ingest` | same |
+| Name | What it is |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase Project B's URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | The public `anon` key. Reads nothing in this app; `/api/health` uses it. |
+| `NEXT_PUBLIC_APP_SCHEMA` | `sift` |
+| `NEXT_PUBLIC_APP_NAME` | Display name in the footer and `/api/health` |
+| `NEXT_PUBLIC_POSTHOG_KEY` / `_HOST` | Analytics; leave empty to run with it off |
+| `SUPABASE_SERVICE_ROLE_KEY` | **Server-only.** Bypasses RLS. Never import `lib/supabase-admin.ts` from a client component. |
+| `SIFT_REFRESH_TOKEN` | **Server-only.** Bearer token for `POST /api/refresh`. Unset = route disabled. |
 
-Locally the same names go in `.env.local` (copy `.env.example`), which git ignores. Names only ever go in this README and in `.env.example`; values live only in Vercel. If a value leaks, rotate it in Supabase/PostHog and update Vercel (runbook "Rotate a secret").
+Names only ever appear here and in `.env.example`; values live in Vercel and `.env.local`
+(gitignored).
 
-## Verified
+## Analytics
 
-_2026-09-18 (T1.2). The template was used to spin up a throwaway app end to end, timed, then the throwaway was removed. No Supabase schema was created for this (health answers `db: "skipped"` without the env), and nothing was spent._
+One event, `paper_opened({ topic, rank })`. It is the only observation that says the ranking did
+its job, and `rank` makes "are the top three actually the ones people open?" answerable.
 
-**Elapsed: 10 min 05 s** from "create the repo from the template" to "curl the live health route" (well under the 15-minute bar). Almost all of it was waiting on Vercel: the build itself took 16 s, but the Hobby team runs one build at a time and four other projects were deploying at the same moment, so the second deploy sat in the queue for about six minutes. On a quiet team the same run is roughly 3 minutes.
+There is deliberately no "paper seen" event. WidgetKit has no impression, visibility or
+on-screen callback of any kind (`docs/widget-constraints.md` #2), so any view count would be
+invented. Taps are real; views are not.
 
-| Step | Command | Result | Clock |
-|---|---|---|---|
-| Create from template | `gh repo create KalpKan/template-smoke --template KalpKan/portfolio-template --public --clone` | repo created `20:17:48Z`, pushed `20:17:52Z` (start marker `20:17:46Z`) | 6 s |
-| Clone + install | `gh repo clone KalpKan/template-smoke && npm ci` | `found 0 vulnerabilities` | T+6 s |
-| Tests | `npm test` | `Test Files 7 passed (7)` · `Tests 28 passed (28)` | T+9 s |
-| Build | `npm run build` | `✓ Compiled successfully in 2.6s` · routes `○ /`, `○ /_not-found`, `ƒ /api/health` | T+16 s |
-| Deploy | `npx vercel@latest deploy --prod --yes --scope kks-projects-2edcb11a` (run from the `template-smoke` folder, so the project is named after it) | project `template-smoke` created; first call reported `Error: fetch failed` after the upload but the deployment still built (`● Ready`, 40 s); the retry queued behind other builds and came back `● Ready` in 16 s | T+590 s |
-| Health | `curl https://template-smoke.vercel.app/api/health` | `{"ok":true,"service":"template","db":"skipped","time":"2026-09-18T22:05:02.955Z"}` · `HTTP 200` · `cache-control: no-store`. Note: this body was re-captured at 22:05Z just before teardown, not at T+599 s; the original T+599 s response (about 20:27:45Z) had the same `ok`, `service`, `db` fields and the same status and headers, only its `time` value differed. The 10 min 05 s figure comes from the start marker `20:17:46Z` and the first successful health curl, not from the pasted `time`. | T+599 s |
-| Footer | `curl https://template-smoke.vercel.app/ \| grep kalpkan` | `href="https://kalpkan.com"` · `part of kalpkan.com` | |
-| PostHog proxy | `curl -o /dev/null -w '%{http_code} %{content_type}' https://template-smoke.vercel.app/ingest/static/array.js` | `200 application/javascript` (313 KB of posthog-js served through the app's own origin) | |
-| Clean-up | `printf 'y\n' \| npx vercel@latest project rm template-smoke --scope kks-projects-2edcb11a` | `Success! Project template-smoke removed`; `https://template-smoke.vercel.app` → 404 | |
+## Cost
 
-The throwaway GitHub repo `KalpKan/template-smoke` was archived rather than deleted: the `gh` login on this Mac has the `repo` scope but not `delete_repo`, and adding a scope is an account-level permission only Kalp should grant. To delete it: `gh auth refresh -h github.com -s delete_repo` (one browser click), then `gh repo delete KalpKan/template-smoke --yes`.
-
-Note for the next spin-up: `vercel deploy` printing `Error: fetch failed` right after the upload does not mean the deploy failed. Run `npx vercel@latest ls <project> --scope kks-projects-2edcb11a` before retrying; if it already says `● Ready`, you are done.
+$0, permanently. NCBI E-utilities needs no API key. Supabase and Vercel are the existing free
+tiers. There are no LLM calls anywhere in the pipeline — which is exactly why the ranker is a
+heuristic, and exactly why `lib/ranking.ts` says so out loud.

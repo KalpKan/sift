@@ -79,12 +79,12 @@ export default function PaperEntry({
         {/* On a phone the score moves under the entry rather than into a third
             column, which would squeeze the titles to four words a line. */}
         <p className="tabular mt-3 text-xs text-ink-faint sm:hidden">
-          score {Math.round(paper.score * 100)}
+          score {paper.orderScore}
         </p>
       </div>
 
       <p className="tabular hidden pt-1 text-right text-sm text-ink-faint sm:block">
-        {Math.round(paper.score * 100)}
+        {paper.orderScore}
       </p>
     </article>
   );

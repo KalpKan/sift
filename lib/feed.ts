@@ -104,6 +104,14 @@ export type FeedPaper = {
   url: string | null;
   /** QUALITY only, 0...1. The phone blends its own recency term on top. */
   score: number;
+  /**
+   * The server's own ordering score (quality + recency), as stored. This is
+   * the number the feed is sorted by, so it is the one the WEB shows — a
+   * column of `score` values would not descend, because `score` deliberately
+   * leaves recency out for the phone's benefit, and a non-monotonic number
+   * next to a ranked list just looks broken. The Swift client ignores it.
+   */
+  orderScore: number;
   summary: string | null;
   reasons: string[];
 };
@@ -191,6 +199,7 @@ export function toFeedPaper(stored: StoredPaper, kind: TopicKind): FeedPaper {
     doi: stored.doi,
     url: stored.url,
     score: qualityScore(stored, kind),
+    orderScore: stored.score,
     // No abstract: esummary does not return one, and efetch would double every
     // refresh's NCBI cost for text the widget has no room to show.
     summary: null,

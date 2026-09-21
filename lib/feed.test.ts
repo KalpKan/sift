@@ -190,7 +190,7 @@ describe("toFeedPaper", () => {
   it("emits exactly the field names ios/Shared/Paper.swift decodes", () => {
     const f = toFeedPaper(stored, "clinical");
     expect(Object.keys(f).sort()).toEqual(
-      ["authorsShort", "doi", "id", "journal", "published", "pmid", "reasons", "score", "summary", "title", "url"].sort(),
+      ["authorsShort", "doi", "id", "journal", "orderScore", "published", "pmid", "reasons", "score", "summary", "title", "url"].sort(),
     );
   });
 
@@ -210,6 +210,11 @@ describe("toFeedPaper", () => {
     expect(f.score).toBeGreaterThanOrEqual(0);
     expect(f.score).toBeLessThanOrEqual(1);
     expect(f.score).not.toBe(stored.score);
+  });
+
+  it("also sends the ordering score, which is the one the web column shows", () => {
+    // The web must show a number that actually descends down the page.
+    expect(toFeedPaper(stored, "clinical").orderScore).toBe(stored.score);
   });
 
   it("never sends null for journal, which Swift declares non-optional", () => {

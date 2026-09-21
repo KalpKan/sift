@@ -14,6 +14,7 @@ function paper(over: Partial<FeedPaper> = {}): FeedPaper {
     doi: "10.1177/03000605261487272",
     url: "https://doi.org/10.1177/03000605261487272",
     score: 0.87,
+    orderScore: 88,
     summary: null,
     reasons: ["4 days old", "meta-analysis", "key journal in field"],
     ...over,
@@ -71,9 +72,11 @@ describe("PaperEntry", () => {
     expect(html({ reasons: [] })).not.toContain("<ul");
   });
 
-  it("shows the score as a whole number out of 100, never a raw float", () => {
-    const out = html({ score: 0.874 });
-    expect(out).toContain("87");
+  it("shows the ORDERING score, not the 0...1 quality the phone gets", () => {
+    // The list is sorted by orderScore, so showing `score` would print a
+    // column of numbers that do not descend.
+    const out = html({ score: 0.874, orderScore: 91 });
+    expect(out).toContain("91");
     expect(out).not.toContain("0.874");
   });
 
