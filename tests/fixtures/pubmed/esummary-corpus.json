@@ -1,0 +1,5173 @@
+{
+  "header": {
+    "type": "esummary",
+    "version": "0.3"
+  },
+  "result": {
+    "40290038": {
+      "uid": "40290038",
+      "pubdate": "2025 Jul",
+      "epubdate": "2025 Apr 28",
+      "source": "Aust N Z J Psychiatry",
+      "authors": [
+        {
+          "name": "Hussain S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Gale C",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Sarma S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Smith J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Bayes A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Loo C",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Loo C",
+      "title": "Royal Australian and New Zealand College of Psychiatrists professional practice guidelines for the use of ketamine in psychiatric practice.",
+      "sorttitle": "royal australian and new zealand college of psychiatrists professional practice guidelines for the use of ketamine in psychiatric practice",
+      "volume": "59",
+      "issue": "7",
+      "pages": "576-587",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "0111052",
+      "issn": "0004-8674",
+      "essn": "1440-1614",
+      "pubtype": [
+        "Journal Article",
+        "Practice Guideline",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "40290038"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1177/00048674251333577"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2025/06/24 18:30"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2025/04/28 12:30"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2025/04/28 06:14"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "The Australian and New Zealand journal of psychiatry",
+      "elocationid": "doi: 10.1177/00048674251333577",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2025/07/01 00:00",
+      "sortfirstauthor": "Hussain S",
+      "vernaculartitle": ""
+    },
+    "40444524": {
+      "uid": "40444524",
+      "pubdate": "2025 Aug",
+      "epubdate": "2025 May 30",
+      "source": "J Pediatr Gastroenterol Nutr",
+      "authors": [
+        {
+          "name": "Groen J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Gordon M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Chogle A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Benninga M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Borlack R",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Borrelli O",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Darbari A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Dolinsek J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Khlevner J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Di Lorenzo C",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Person H",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Sanghavi R",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Snyder J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Thapar N",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Vlieger A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Sinopoulou V",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Tabbers M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Saps M",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Saps M",
+      "title": "ESPGHAN/NASPGHAN guidelines for treatment of irritable bowel syndrome and functional abdominal pain-not otherwise specified in children aged 4-18 years.",
+      "sorttitle": "espghan naspghan guidelines for treatment of irritable bowel syndrome and functional abdominal pain not otherwise specified in children aged 4 18 years",
+      "volume": "81",
+      "issue": "2",
+      "pages": "442-471",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "8211545",
+      "issn": "0277-2116",
+      "essn": "1536-4801",
+      "pubtype": [
+        "Journal Article",
+        "Practice Guideline"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "40444524"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC12314588"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC12314588;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1002/jpn3.70070"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "revised",
+          "date": "2025/01/09 00:00"
+        },
+        {
+          "pubstatus": "received",
+          "date": "2024/04/30 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2025/03/12 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2025/08/01 06:27"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2025/05/30 08:28"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2025/05/30 06:13"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2025/08/01 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 145,
+      "fulljournalname": "Journal of pediatric gastroenterology and nutrition",
+      "elocationid": "doi: 10.1002/jpn3.70070",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2025/08/01 00:00",
+      "sortfirstauthor": "Groen J",
+      "vernaculartitle": ""
+    },
+    "40518906": {
+      "uid": "40518906",
+      "pubdate": "2025 May",
+      "epubdate": "",
+      "source": "Rev Med Liege",
+      "authors": [
+        {
+          "name": "Scantamburlo G",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Scantamburlo G",
+      "title": "[Practical guidelines for the treatment of obsessive-compulsive disorders].",
+      "sorttitle": "practical guidelines for the treatment of obsessive compulsive disorders",
+      "volume": "80",
+      "issue": "5-6",
+      "pages": "463-471",
+      "lang": [
+        "fre"
+      ],
+      "nlmuniqueid": "0404317",
+      "issn": "0370-629X",
+      "essn": "",
+      "pubtype": [
+        "English Abstract",
+        "Guideline",
+        "Journal Article"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "4",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "40518906"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2025/06/16 11:12"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2025/06/16 11:11"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2025/06/16 04:03"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Revue medicale de Liege",
+      "elocationid": "",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2025/05/01 00:00",
+      "sortfirstauthor": "Scantamburlo G",
+      "vernaculartitle": "Recommandations de pratique cliniquedans les troubles obsessionnels-compulsifs."
+    },
+    "42167724": {
+      "uid": "42167724",
+      "pubdate": "2026 Jul-Aug",
+      "epubdate": "2026 May 20",
+      "source": "Brain Stimul",
+      "authors": [
+        {
+          "name": "Zeng Z",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Lin Z",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Huang P",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Pan Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhang C",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Sun B",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Li D",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Li D",
+      "title": "Effect of high, low, and asymmetric frequency stimulation of the subthalamic nucleus in Parkinson's disease.",
+      "sorttitle": "effect of high low and asymmetric frequency stimulation of the subthalamic nucleus in parkinson s disease",
+      "volume": "19",
+      "issue": "4",
+      "pages": "103121",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101465726",
+      "issn": "",
+      "essn": "1876-4754",
+      "pubtype": [
+        "Journal Article",
+        "Randomized Controlled Trial"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42167724"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1016/j.brs.2026.103121"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "S1935-861X(26)00098-7"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2024/09/27 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/04/15 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/05/13 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/07/15 18:37"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/05/22 00:33"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/05/21 19:42"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Brain stimulation",
+      "elocationid": "doi: 10.1016/j.brs.2026.103121",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/07/01 00:00",
+      "sortfirstauthor": "Zeng Z",
+      "vernaculartitle": ""
+    },
+    "42233958": {
+      "uid": "42233958",
+      "pubdate": "2026 Aug",
+      "epubdate": "2026 Jun 3",
+      "source": "Epilepsia",
+      "authors": [
+        {
+          "name": "Uysal U",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Landazuri P",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Burdette DE",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Patra S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Crudele AN",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Englot DJ",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Gavvala JR",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Tandon N",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Pati S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Kaye LC",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ojemann S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Barnett D",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Neimat J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Palade AE",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Rahimpour S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Arain AA",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Richardson RM",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Cash SS",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Salanova V",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Urban A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Welch WP",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Gonzalez-Martinez JA",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Van Gompel JJ",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Starnes K",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Spencer D",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ernst LD",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Amin U",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Rivera-Cruz A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Dugan P",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Fajardo M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Lallas M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Jobst BC",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Odom N",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Roland JL",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Willie JT",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Sheth SA",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Goldman AM",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Skidmore CT",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Wu C",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Drees C",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Parker J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ganguly TM",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Szaflarski J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ghatan S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Johnson L",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Norman J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Wingeier B",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Seale CG",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Morrell MJ",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Nautilus Study Group",
+          "authtype": "CollectiveName",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Morrell MJ",
+      "title": "Responsive stimulation of the thalamus for idiopathic generalized epilepsy: Results of the randomized controlled NAUTILUS trial through 18 months.",
+      "sorttitle": "responsive stimulation of the thalamus for idiopathic generalized epilepsy results of the randomized controlled nautilus trial through 18 months",
+      "volume": "67",
+      "issue": "8",
+      "pages": "4139-4152",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "2983306R",
+      "issn": "0013-9580",
+      "essn": "1528-1167",
+      "pubtype": [
+        "Journal Article",
+        "Randomized Controlled Trial",
+        "Multicenter Study"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42233958"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13525554"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13525554;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1002/epi.70321"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "revised",
+          "date": "2026/05/15 00:00"
+        },
+        {
+          "pubstatus": "received",
+          "date": "2026/03/31 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/05/18 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/08/29 12:02"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/06/03 12:40"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/06/03 10:43"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/08/29 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 22,
+      "fulljournalname": "Epilepsia",
+      "elocationid": "doi: 10.1002/epi.70321",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/08/01 00:00",
+      "sortfirstauthor": "Uysal U",
+      "vernaculartitle": ""
+    },
+    "42297980": {
+      "uid": "42297980",
+      "pubdate": "2026 Aug",
+      "epubdate": "2026 Jun 15",
+      "source": "Nat Med",
+      "authors": [
+        {
+          "name": "Louie KH",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Balakid JP",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Bath JE",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Song S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Fekri Azgomi H",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Marks JH",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Choi JT",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Starr PA",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Wang DD",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Wang DD",
+      "title": "Adaptive deep brain stimulation for dynamic gait control in Parkinson's disease: a randomized feasibility trial.",
+      "sorttitle": "adaptive deep brain stimulation for dynamic gait control in parkinson s disease a randomized feasibility trial",
+      "volume": "32",
+      "issue": "8",
+      "pages": "2803-2814",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "9502015",
+      "issn": "1078-8956",
+      "essn": "1546-170X",
+      "pubtype": [
+        "Journal Article",
+        "Randomized Controlled Trial"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42297980"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13473014"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13473014;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1038/s41591-026-04434-2"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "10.1038/s41591-026-04434-2"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2025/09/06 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/04/29 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/08/14 05:38"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/06/16 00:33"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/06/15 23:36"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/06/15 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 94,
+      "fulljournalname": "Nature medicine",
+      "elocationid": "doi: 10.1038/s41591-026-04434-2",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/08/01 00:00",
+      "sortfirstauthor": "Louie KH",
+      "vernaculartitle": ""
+    },
+    "42371031": {
+      "uid": "42371031",
+      "pubdate": "2026 Jul",
+      "epubdate": "2026 Jun 29",
+      "source": "Neuroradiology",
+      "authors": [
+        {
+          "name": "Patel Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zou R",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Nino ACV",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Menetrey A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Mueller MC",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Pai V",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Germann J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Lozano AM",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ibrahim GM",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Gorodetsky C",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Boutet A",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Boutet A",
+      "title": "Magnetic resonance imaging use in pediatric deep brain stimulation: a systematic review and call for standardization.",
+      "sorttitle": "magnetic resonance imaging use in pediatric deep brain stimulation a systematic review and call for standardization",
+      "volume": "68",
+      "issue": "7",
+      "pages": "1861-1869",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "1302751",
+      "issn": "0028-3940",
+      "essn": "1432-1920",
+      "pubtype": [
+        "Journal Article",
+        "Systematic Review"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42371031"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1007/s00234-026-04089-3"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "10.1007/s00234-026-04089-3"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2025/12/25 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/06/17 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/07/27 12:36"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/06/29 12:33"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/06/29 11:13"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Neuroradiology",
+      "elocationid": "doi: 10.1007/s00234-026-04089-3",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/07/01 00:00",
+      "sortfirstauthor": "Patel Y",
+      "vernaculartitle": ""
+    },
+    "42378062": {
+      "uid": "42378062",
+      "pubdate": "2026 Aug 24",
+      "epubdate": "2026 Jun 30",
+      "source": "JCI Insight",
+      "authors": [
+        {
+          "name": "Gonzalez Saez-Diez E",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Xue X",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Tam A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Kim HM",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Carty S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Rong J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ferrer-Socorro M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Yang K",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ebrahimi-Fakhari D",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Ebrahimi-Fakhari D",
+      "title": "De novo VPS16 missense variant causes infantile-onset dystonia with defective autophagic flux.",
+      "sorttitle": "de novo vps16 missense variant causes infantile onset dystonia with defective autophagic flux",
+      "volume": "11",
+      "issue": "16",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101676073",
+      "issn": "",
+      "essn": "2379-3708",
+      "pubtype": [
+        "Journal Article",
+        "Case Reports",
+        "Research Support, N.I.H., Extramural"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "258",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42378062"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13505382"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13505382;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1172/jci.insight.207998"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "207998"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2026/08/24 11:37"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/06/30 18:40"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/06/30 12:04"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/06/30 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 7,
+      "fulljournalname": "JCI insight",
+      "elocationid": "doi: 10.1172/jci.insight.207998",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/06/30 00:00",
+      "sortfirstauthor": "Gonzalez Saez-Diez E",
+      "vernaculartitle": ""
+    },
+    "42420630": {
+      "uid": "42420630",
+      "pubdate": "2026 Jul 9",
+      "epubdate": "2026 Jul 9",
+      "source": "Childs Nerv Syst",
+      "authors": [
+        {
+          "name": "Byun JW",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Lee JM",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Shin YB",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Yoon JA",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Kim SY",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Kim SY",
+      "title": "Stepwise surgical management of spasticity and dystonia in severe pediatric cerebral palsy: a case report involving selective dorsal rhizotomy, intrathecal baclofen therapy, and deep brain stimulation.",
+      "sorttitle": "stepwise surgical management of spasticity and dystonia in severe pediatric cerebral palsy a case report involving selective dorsal rhizotomy intrathecal baclofen therapy and deep brain stimulation",
+      "volume": "42",
+      "issue": "1",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "8503227",
+      "issn": "0256-7040",
+      "essn": "1433-0350",
+      "pubtype": [
+        "Journal Article",
+        "Case Reports"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "3",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42420630"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1007/s00381-026-07382-x"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "10.1007/s00381-026-07382-x"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/03/01 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/06/21 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/07/09 07:10"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/07/09 00:40"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/07/08 23:45"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Child's nervous system : ChNS : official journal of the International Society for Pediatric Neurosurgery",
+      "elocationid": "pii: 291. doi: 10.1007/s00381-026-07382-x",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/07/09 00:00",
+      "sortfirstauthor": "Byun JW",
+      "vernaculartitle": ""
+    },
+    "42434538": {
+      "uid": "42434538",
+      "pubdate": "2026",
+      "epubdate": "2026 Jul 7",
+      "source": "Tremor Other Hyperkinet Mov (N Y)",
+      "authors": [
+        {
+          "name": "De Santis T",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Mogilner AY",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Pourfar M",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Pourfar M",
+      "title": "Post-Hypoxic Myoclonus and Deep Brain Stimulation. Experience from a Small Patient Cohort and Literature Review Highlighting Variable Outcomes.",
+      "sorttitle": "post hypoxic myoclonus and deep brain stimulation experience from a small patient cohort and literature review highlighting variable outcomes",
+      "volume": "16",
+      "issue": "",
+      "pages": "43",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101569493",
+      "issn": "",
+      "essn": "2160-8288",
+      "pubtype": [
+        "Journal Article",
+        "Review",
+        "Case Reports"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "258",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42434538"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13353099"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13353099;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.5334/tohm.1171"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/01/22 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/04/02 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/07/12 04:10"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/07/11 10:10"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/07/11 05:17"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/07/07 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 30,
+      "fulljournalname": "Tremor and other hyperkinetic movements (New York, N.Y.)",
+      "elocationid": "doi: 10.5334/tohm.1171",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/07/07 00:00",
+      "sortfirstauthor": "De Santis T",
+      "vernaculartitle": ""
+    },
+    "42462375": {
+      "uid": "42462375",
+      "pubdate": "2026 Sep",
+      "epubdate": "2026 Jul 8",
+      "source": "Seizure",
+      "authors": [
+        {
+          "name": "Samanta D",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Nath M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Prabhu N",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Haneef Z",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Albert GW",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Albert GW",
+      "title": "Responsive neurostimulation in pediatric drug-resistant epilepsy: A systematic review and meta-analysis of seizure and non-seizure outcomes, safety, and predictors of response.",
+      "sorttitle": "responsive neurostimulation in pediatric drug resistant epilepsy a systematic review and meta analysis of seizure and non seizure outcomes safety and predictors of response",
+      "volume": "141",
+      "issue": "",
+      "pages": "99-108",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "9306979",
+      "issn": "1059-1311",
+      "essn": "1532-2688",
+      "pubtype": [
+        "Journal Article",
+        "Systematic Review",
+        "Meta-Analysis"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42462375"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1016/j.seizure.2026.07.007"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "S1059-1311(26)00203-7"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/04/23 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/07/06 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/07/07 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/08/28 23:34"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/07/17 00:42"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/07/16 18:03"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Seizure",
+      "elocationid": "doi: 10.1016/j.seizure.2026.07.007",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/01 00:00",
+      "sortfirstauthor": "Samanta D",
+      "vernaculartitle": ""
+    },
+    "42530887": {
+      "uid": "42530887",
+      "pubdate": "2026 Sep",
+      "epubdate": "2026 Jul 30",
+      "source": "J Parkinsons Dis",
+      "authors": [
+        {
+          "name": "Rouleau EA",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Falck DE",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Hoffmann CF",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Geraedts VJ",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zutt R",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "van der Gaag NA",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Contarino MF",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Contarino MF",
+      "title": "Full recovery after severe bacterial encephalitis and brain abscess following deep brain stimulation surgery for Parkinson's disease.",
+      "sorttitle": "full recovery after severe bacterial encephalitis and brain abscess following deep brain stimulation surgery for parkinson s disease",
+      "volume": "16",
+      "issue": "6",
+      "pages": "1347-1350",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101567362",
+      "issn": "1877-7171",
+      "essn": "1877-718X",
+      "pubtype": [
+        "Case Reports",
+        "Letter"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42530887"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13438653"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13438653;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1177/1877718X261470302"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/07 17:36"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/07/30 12:43"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/07/30 11:24"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/07/30 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 13,
+      "fulljournalname": "Journal of Parkinson's disease",
+      "elocationid": "doi: 10.1177/1877718X261470302",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/01 00:00",
+      "sortfirstauthor": "Rouleau EA",
+      "vernaculartitle": ""
+    },
+    "42533644": {
+      "uid": "42533644",
+      "pubdate": "2026 Aug",
+      "epubdate": "",
+      "source": "Eur J Neurosci",
+      "authors": [
+        {
+          "name": "Wilde M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Kiakou D",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Bakstein E",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Filip P",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Novak D",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Novak D",
+      "title": "Predictive Models for Motor Outcomes From Deep Brain Stimulation in Parkinson's Disease: A Systematic Review.",
+      "sorttitle": "predictive models for motor outcomes from deep brain stimulation in parkinson s disease a systematic review",
+      "volume": "64",
+      "issue": "3",
+      "pages": "e70644",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "8918110",
+      "issn": "0953-816X",
+      "essn": "1460-9568",
+      "pubtype": [
+        "Journal Article",
+        "Systematic Review",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "4",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42533644"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13425036"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13425036;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1111/ejn.70644"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "revised",
+          "date": "2026/07/07 00:00"
+        },
+        {
+          "pubstatus": "received",
+          "date": "2026/02/04 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/07/13 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/07/31 06:38"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/07/31 06:37"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/07/31 03:23"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/07/31 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 72,
+      "fulljournalname": "The European journal of neuroscience",
+      "elocationid": "doi: 10.1111/ejn.70644",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/08/01 00:00",
+      "sortfirstauthor": "Wilde M",
+      "vernaculartitle": ""
+    },
+    "42551000": {
+      "uid": "42551000",
+      "pubdate": "2026 Aug 25",
+      "epubdate": "2026 Aug 4",
+      "source": "Neurology",
+      "authors": [
+        {
+          "name": "Ressler HW",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Somerville M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Hite A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Chapman L",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Kaplan J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Hunt A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Harmon J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Tate J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Couture DE",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Martindale JM",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Martindale JM",
+      "title": "Child Neurology: Early-Onset, Rapidly Progressive, and Refractory DYT-TOR1A Status Dystonicus.",
+      "sorttitle": "child neurology early onset rapidly progressive and refractory dyt tor1a status dystonicus",
+      "volume": "107",
+      "issue": "4",
+      "pages": "e214878",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "0401060",
+      "issn": "0028-3878",
+      "essn": "1526-632X",
+      "pubtype": [
+        "Journal Article",
+        "Case Reports"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42551000"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1212/WNL.0000000000214878"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2026/08/09 15:22"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/08/09 15:21"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/08/04 16:12"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Neurology",
+      "elocationid": "doi: 10.1212/WNL.0000000000214878",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/08/25 00:00",
+      "sortfirstauthor": "Ressler HW",
+      "vernaculartitle": ""
+    },
+    "42586498": {
+      "uid": "42586498",
+      "pubdate": "2026 Sep-Oct",
+      "epubdate": "2026 Aug 12",
+      "source": "Brain Stimul",
+      "authors": [
+        {
+          "name": "Liu Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Jiang C",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Li B",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Liu Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Yang Z",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Xu Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Yao A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhang X",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Yang A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Meng F",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhang J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Shi L",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Shi L",
+      "title": "Direct substantia nigra deep brain stimulation in Parkinson's disease: Efficacy, safety, and the frequency-response relationship.",
+      "sorttitle": "direct substantia nigra deep brain stimulation in parkinson s disease efficacy safety and the frequency response relationship",
+      "volume": "19",
+      "issue": "5",
+      "pages": "103186",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101465726",
+      "issn": "",
+      "essn": "1876-4754",
+      "pubtype": [
+        "Journal Article",
+        "Randomized Controlled Trial",
+        "Clinical Trial, Phase I"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42586498"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1016/j.brs.2026.103186"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "S1935-861X(26)00163-4"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/05/19 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/07/23 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/11 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/17 23:34"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/08/12 23:34"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/08/12 19:22"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Brain stimulation",
+      "elocationid": "doi: 10.1016/j.brs.2026.103186",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/01 00:00",
+      "sortfirstauthor": "Liu Y",
+      "vernaculartitle": ""
+    },
+    "42607979": {
+      "uid": "42607979",
+      "pubdate": "2026 Nov",
+      "epubdate": "2026 Aug 17",
+      "source": "Neurosci Biobehav Rev",
+      "authors": [
+        {
+          "name": "Murris SR",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Westerberg JA",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Klink PC",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Roelfsema PR",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Roelfsema PR",
+      "title": "A systematic review of macaque brain stimulation: Trends and future directions.",
+      "sorttitle": "systematic review of macaque brain stimulation trends and future directions",
+      "volume": "190",
+      "issue": "",
+      "pages": "106906",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "7806090",
+      "issn": "0149-7634",
+      "essn": "1873-7528",
+      "pubtype": [
+        "Journal Article",
+        "Systematic Review",
+        "Review"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42607979"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1016/j.neubiorev.2026.106906"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "S0149-7634(26)00363-5"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/03/31 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/07/05 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/10 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/11 23:36"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/08/17 23:39"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/08/17 19:15"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Neuroscience and biobehavioral reviews",
+      "elocationid": "doi: 10.1016/j.neubiorev.2026.106906",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/11/01 00:00",
+      "sortfirstauthor": "Murris SR",
+      "vernaculartitle": ""
+    },
+    "42621918": {
+      "uid": "42621918",
+      "pubdate": "2026",
+      "epubdate": "2026 Aug 5",
+      "source": "Front Neurol",
+      "authors": [
+        {
+          "name": "Triguero-Cueva L",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Martínez-Barbero JP",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Madrid-Navarro CJ",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Pérez-Navarro MJ",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Mínguez-Castellanos A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Marín-Romero B",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Iáñez-Velasco B",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Escamilla-Sevilla F",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Katati MJ",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Katati MJ",
+      "title": "Dual-target VIM-PSA deep brain stimulation using octopolar electrodes: surgical technique and feasibility study.",
+      "sorttitle": "dual target vim psa deep brain stimulation using octopolar electrodes surgical technique and feasibility study",
+      "volume": "17",
+      "issue": "",
+      "pages": "1865673",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101546899",
+      "issn": "",
+      "essn": "1664-2295",
+      "pubtype": [
+        "Journal Article",
+        "Randomized Controlled Trial"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "258",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42621918"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13488162"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13488162;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.3389/fneur.2026.1865673"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/04/26 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/07/09 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/07/10 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/08/20 11:42"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/08/20 11:41"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/08/20 09:25"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/08/05 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 36,
+      "fulljournalname": "Frontiers in neurology",
+      "elocationid": "doi: 10.3389/fneur.2026.1865673",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/08/05 00:00",
+      "sortfirstauthor": "Triguero-Cueva L",
+      "vernaculartitle": ""
+    },
+    "42656097": {
+      "uid": "42656097",
+      "pubdate": "2026 Aug 25",
+      "epubdate": "",
+      "source": "Sheng Wu Yi Xue Gong Cheng Xue Za Zhi",
+      "authors": [
+        {
+          "name": "Fu Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Yao H",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Li T",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhao L",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Yang X",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Luo R",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Xu J",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Xu J",
+      "title": "[Analysis of the constraints of inherent limitations on the capability boundaries of brain-computer interfaces and corresponding strategies].",
+      "sorttitle": "analysis of the constraints of inherent limitations on the capability boundaries of brain computer interfaces and corresponding strategies",
+      "volume": "43",
+      "issue": "4",
+      "pages": "669-677",
+      "lang": [
+        "chi"
+      ],
+      "nlmuniqueid": "9426398",
+      "issn": "1001-5515",
+      "essn": "",
+      "pubtype": [
+        "Journal Article",
+        "Review",
+        "English Abstract"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "4",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42656097"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13519809"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13519809;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.7507/1001-5515.202603080"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2026/08/27 12:36"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/08/27 05:35"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/08/27 04:03"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/08/25 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 38,
+      "fulljournalname": "Sheng wu yi xue gong cheng xue za zhi = Journal of biomedical engineering = Shengwu yixue gongchengxue zazhi",
+      "elocationid": "doi: 10.7507/1001-5515.202603080",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/08/25 00:00",
+      "sortfirstauthor": "Fu Y",
+      "vernaculartitle": ""
+    },
+    "42680205": {
+      "uid": "42680205",
+      "pubdate": "2026 Aug 25",
+      "epubdate": "",
+      "source": "Hum Mol Genet",
+      "authors": [
+        {
+          "name": "Hines TJ",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Funke JR",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Pratt SL",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Rice AD",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Twiss JL",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Burgess RW",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Burgess RW",
+      "title": "A mouse model of autosomal dominant spastic ataxia and myopathy caused by a mutation in Tuba4a.",
+      "sorttitle": "mouse model of autosomal dominant spastic ataxia and myopathy caused by a mutation in tuba4a",
+      "volume": "35",
+      "issue": "18",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "9208958",
+      "issn": "0964-6906",
+      "essn": "1460-2083",
+      "pubtype": [
+        "Journal Article"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "4",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42680205"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1093/hmg/ddag084"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "8778799"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/03/10 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/07/27 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/17 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/01 23:35"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/01 23:34"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/01 20:33"
+        }
+      ],
+      "references": [
+        {
+          "refsource": "bioRxiv. 2026 Mar 09:2026.03.06.710113. doi: 10.64898/2026.03.06.710113.",
+          "reftype": "Update of",
+          "pmid": 41889878,
+          "note": ""
+        }
+      ],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Human molecular genetics",
+      "elocationid": "pii: ddag084. doi: 10.1093/hmg/ddag084",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/08/25 00:00",
+      "sortfirstauthor": "Hines TJ",
+      "vernaculartitle": ""
+    },
+    "42684273": {
+      "uid": "42684273",
+      "pubdate": "2026 Aug 28",
+      "epubdate": "2026 Aug 28",
+      "source": "J Med Internet Res",
+      "authors": [
+        {
+          "name": "Xu J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Gao Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Xie S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Jiang W",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhang H",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Qiu L",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Jiang M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhou L",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Zhou L",
+      "title": "Comparative Effectiveness of Noninvasive Brain-Computer Interface-Based Interventions for Upper Limb Rehabilitation in Poststroke Hemiplegia: Systematic Review and Network Meta-Analysis of Randomized Controlled Trials.",
+      "sorttitle": "comparative effectiveness of noninvasive brain computer interface based interventions for upper limb rehabilitation in poststroke hemiplegia systematic review and network meta analysis of randomized controlled trials",
+      "volume": "28",
+      "issue": "",
+      "pages": "e92940",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "100959882",
+      "issn": "1439-4456",
+      "essn": "1438-8871",
+      "pubtype": [
+        "Journal Article",
+        "Systematic Review",
+        "Network Meta-Analysis",
+        "Comparative Study"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "3",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42684273"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13524221"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13524221;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.2196/92940"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "v28i1e92940"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/02/05 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/08/09 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/10 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/03 01:14"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/03 01:13"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/02 11:34"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/08/28 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 142,
+      "fulljournalname": "Journal of medical Internet research",
+      "elocationid": "doi: 10.2196/92940",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/08/28 00:00",
+      "sortfirstauthor": "Xu J",
+      "vernaculartitle": ""
+    },
+    "42702636": {
+      "uid": "42702636",
+      "pubdate": "2026 Sep 6",
+      "epubdate": "2026 Sep 6",
+      "source": "Neurogenetics",
+      "authors": [
+        {
+          "name": "Stearns H",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Vanood A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Arca KN",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Osundiji MA",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Osundiji MA",
+      "title": "Downbeat nystagmus without ataxia as an early manifestation of spinocerebellar ataxia, autosomal recessive type 10 (SCAR10): a case report.",
+      "sorttitle": "downbeat nystagmus without ataxia as an early manifestation of spinocerebellar ataxia autosomal recessive type 10 scar10 a case report",
+      "volume": "27",
+      "issue": "1",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "9709714",
+      "issn": "1364-6745",
+      "essn": "1364-6753",
+      "pubtype": [
+        "Journal Article",
+        "Case Reports"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "3",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42702636"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1007/s10048-026-00939-7"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "10.1007/s10048-026-00939-7"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/05/30 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/09/01 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/07 05:36"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/07 05:35"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/07 00:20"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Neurogenetics",
+      "elocationid": "pii: 68. doi: 10.1007/s10048-026-00939-7",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/06 00:00",
+      "sortfirstauthor": "Stearns H",
+      "vernaculartitle": ""
+    },
+    "42714627": {
+      "uid": "42714627",
+      "pubdate": "2026 Sep 9",
+      "epubdate": "2026 Sep 9",
+      "source": "J Neurol",
+      "authors": [
+        {
+          "name": "Leeuwenberg KE",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "van Prooije TH",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Reniers C",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Kapteijns KCJ",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Maas RPPWM",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "van de Warrenburg BP",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "van de Warrenburg BP",
+      "title": "Convergent validity, responsiveness, and meaningful within-subject change of the PROM-Ataxia in spinocerebellar ataxias.",
+      "sorttitle": "convergent validity responsiveness and meaningful within subject change of the prom ataxia in spinocerebellar ataxias",
+      "volume": "273",
+      "issue": "10",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "0423161",
+      "issn": "0340-5354",
+      "essn": "1432-1459",
+      "pubtype": [
+        "Journal Article"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "3",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42714627"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13558426"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13558426;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1007/s00415-026-14108-1"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "10.1007/s00415-026-14108-1"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/04/25 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/25 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/08/14 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/09 17:48"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/09 17:47"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/09 11:14"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/09/09 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 26,
+      "fulljournalname": "Journal of neurology",
+      "elocationid": "doi: 10.1007/s00415-026-14108-1",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/09 00:00",
+      "sortfirstauthor": "Leeuwenberg KE",
+      "vernaculartitle": ""
+    },
+    "42727980": {
+      "uid": "42727980",
+      "pubdate": "2026 Sep 10",
+      "epubdate": "2026 Sep 10",
+      "source": "Reg Anesth Pain Med",
+      "authors": [
+        {
+          "name": "Prasad R",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Singh N",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Pritzlaff S",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Pritzlaff S",
+      "title": "Psychological evaluation before neuromodulation: not just a gatekeeper.",
+      "sorttitle": "psychological evaluation before neuromodulation not just a gatekeeper",
+      "volume": "",
+      "issue": "",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "9804508",
+      "issn": "1098-7339",
+      "essn": "1532-8651",
+      "pubtype": [
+        "Letter"
+      ],
+      "recordstatus": "PubMed - as supplied by publisher",
+      "pubstatus": "10",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42727980"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1136/rapm-2026-108156"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "rapm-2026-108156"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/06/01 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/07/01 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/11 23:36"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/11 23:36"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/11 20:53"
+        }
+      ],
+      "references": [],
+      "attributes": [],
+      "pmcrefcount": "",
+      "fulljournalname": "Regional anesthesia and pain medicine",
+      "elocationid": "pii: rapm-2026-108156. doi: 10.1136/rapm-2026-108156",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/10 00:00",
+      "sortfirstauthor": "Prasad R",
+      "vernaculartitle": ""
+    },
+    "42730398": {
+      "uid": "42730398",
+      "pubdate": "2026 Jul",
+      "epubdate": "2026 Sep 11",
+      "source": "Pulm Circ",
+      "authors": [
+        {
+          "name": "Bekiaridou A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Mughrabi I",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Rios N",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Giannakoulas G",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Diamond B",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zanos S",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Zanos S",
+      "title": "Splenic Focused Ultrasound Improves Experimental Pulmonary Hypertension and Reprograms Immune Responses in Female and Male Rats.",
+      "sorttitle": "splenic focused ultrasound improves experimental pulmonary hypertension and reprograms immune responses in female and male rats",
+      "volume": "16",
+      "issue": "3",
+      "pages": "e70392",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101557243",
+      "issn": "2045-8932",
+      "essn": "2045-8940",
+      "pubtype": [
+        "Letter"
+      ],
+      "recordstatus": "PubMed",
+      "pubstatus": "258",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42730398"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13566670"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13566670;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1002/pul2.70392"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "PUL270392"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/04/02 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/07/28 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/24 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/13 00:51"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/13 00:50"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/12 08:04"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/09/11 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 5,
+      "fulljournalname": "Pulmonary circulation",
+      "elocationid": "doi: 10.1002/pul2.70392",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/11 00:00",
+      "sortfirstauthor": "Bekiaridou A",
+      "vernaculartitle": ""
+    },
+    "42730671": {
+      "uid": "42730671",
+      "pubdate": "2026 Sep",
+      "epubdate": "",
+      "source": "Ann N Y Acad Sci",
+      "authors": [
+        {
+          "name": "Zhang Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Xiao Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Luo KL",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Lin W",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhang W",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Liu X",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Sun QK",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Yuan RY",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ni J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Gan SR",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Chen XY",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Chen XY",
+      "title": "Digital Balance Biomarkers and Interpretable Evaluation of Disease Severity in Spinocerebellar Ataxia Type 3.",
+      "sorttitle": "digital balance biomarkers and interpretable evaluation of disease severity in spinocerebellar ataxia type 3",
+      "volume": "1563",
+      "issue": "1",
+      "pages": "e70398",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "7506858",
+      "issn": "0077-8923",
+      "essn": "1749-6632",
+      "pubtype": [
+        "Journal Article"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "4",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42730671"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13570565"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13570565;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1111/nyas.70398"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "revised",
+          "date": "2026/06/11 00:00"
+        },
+        {
+          "pubstatus": "received",
+          "date": "2025/12/05 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/14 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/13 00:51"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/13 00:50"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/12 08:30"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/09/12 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 40,
+      "fulljournalname": "Annals of the New York Academy of Sciences",
+      "elocationid": "doi: 10.1111/nyas.70398",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/01 00:00",
+      "sortfirstauthor": "Zhang Y",
+      "vernaculartitle": ""
+    },
+    "42736497": {
+      "uid": "42736497",
+      "pubdate": "2026 Sep 15",
+      "epubdate": "2026 Sep 15",
+      "source": "Neurosurg Rev",
+      "authors": [
+        {
+          "name": "Li S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Wei H",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Wei Z",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Liu T",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Kuang S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Wang J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Wang X",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Liang S",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Liang S",
+      "title": "Deep brain stimulation for Tourette syndrome: a systematic review and meta-analysis.",
+      "sorttitle": "deep brain stimulation for tourette syndrome a systematic review and meta analysis",
+      "volume": "49",
+      "issue": "1",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "7908181",
+      "issn": "0344-5607",
+      "essn": "1437-2320",
+      "pubtype": [
+        "Journal Article",
+        "Systematic Review",
+        "Meta-Analysis",
+        "Review"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "3",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42736497"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1007/s10143-026-04487-4"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "10.1007/s10143-026-04487-4"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2025/09/19 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/09/08 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/06/14 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/15 05:37"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/15 05:36"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/15 02:49"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Neurosurgical review",
+      "elocationid": "pii: 567. doi: 10.1007/s10143-026-04487-4",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/15 00:00",
+      "sortfirstauthor": "Li S",
+      "vernaculartitle": ""
+    },
+    "42737649": {
+      "uid": "42737649",
+      "pubdate": "2026 Aug 29",
+      "epubdate": "2026 Aug 29",
+      "source": "Int J Mol Sci",
+      "authors": [
+        {
+          "name": "Oh J",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Choi JH",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Choi JH",
+      "title": "Efficacy of Histaglobulin in Allergic Diseases: A Systematic Review and Meta-Analysis with Implications for Allergic Rhinitis.",
+      "sorttitle": "efficacy of histaglobulin in allergic diseases a systematic review and meta analysis with implications for allergic rhinitis",
+      "volume": "27",
+      "issue": "17",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101092791",
+      "issn": "",
+      "essn": "1422-0067",
+      "pubtype": [
+        "Journal Article",
+        "Systematic Review",
+        "Meta-Analysis",
+        "Review"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "3",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42737649"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13566228"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13566228;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.3390/ijms27177753"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "ijms27177753"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/07/09 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/08/23 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/27 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/15 05:37"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/15 05:36"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/15 03:21"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/08/29 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 38,
+      "fulljournalname": "International journal of molecular sciences",
+      "elocationid": "doi: 10.3390/ijms27177753",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/08/29 00:00",
+      "sortfirstauthor": "Oh J",
+      "vernaculartitle": ""
+    },
+    "42740182": {
+      "uid": "42740182",
+      "pubdate": "2026 Sep 1",
+      "epubdate": "2026 Sep 1",
+      "source": "Sensors (Basel)",
+      "authors": [
+        {
+          "name": "Peksa J",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Peksa J",
+      "title": "Dataset Fragmentation, Cognitive Variability, and Reproducibility Challenges in EEG-Based Brain-Computer Interfaces: A PRISMA-Based Systematic Review.",
+      "sorttitle": "dataset fragmentation cognitive variability and reproducibility challenges in eeg based brain computer interfaces a prisma based systematic review",
+      "volume": "26",
+      "issue": "17",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101204366",
+      "issn": "",
+      "essn": "1424-8220",
+      "pubtype": [
+        "Journal Article",
+        "Systematic Review",
+        "Review"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "3",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42740182"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13567918"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13567918;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.3390/s26175562"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "s26175562"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/08/04 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/08/26 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/29 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/15 11:37"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/15 05:36"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/15 03:25"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/09/01 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 137,
+      "fulljournalname": "Sensors (Basel, Switzerland)",
+      "elocationid": "doi: 10.3390/s26175562",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/01 00:00",
+      "sortfirstauthor": "Peksa J",
+      "vernaculartitle": ""
+    },
+    "42742564": {
+      "uid": "42742564",
+      "pubdate": "2026 Sep",
+      "epubdate": "",
+      "source": "Urologiia",
+      "authors": [
+        {
+          "name": "Kuzmin I V",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Slesarevskaya M N",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Al-Shukri S K",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Al-Shukri S K",
+      "title": "[Evaluation of tolerability and cognitive safety of trospium chloride in the treatment of overactive bladder: a systematic review and meta-analysis].",
+      "sorttitle": "evaluation of tolerability and cognitive safety of trospium chloride in the treatment of overactive bladder a systematic review and meta analysis",
+      "volume": "",
+      "issue": "4",
+      "pages": "176-186",
+      "lang": [
+        "rus"
+      ],
+      "nlmuniqueid": "100900900",
+      "issn": "1728-2985",
+      "essn": "",
+      "pubtype": [
+        "Journal Article",
+        "Meta-Analysis",
+        "Systematic Review",
+        "English Abstract"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "4",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42742564"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/15 11:38"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/15 11:37"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/15 10:43"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Urologiia (Moscow, Russia : 1999)",
+      "elocationid": "",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/01 00:00",
+      "sortfirstauthor": "Kuzmin I V",
+      "vernaculartitle": ""
+    },
+    "42747256": {
+      "uid": "42747256",
+      "pubdate": "2026 Sep 1",
+      "epubdate": "",
+      "source": "Invest Ophthalmol Vis Sci",
+      "authors": [
+        {
+          "name": "Agharazi H",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Guha A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Shaikh AG",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ghasia FF",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Ghasia FF",
+      "title": "Deep Brain Stimulation: A Window Into the Neural Mechanisms of Latent Nystagmus.",
+      "sorttitle": "deep brain stimulation a window into the neural mechanisms of latent nystagmus",
+      "volume": "67",
+      "issue": "11",
+      "pages": "33",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "7703701",
+      "issn": "0146-0404",
+      "essn": "1552-5783",
+      "pubtype": [
+        "Journal Article",
+        "Case Reports"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "4",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42747256"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1167/iovs.67.11.33"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "2818573"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13589393"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13589393;"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/16 11:42"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/16 11:41"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/16 09:34"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/09/16 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 17,
+      "fulljournalname": "Investigative ophthalmology & visual science",
+      "elocationid": "doi: 10.1167/iovs.67.11.33",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/01 00:00",
+      "sortfirstauthor": "Agharazi H",
+      "vernaculartitle": ""
+    },
+    "42750012": {
+      "uid": "42750012",
+      "pubdate": "2026 Sep 14",
+      "epubdate": "2026 Sep 14",
+      "source": "BMC Geriatr",
+      "authors": [
+        {
+          "name": "Qi R",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Wu Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhang L",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Niu W",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Hao T",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Xie H",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Han X",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Wang H",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Jia D",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Wan Z",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhang Z",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Zhang Z",
+      "title": "Perioperative esketamine-containing strategies and postoperative neurocognitive outcomes in older surgical patients: a systematic review and meta-analysis of randomized controlled trials with certainty assessment.",
+      "sorttitle": "perioperative esketamine containing strategies and postoperative neurocognitive outcomes in older surgical patients a systematic review and meta analysis of randomized controlled trials with certainty assessment",
+      "volume": "26",
+      "issue": "1",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "100968548",
+      "issn": "",
+      "essn": "1471-2318",
+      "pubtype": [
+        "Journal Article",
+        "Systematic Review",
+        "Meta-Analysis"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "3",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42750012"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13584296"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13584296;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1186/s12877-026-08201-3"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "10.1186/s12877-026-08201-3"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/04/22 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/26 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/17 05:36"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/17 05:35"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/16 23:52"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/09/14 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 63,
+      "fulljournalname": "BMC geriatrics",
+      "elocationid": "doi: 10.1186/s12877-026-08201-3",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/14 00:00",
+      "sortfirstauthor": "Qi R",
+      "vernaculartitle": ""
+    },
+    "42751933": {
+      "uid": "42751933",
+      "pubdate": "2026 Sep",
+      "epubdate": "2026 Sep 17",
+      "source": "J Int Med Res",
+      "authors": [
+        {
+          "name": "Zhang C",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Yang L",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhang J",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Zhang J",
+      "title": "Cognitive behavioral therapy for insomnia-assisted discontinuation or reduction of benzodiazepine receptor agonists and Z-drugs in chronic insomnia: A systematic review and meta-analysis.",
+      "sorttitle": "cognitive behavioral therapy for insomnia assisted discontinuation or reduction of benzodiazepine receptor agonists and z drugs in chronic insomnia a systematic review and meta analysis",
+      "volume": "54",
+      "issue": "9",
+      "pages": "3000605261487272",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "0346411",
+      "issn": "0300-0605",
+      "essn": "1473-2300",
+      "pubtype": [
+        "Journal Article",
+        "Systematic Review",
+        "Meta-Analysis",
+        "Review"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42751933"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1177/03000605261487272"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/17 15:38"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/17 15:37"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/17 07:32"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "The Journal of international medical research",
+      "elocationid": "doi: 10.1177/03000605261487272",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/01 00:00",
+      "sortfirstauthor": "Zhang C",
+      "vernaculartitle": ""
+    },
+    "42752055": {
+      "uid": "42752055",
+      "pubdate": "2026 Sep 15",
+      "epubdate": "2026 Sep 15",
+      "source": "JACC Clin Electrophysiol",
+      "authors": [
+        {
+          "name": "Futyma P",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Futyma P",
+      "title": "When Less Can Be More in Cardioneuroablation.",
+      "sorttitle": "when less can be more in cardioneuroablation",
+      "volume": "",
+      "issue": "",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101656995",
+      "issn": "2405-500X",
+      "essn": "2405-5018",
+      "pubtype": [
+        "Editorial"
+      ],
+      "recordstatus": "PubMed - as supplied by publisher",
+      "pubstatus": "10",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42752055"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1016/j.jacep.2026.08.004"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "S2405-500X(26)00774-7"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/08/03 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/11 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/17 15:37"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/17 15:37"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/17 10:29"
+        }
+      ],
+      "references": [],
+      "attributes": [],
+      "pmcrefcount": "",
+      "fulljournalname": "JACC. Clinical electrophysiology",
+      "elocationid": "pii: S2405-500X(26)00774-7. doi: 10.1016/j.jacep.2026.08.004",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/15 00:00",
+      "sortfirstauthor": "Futyma P",
+      "vernaculartitle": ""
+    },
+    "42754136": {
+      "uid": "42754136",
+      "pubdate": "2026 Sep 17",
+      "epubdate": "2026 Sep 17",
+      "source": "Arch Phys Med Rehabil",
+      "authors": [
+        {
+          "name": "Albert-Lucena D",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Rabanal-Rodríguez G",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Navarro-Santana MJ",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Gómez-Chiguano GF",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "González-de-la-Flor Á",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Romero-Morales C",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Plaza-Manzano G",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Plaza-Manzano G",
+      "title": "Reply to: \"Beyond Clinical Improvement: Is Radial Nerve Neuromodulation Truly the Mechanism Behind Long-Term Benefits of Ultrasound-Guided Percutaneous Electrical Nerve Stimulation?\".",
+      "sorttitle": "reply to beyond clinical improvement is radial nerve neuromodulation truly the mechanism behind long term benefits of ultrasound guided percutaneous electrical nerve stimulation",
+      "volume": "",
+      "issue": "",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "2985158R",
+      "issn": "0003-9993",
+      "essn": "1532-821X",
+      "pubtype": [
+        "Letter"
+      ],
+      "recordstatus": "PubMed - as supplied by publisher",
+      "pubstatus": "10",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42754136"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1016/j.apmr.2026.09.008"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "S0003-9993(26)00905-6"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/09/04 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/09/08 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/17 23:34"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/17 23:34"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/17 19:18"
+        }
+      ],
+      "references": [],
+      "attributes": [],
+      "pmcrefcount": "",
+      "fulljournalname": "Archives of physical medicine and rehabilitation",
+      "elocationid": "pii: S0003-9993(26)00905-6. doi: 10.1016/j.apmr.2026.09.008",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/17 00:00",
+      "sortfirstauthor": "Albert-Lucena D",
+      "vernaculartitle": ""
+    },
+    "42754137": {
+      "uid": "42754137",
+      "pubdate": "2026 Sep 17",
+      "epubdate": "2026 Sep 17",
+      "source": "Arch Phys Med Rehabil",
+      "authors": [
+        {
+          "name": "Ekiz T",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Ekiz T",
+      "title": "Beyond Clinical Improvement: Is Radial Nerve Neuromodulation Truly the Mechanism Behind Long Term Benefits of Ultrasound-Guided Percutaneous Electrical Nerve Stimulation?",
+      "sorttitle": "beyond clinical improvement is radial nerve neuromodulation truly the mechanism behind long term benefits of ultrasound guided percutaneous electrical nerve stimulation",
+      "volume": "",
+      "issue": "",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "2985158R",
+      "issn": "0003-9993",
+      "essn": "1532-821X",
+      "pubtype": [
+        "Letter"
+      ],
+      "recordstatus": "PubMed - as supplied by publisher",
+      "pubstatus": "10",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42754137"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1016/j.apmr.2026.09.009"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "S0003-9993(26)00904-4"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/07/23 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/09/10 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/17 23:34"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/17 23:34"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/17 19:18"
+        }
+      ],
+      "references": [],
+      "attributes": [],
+      "pmcrefcount": "",
+      "fulljournalname": "Archives of physical medicine and rehabilitation",
+      "elocationid": "pii: S0003-9993(26)00904-4. doi: 10.1016/j.apmr.2026.09.009",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/17 00:00",
+      "sortfirstauthor": "Ekiz T",
+      "vernaculartitle": ""
+    },
+    "42754351": {
+      "uid": "42754351",
+      "pubdate": "2026 Sep 17",
+      "epubdate": "2026 Sep 17",
+      "source": "BMJ Case Rep",
+      "authors": [
+        {
+          "name": "AlNasser FK",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "AlRashidi M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "AlRashidi A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "AbdelBadie M",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "AbdelBadie M",
+      "title": "Orbital lymphoma presenting as preseptal cellulitis in a child with ataxia-telangiectasia.",
+      "sorttitle": "orbital lymphoma presenting as preseptal cellulitis in a child with ataxia telangiectasia",
+      "volume": "19",
+      "issue": "9",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101526291",
+      "issn": "",
+      "essn": "1757-790X",
+      "pubtype": [
+        "Journal Article",
+        "Case Reports"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "3",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42754351"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1136/bcr-2026-275016"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "19/9/e275016"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/17 23:35"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/17 23:34"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/17 21:03"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "BMJ case reports",
+      "elocationid": "pii: e275016. doi: 10.1136/bcr-2026-275016",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/17 00:00",
+      "sortfirstauthor": "AlNasser FK",
+      "vernaculartitle": ""
+    },
+    "42755372": {
+      "uid": "42755372",
+      "pubdate": "2026 Sep 1",
+      "epubdate": "2026 Sep 18",
+      "source": "Dis Model Mech",
+      "authors": [
+        {
+          "name": "Simó I",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Robinson KJ",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Kam JY",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Wang Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Kuriakose A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Paric E",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Cheng F",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Potapenko A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "An Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Watchon M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Lee A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Laird AS",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Laird AS",
+      "title": "PolyQ-expanded ataxin-3 is associated with mitochondrial alterations in Machado-Joseph disease.",
+      "sorttitle": "polyq expanded ataxin 3 is associated with mitochondrial alterations in machado joseph disease",
+      "volume": "19",
+      "issue": "9",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101483332",
+      "issn": "1754-8403",
+      "essn": "1754-8411",
+      "pubtype": [
+        "Journal Article"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "256",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42755372"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1242/dmm.052757"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "372949"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2025/11/17 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/07/06 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/18 05:37"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/18 05:36"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/18 04:23"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Disease models & mechanisms",
+      "elocationid": "pii: dmm052757. doi: 10.1242/dmm.052757",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/01 00:00",
+      "sortfirstauthor": "Simó I",
+      "vernaculartitle": ""
+    },
+    "42755662": {
+      "uid": "42755662",
+      "pubdate": "2026",
+      "epubdate": "2026 Sep 3",
+      "source": "Front Neurol",
+      "authors": [
+        {
+          "name": "Wu Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhu F",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Dong Q",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Zhang M",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Zhang M",
+      "title": "Brain-computer interface for post-stroke upper-limb recovery: a systematic review integrating clinical efficacy with neuroplasticity evidence.",
+      "sorttitle": "brain computer interface for post stroke upper limb recovery a systematic review integrating clinical efficacy with neuroplasticity evidence",
+      "volume": "17",
+      "issue": "",
+      "pages": "1895484",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101546899",
+      "issn": "",
+      "essn": "1664-2295",
+      "pubtype": [
+        "Journal Article",
+        "Systematic Review"
+      ],
+      "recordstatus": "PubMed - indexed for MEDLINE",
+      "pubstatus": "258",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42755662"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13581672"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13581672;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.3389/fneur.2026.1895484"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/05/30 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/07/22 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/08/17 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/18 12:27"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/18 12:26"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/18 05:32"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/09/03 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 58,
+      "fulljournalname": "Frontiers in neurology",
+      "elocationid": "doi: 10.3389/fneur.2026.1895484",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/03 00:00",
+      "sortfirstauthor": "Wu Y",
+      "vernaculartitle": ""
+    },
+    "42756320": {
+      "uid": "42756320",
+      "pubdate": "2026",
+      "epubdate": "2026 Sep 17",
+      "source": "BME Front",
+      "authors": [
+        {
+          "name": "Yin C",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Tu J",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Tu J",
+      "title": "Ultrasound Brain-Computer Interfaces for Transcranial Closed-Loop Neuromodulation.",
+      "sorttitle": "ultrasound brain computer interfaces for transcranial closed loop neuromodulation",
+      "volume": "7",
+      "issue": "",
+      "pages": "0312",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101775616",
+      "issn": "",
+      "essn": "2765-8031",
+      "pubtype": [
+        "Editorial"
+      ],
+      "recordstatus": "PubMed",
+      "pubstatus": "258",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42756320"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13583128"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13583128;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.34133/bmef.0312"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "0312"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "received",
+          "date": "2026/06/07 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/08/05 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/09/02 00:00"
+        },
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/18 12:26"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/18 12:25"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/18 07:11"
+        },
+        {
+          "pubstatus": "pmc-release",
+          "date": "2026/09/17 00:00"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": 32,
+      "fulljournalname": "BME frontiers",
+      "elocationid": "doi: 10.34133/bmef.0312",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/17 00:00",
+      "sortfirstauthor": "Yin C",
+      "vernaculartitle": ""
+    },
+    "uids": [
+      "42751933",
+      "42750012",
+      "42742564",
+      "42737649",
+      "42736497",
+      "42607979",
+      "42533644",
+      "42462375",
+      "42371031",
+      "42621918",
+      "42586498",
+      "42297980",
+      "42233958",
+      "42167724",
+      "40518906",
+      "40444524",
+      "40290038",
+      "42747256",
+      "42551000",
+      "42530887",
+      "42434538",
+      "42420630",
+      "42378062",
+      "42756320",
+      "42754137",
+      "42754136",
+      "42752055",
+      "42730398",
+      "42727980",
+      "42755662",
+      "42740182",
+      "42684273",
+      "42656097",
+      "42755372",
+      "42754351",
+      "42730671",
+      "42714627",
+      "42702636",
+      "42680205"
+    ]
+  }
+}

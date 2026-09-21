@@ -1,26 +1,79 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Sift reads like a journal's table of contents, not a dashboard.
+ *
+ * The visual thesis is one line long: INK ON PAPER, AND THE PAPER TITLES ARE
+ * THE ONLY THING THAT SHOUTS. Everything else — journal, byline, age, score,
+ * reasons — is set small, in sans, at low contrast, and sits underneath. A
+ * researcher scanning this is doing exactly one thing: reading titles and
+ * deciding. Anything that competes with a title is in the way.
+ *
+ * Consequences that are enforced by absence, not by CSS: no cards, no shadows,
+ * no gradients, no rounded panels, no accent colour, no icons, no emoji. The
+ * only structural device is a hairline rule between entries, which is what a
+ * printed contents page uses and it is enough.
+ *
+ * Colour never carries meaning here, which also happens to be what the Lock
+ * Screen widget requires (docs/widget-constraints.md #4) — so the web and the
+ * widget end up honest in the same way.
+ */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  /* Warm off-white rather than #fff: it is a page, and pure white glares. */
+  --paper: #fcfbf9;
+  --ink: #171614;
+  --ink-muted: #5d5a54;
+  --ink-faint: #8a867e;
+  --rule: #e0ddd6;
+  --rule-strong: #171614;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Not pure black: a near-black page keeps serif text from blooming. */
+    --paper: #100f0e;
+    --ink: #eae7e0;
+    --ink-muted: #9b968d;
+    --ink-faint: #6f6b64;
+    --rule: #2b2925;
+    --rule-strong: #eae7e0;
   }
 }
 
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+
+  /* System stacks only: no web font means no network fetch and no layout
+     shift, and the OS serif is a better book face than anything loaded from
+     a CDN would be at this size. */
+  --font-serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  /* Old-style figures where the OS has them: dates and scores sit in running
+     text rather than sticking out of it. */
+  font-variant-numeric: oldstyle-nums;
+}
+
+/* Scores and counts are compared column-to-column, so they get lining,
+   tabular figures instead. */
+.tabular {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* One link treatment everywhere: the rule under a title thickens on hover.
+   No colour change, because colour is not a signal in this design. */
+a {
+  color: inherit;
 }

@@ -1,0 +1,37 @@
+{
+  "header": {
+    "type": "esearch",
+    "version": "0.3"
+  },
+  "esearchresult": {
+    "count": "0",
+    "retmax": "0",
+    "retstart": "0",
+    "idlist": [],
+    "translationset": [
+      {
+        "from": "pubmed",
+        "to": "\"pubmed\"[MeSH Terms] OR \"pubmed\"[All Fields] OR \"pubmed's\"[All Fields]"
+      },
+      {
+        "from": "term",
+        "to": "\"term birth\"[MeSH Terms] OR (\"term\"[All Fields] AND \"birth\"[All Fields]) OR \"term birth\"[All Fields] OR \"term\"[All Fields]"
+      }
+    ],
+    "querytranslation": "zzqqxx_not_a_real_pubmed_term_9182 AND 2026/09/14:2026/09/21[edat]",
+    "errorlist": {
+      "phrasesnotfound": [
+        "zzqqxx"
+      ],
+      "fieldsnotfound": []
+    },
+    "warninglist": {
+      "phrasesignored": [],
+      "quotedphrasesnotfound": [],
+      "outputmessages": [
+        "Unknown sort schema 'date' ignored",
+        "No items found."
+      ]
+    }
+  }
+}

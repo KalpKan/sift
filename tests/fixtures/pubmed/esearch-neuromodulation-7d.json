@@ -1,0 +1,47 @@
+{
+  "header": {
+    "type": "esearch",
+    "version": "0.3"
+  },
+  "esearchresult": {
+    "count": "280",
+    "retmax": "20",
+    "retstart": "0",
+    "idlist": [
+      "42764133",
+      "42764112",
+      "42764046",
+      "42764038",
+      "42763950",
+      "42763914",
+      "42763912",
+      "42763835",
+      "42763643",
+      "42763640",
+      "42763636",
+      "42763583",
+      "42763560",
+      "42763340",
+      "42763304",
+      "42763215",
+      "42763147",
+      "42763142",
+      "42762880",
+      "42762875"
+    ],
+    "translationset": [
+      {
+        "from": "neuromodulation",
+        "to": "\"neuromodulate\"[All Fields] OR \"neuromodulating\"[All Fields] OR \"neuromodulation\"[All Fields] OR \"neuromodulations\"[All Fields] OR \"neuromodulative\"[All Fields] OR \"neurotransmitter agents\"[Pharmacological Action] OR \"neurotransmitter agents\"[Supplementary Concept] OR \"neurotransmitter agents\"[All Fields] OR \"neuromodulator\"[All Fields] OR \"neurotransmitter agents\"[MeSH Terms] OR (\"neurotransmitter\"[All Fields] AND \"agents\"[All Fields]) OR \"neuromodulators\"[All Fields]"
+      }
+    ],
+    "querytranslation": "(\"neuromodulate\"[All Fields] OR \"neuromodulating\"[All Fields] OR \"neuromodulation\"[All Fields] OR \"neuromodulations\"[All Fields] OR \"neuromodulative\"[All Fields] OR \"neurotransmitter agents\"[Pharmacological Action] OR \"neurotransmitter agents\"[Supplementary Concept] OR \"neurotransmitter agents\"[All Fields] OR \"neuromodulator\"[All Fields] OR \"neurotransmitter agents\"[MeSH Terms] OR (\"neurotransmitter\"[All Fields] AND \"agents\"[All Fields]) OR \"neuromodulators\"[All Fields]) AND 2026/09/14:2026/09/21[Date - Entry]",
+    "warninglist": {
+      "phrasesignored": [],
+      "quotedphrasesnotfound": [],
+      "outputmessages": [
+        "Unknown sort schema 'date' ignored"
+      ]
+    }
+  }
+}

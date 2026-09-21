@@ -1,0 +1,463 @@
+{
+  "header": {
+    "type": "esummary",
+    "version": "0.3"
+  },
+  "result": {
+    "42764046": {
+      "uid": "42764046",
+      "pubdate": "2026 Sep 20",
+      "epubdate": "2026 Sep 20",
+      "source": "Neurosci Biobehav Rev",
+      "authors": [
+        {
+          "name": "Sharifzadeh S",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Jouzdani AF",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Souki A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Brunoni AR",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Marques DB",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ebrahimi M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ghobadi-Azbari P",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Pariz A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Soleimani G",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Yavari F",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Khosrowabadi R",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Violante IR",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ekhtiari H",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Ekhtiari H",
+      "title": "Personalized Brain Stimulation based on Brain Oscillations: A Systematic Review of MEG- and EEG-informed Transcranial Alternating Current Stimulation (tACS).",
+      "sorttitle": "personalized brain stimulation based on brain oscillations a systematic review of meg and eeg informed transcranial alternating current stimulation tacs",
+      "volume": "",
+      "issue": "",
+      "pages": "106991",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "7806090",
+      "issn": "0149-7634",
+      "essn": "1873-7528",
+      "pubtype": [
+        "Journal Article",
+        "Review"
+      ],
+      "recordstatus": "PubMed - as supplied by publisher",
+      "pubstatus": "10",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42764046"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1016/j.neubiorev.2026.106991"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "S0149-7634(26)00448-3"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/20 23:34"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/20 23:34"
+        },
+        {
+          "pubstatus": "received",
+          "date": "2025/12/26 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/07/12 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/09/18 00:00"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/20 19:12"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Neuroscience and biobehavioral reviews",
+      "elocationid": "doi: 10.1016/j.neubiorev.2026.106991",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/20 00:00",
+      "sortfirstauthor": "Sharifzadeh S",
+      "vernaculartitle": ""
+    },
+    "42764112": {
+      "uid": "42764112",
+      "pubdate": "2026 Sep 20",
+      "epubdate": "2026 Sep 20",
+      "source": "Heart Rhythm",
+      "authors": [
+        {
+          "name": "Reddy VY",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Nair DG",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Turagam MK",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Rosso R",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Banai A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Henriques L",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Strzeciwilk M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Schwartz N",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Holand T",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Benari A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Puzhevsky D",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ziv A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Chorin E",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Chorin E",
+      "title": "Non-Invasive Median Nerve Stimulation with a Wearable Stimulator to Reduce Atrial Arrhythmia Recurrence after Atrial Fibrillation Ablation: The NEUROPULSE Pilot.",
+      "sorttitle": "non invasive median nerve stimulation with a wearable stimulator to reduce atrial arrhythmia recurrence after atrial fibrillation ablation the neuropulse pilot",
+      "volume": "",
+      "issue": "",
+      "pages": "",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "101200317",
+      "issn": "1547-5271",
+      "essn": "1556-3871",
+      "pubtype": [
+        "Journal Article"
+      ],
+      "recordstatus": "PubMed - as supplied by publisher",
+      "pubstatus": "10",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42764112"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1016/j.hrthm.2026.09.013"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "S1547-5271(26)02777-3"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/20 23:34"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/20 23:34"
+        },
+        {
+          "pubstatus": "received",
+          "date": "2026/09/01 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/09/10 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/09/14 00:00"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/20 19:15"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Heart rhythm",
+      "elocationid": "pii: S1547-5271(26)02777-3. doi: 10.1016/j.hrthm.2026.09.013",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/20 00:00",
+      "sortfirstauthor": "Reddy VY",
+      "vernaculartitle": ""
+    },
+    "42764133": {
+      "uid": "42764133",
+      "pubdate": "2026 Sep 20",
+      "epubdate": "2026 Sep 20",
+      "source": "Brain Behav Immun",
+      "authors": [
+        {
+          "name": "Chandra A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Duque L",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Pines A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Fladger A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Manzano GS",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Benros ME",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Blackman G",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Baum ML",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Baum ML",
+      "title": "Prevalence of clinically-relevant cerebrospinal fluid abnormalities in first-episode psychosis: a systematic review and meta-analysis.",
+      "sorttitle": "prevalence of clinically relevant cerebrospinal fluid abnormalities in first episode psychosis a systematic review and meta analysis",
+      "volume": "",
+      "issue": "",
+      "pages": "107024",
+      "lang": [
+        "eng"
+      ],
+      "nlmuniqueid": "8800478",
+      "issn": "0889-1591",
+      "essn": "1090-2139",
+      "pubtype": [
+        "Journal Article"
+      ],
+      "recordstatus": "PubMed - as supplied by publisher",
+      "pubstatus": "10",
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42764133"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1016/j.bbi.2026.107024"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "S0889-1591(26)00772-5"
+        }
+      ],
+      "history": [
+        {
+          "pubstatus": "medline",
+          "date": "2026/09/20 23:34"
+        },
+        {
+          "pubstatus": "pubmed",
+          "date": "2026/09/20 23:34"
+        },
+        {
+          "pubstatus": "received",
+          "date": "2026/04/16 00:00"
+        },
+        {
+          "pubstatus": "revised",
+          "date": "2026/08/11 00:00"
+        },
+        {
+          "pubstatus": "accepted",
+          "date": "2026/09/19 00:00"
+        },
+        {
+          "pubstatus": "entrez",
+          "date": "2026/09/20 19:15"
+        }
+      ],
+      "references": [],
+      "attributes": [
+        "Has Abstract"
+      ],
+      "pmcrefcount": "",
+      "fulljournalname": "Brain, behavior, and immunity",
+      "elocationid": "doi: 10.1016/j.bbi.2026.107024",
+      "doctype": "citation",
+      "srccontriblist": [],
+      "booktitle": "",
+      "medium": "",
+      "edition": "",
+      "publisherlocation": "",
+      "publishername": "",
+      "srcdate": "",
+      "reportnumber": "",
+      "availablefromurl": "",
+      "locationlabel": "",
+      "doccontriblist": [],
+      "docdate": "",
+      "bookname": "",
+      "chapter": "",
+      "sortpubdate": "2026/09/20 00:00",
+      "sortfirstauthor": "Chandra A",
+      "vernaculartitle": ""
+    },
+    "uids": [
+      "42764133",
+      "42764112",
+      "42764046"
+    ]
+  }
+}

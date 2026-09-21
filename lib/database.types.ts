@@ -12,311 +12,163 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
-  adspace: {
+  sift: {
     Tables: {
-      advertisers: {
+      papers: {
         Row: {
-          contact_email: string
-          created_at: string
-          dashboard_key: string
-          id: string
-          name: string
-          status: string
+          authors: string[] | null
+          doi: string | null
+          first_seen_at: string
+          journal: string | null
+          pmid: string
+          pub_types: string[] | null
+          published_on: string | null
+          raw: Json | null
+          title: string
+          url: string | null
         }
         Insert: {
-          contact_email: string
-          created_at?: string
-          dashboard_key: string
-          id?: string
-          name: string
-          status?: string
+          authors?: string[] | null
+          doi?: string | null
+          first_seen_at?: string
+          journal?: string | null
+          pmid: string
+          pub_types?: string[] | null
+          published_on?: string | null
+          raw?: Json | null
+          title: string
+          url?: string | null
         }
         Update: {
-          contact_email?: string
-          created_at?: string
-          dashboard_key?: string
-          id?: string
-          name?: string
-          status?: string
+          authors?: string[] | null
+          doi?: string | null
+          first_seen_at?: string
+          journal?: string | null
+          pmid?: string
+          pub_types?: string[] | null
+          published_on?: string | null
+          raw?: Json | null
+          title?: string
+          url?: string | null
         }
         Relationships: []
       }
-      creatives: {
+      refresh_runs: {
         Row: {
-          accent_hex: string
-          advertiser_id: string
-          body: string | null
-          created_at: string
-          cta_label: string
-          cta_url: string | null
-          daily_cap: number | null
-          headline: string
+          error: string | null
+          finished_at: string | null
           id: string
-          payout_cents: number
-          price_cents: number
-          status: string
-          updated_at: string
+          papers_added: number | null
+          papers_seen: number | null
+          started_at: string
+          topic_id: string | null
         }
         Insert: {
-          accent_hex?: string
-          advertiser_id: string
-          body?: string | null
-          created_at?: string
-          cta_label?: string
-          cta_url?: string | null
-          daily_cap?: number | null
-          headline: string
+          error?: string | null
+          finished_at?: string | null
           id?: string
-          payout_cents?: number
-          price_cents?: number
-          status?: string
-          updated_at?: string
+          papers_added?: number | null
+          papers_seen?: number | null
+          started_at?: string
+          topic_id?: string | null
         }
         Update: {
-          accent_hex?: string
-          advertiser_id?: string
-          body?: string | null
-          created_at?: string
-          cta_label?: string
-          cta_url?: string | null
-          daily_cap?: number | null
-          headline?: string
+          error?: string | null
+          finished_at?: string | null
           id?: string
-          payout_cents?: number
-          price_cents?: number
-          status?: string
-          updated_at?: string
+          papers_added?: number | null
+          papers_seen?: number | null
+          started_at?: string
+          topic_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "creatives_advertiser_id_fkey"
-            columns: ["advertiser_id"]
+            foreignKeyName: "refresh_runs_topic_id_fkey"
+            columns: ["topic_id"]
             isOneToOne: false
-            referencedRelation: "advertisers"
+            referencedRelation: "topics"
             referencedColumns: ["id"]
           },
         ]
       }
-      devices: {
+      topic_papers: {
         Row: {
-          created_at: string
-          id: string
-          install_id: string
-          last_seen_at: string
-          platform: string
+          pmid: string
+          ranked_at: string
+          score: number
+          score_reasons: Json | null
+          topic_id: string
         }
         Insert: {
-          created_at?: string
-          id?: string
-          install_id: string
-          last_seen_at?: string
-          platform: string
+          pmid: string
+          ranked_at?: string
+          score: number
+          score_reasons?: Json | null
+          topic_id: string
         }
         Update: {
-          created_at?: string
-          id?: string
-          install_id?: string
-          last_seen_at?: string
-          platform?: string
-        }
-        Relationships: []
-      }
-      impressions: {
-        Row: {
-          confirmed_at: string | null
-          creative_id: string
-          device_id: string
-          expires_at: string
-          id: string
-          issued_at: string
-          nonce: string
-        }
-        Insert: {
-          confirmed_at?: string | null
-          creative_id: string
-          device_id: string
-          expires_at: string
-          id?: string
-          issued_at?: string
-          nonce: string
-        }
-        Update: {
-          confirmed_at?: string | null
-          creative_id?: string
-          device_id?: string
-          expires_at?: string
-          id?: string
-          issued_at?: string
-          nonce?: string
+          pmid?: string
+          ranked_at?: string
+          score?: number
+          score_reasons?: Json | null
+          topic_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "impressions_creative_id_fkey"
-            columns: ["creative_id"]
+            foreignKeyName: "topic_papers_pmid_fkey"
+            columns: ["pmid"]
             isOneToOne: false
-            referencedRelation: "creative_stats"
-            referencedColumns: ["creative_id"]
+            referencedRelation: "papers"
+            referencedColumns: ["pmid"]
           },
           {
-            foreignKeyName: "impressions_creative_id_fkey"
-            columns: ["creative_id"]
+            foreignKeyName: "topic_papers_topic_id_fkey"
+            columns: ["topic_id"]
             isOneToOne: false
-            referencedRelation: "creatives"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "impressions_device_id_fkey"
-            columns: ["device_id"]
-            isOneToOne: false
-            referencedRelation: "device_balances"
-            referencedColumns: ["device_id"]
-          },
-          {
-            foreignKeyName: "impressions_device_id_fkey"
-            columns: ["device_id"]
-            isOneToOne: false
-            referencedRelation: "devices"
+            referencedRelation: "topics"
             referencedColumns: ["id"]
           },
         ]
       }
-      ledger_entries: {
+      topics: {
         Row: {
-          amount_cents: number
           created_at: string
-          device_id: string
+          description: string | null
           id: string
-          impression_id: string | null
+          is_active: boolean
           kind: string
-          note: string | null
+          name: string
+          pubmed_query: string
+          slug: string
+          source: string
         }
         Insert: {
-          amount_cents: number
           created_at?: string
-          device_id: string
+          description?: string | null
           id?: string
-          impression_id?: string | null
-          kind: string
-          note?: string | null
-        }
-        Update: {
-          amount_cents?: number
-          created_at?: string
-          device_id?: string
-          id?: string
-          impression_id?: string | null
+          is_active?: boolean
           kind?: string
-          note?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "ledger_entries_device_id_fkey"
-            columns: ["device_id"]
-            isOneToOne: false
-            referencedRelation: "device_balances"
-            referencedColumns: ["device_id"]
-          },
-          {
-            foreignKeyName: "ledger_entries_device_id_fkey"
-            columns: ["device_id"]
-            isOneToOne: false
-            referencedRelation: "devices"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "ledger_entries_impression_id_fkey"
-            columns: ["impression_id"]
-            isOneToOne: true
-            referencedRelation: "impressions"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      payouts: {
-        Row: {
-          amount_cents: number
-          device_id: string
-          id: string
-          method: string
-          note: string | null
-          paid_at: string | null
-          requested_at: string
-          status: string
-        }
-        Insert: {
-          amount_cents: number
-          device_id: string
-          id?: string
-          method: string
-          note?: string | null
-          paid_at?: string | null
-          requested_at?: string
-          status?: string
+          name: string
+          pubmed_query: string
+          slug: string
+          source?: string
         }
         Update: {
-          amount_cents?: number
-          device_id?: string
+          created_at?: string
+          description?: string | null
           id?: string
-          method?: string
-          note?: string | null
-          paid_at?: string | null
-          requested_at?: string
-          status?: string
+          is_active?: boolean
+          kind?: string
+          name?: string
+          pubmed_query?: string
+          slug?: string
+          source?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "payouts_device_id_fkey"
-            columns: ["device_id"]
-            isOneToOne: false
-            referencedRelation: "device_balances"
-            referencedColumns: ["device_id"]
-          },
-          {
-            foreignKeyName: "payouts_device_id_fkey"
-            columns: ["device_id"]
-            isOneToOne: false
-            referencedRelation: "devices"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
-      creative_stats: {
-        Row: {
-          advertiser_id: string | null
-          confirmed: number | null
-          creative_id: string | null
-          headline: string | null
-          issued: number | null
-          last_confirmed_at: string | null
-          payout_cents: number | null
-          price_cents: number | null
-          spend_cents: number | null
-          status: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "creatives_advertiser_id_fkey"
-            columns: ["advertiser_id"]
-            isOneToOne: false
-            referencedRelation: "advertisers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      device_balances: {
-        Row: {
-          balance_cents: number | null
-          confirmed_views: number | null
-          device_id: string | null
-          install_id: string | null
-          last_seen_at: string | null
-          lifetime_earned_cents: number | null
-          platform: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       health_select_one: { Args: never; Returns: number }
@@ -448,7 +300,7 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  adspace: {
+  sift: {
     Enums: {},
   },
 } as const
