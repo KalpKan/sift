@@ -8,7 +8,7 @@ import { readSupabaseEnv, type Env } from "./env";
  * this to the literal name (`"hoops"`), so change it to that literal when you
  * replace `database.types.ts`.
  */
-export type Schema = "adspace";
+export type Schema = "sift";
 
 export type AppSupabaseClient = SupabaseClient<Database, Schema>;
 
