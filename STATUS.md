@@ -9,11 +9,13 @@ The server turns PubMed's firehose into a short, ranked feed; the iPhone app and
 
 ## Needs Kalp (human checkpoints)
 
-| # | What | Why it needs you | Blocking? |
+| # | What | Why it needs you | Blocking what |
 |---|---|---|---|
-| H1 | Label `docs/eval/eval-set.csv` — put `y`/`n` in `would_read` for 53 rows, ~10 min | Nothing in the test suite can tell us whether the top 3 are the 3 you'd have wanted. This is the only way to find out, and it is the project's real quality gate. See `docs/eval/README.md`. | Not blocking, but the ranker is unvalidated until it is done |
-| H2 | Set `SUPABASE_SERVICE_ROLE_KEY` and `SIFT_REFRESH_TOKEN` in Vercel before the first deploy | Server-only secrets; they are in `.env.local` locally but Vercel has never seen them. Without them the deployed site renders but has no data. | Blocks a working deploy |
-| H3 | Review the curated queries in `scripts/seed-topics.mjs` | They are hand-tuned guesses at what you actually want to read. You are the only person who knows if `neural-engineering` should include optogenetics. | No |
+| **H1** | **Label `docs/eval/eval-set.csv`** — 53 real papers from your own three fields; put `y`/`n` in the `would_read` column. About 10 minutes. | This is the only thing that can tell us whether Sift is any good. 272 automated tests cannot. The bar is **precision@5 ≥ 0.6 and 2× a plain newest-first feed** — newest-first is exactly what a free PubMed alert gives you, so if Sift lands within one paper of it, it has no reason to exist and we stop. | Knowing whether to continue at all |
+| **H2** | **Run the three zero-cost experiments** in `docs/market-research.md` §2.7 — especially the second: pick two papers a week yourself and email them to 15–20 people in your lab. | The research says the product is not viable but the *filter* might still be. An email list tests your judgement with no code, no App Store and no $99. | Whether there is a product here at all |
+| **H3** | **Apple Developer Program, $99/yr** | No TestFlight, no install on your real iPhone, no App Group entitlement. Everything runs in the simulator on a local-file fallback. **Nothing has been bought.** | Sift on your actual Lock Screen |
+| **H4** | **Review the 5 curated PubMed queries** in `scripts/seed-topics.mjs` | They are my guesses at what you want to read, and query tuning is worth more than ranking: field-tagging alone cut neuromodulation from 280 to 109 papers a week. | Feed quality |
+| **H5** | **Decide the name** | "Sift" is taken by several products. Fine as a subdomain, a problem the day it goes on the App Store. Cheap now, expensive later. | App Store, if ever |
 
 ## Done
 

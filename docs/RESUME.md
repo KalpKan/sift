@@ -1,98 +1,92 @@
 # Sift — pick up here
 
-*Last updated 2026-09-21 (overnight planning session). The full design is `docs/plan.md`;
-this file is only "where things are and what to type next". `STATUS.md` in the repo root
-carries the human checkpoints H1 to H4 and the session log; keep the two in step.*
+*Last updated 2026-09-21, end of the overnight session. `docs/plan.md` is the full design;
+this file is only "what is true right now and what to type next".*
 
-## Current state
+## Read this first
 
-- **Product:** Sift, an iOS widget showing the week's important papers in a field. The ad
-  idea is dead (`docs/why-not-ads.md`); do not re-propose it.
-- **Repo:** `KalpKan/sift` (public), local `/Users/kalp/projects/sift`, from the portfolio
-  template (Next.js 16, TypeScript, Tailwind 4, vitest, zod, CI). Latest commit:
-  `155599e Pivot: AdSpace becomes Sift`. **A lot is uncommitted** (other agents' work
-  from the same night): `ios/` (Xcode project with `Sift`, `SiftWidget`, `SiftTests`
-  targets and `Shared/` models, store, ranking, deep link), `lib/pubmed.ts` + tests +
-  recorded fixtures in `tests/fixtures/pubmed/`, `supabase/migrations/0002_sift_core.sql`
-  + `lib/schema.test.ts`, regenerated `lib/database.types.ts`, a rewritten `STATUS.md`,
-  `docs/widget-constraints.md`, and these two docs. Run `npm test` and the xcodebuild line
-  below before committing any of it.
-- **Database:** Supabase Project B (`platform`, ref `yzppfufqaekgaxcrsqxp`), schema `sift`,
-  exposed to PostgREST. Migrations `0001` and `0002` are **applied**: tables `topics`,
-  `papers`, `topic_papers`, `refresh_runs` exist with **0 rows**; RLS on, no policies
-  (server-only access via the service-role key). Migration `0003` (journals cache, labels,
-  evaluations, `ranker_version`) is sketched in `docs/plan.md` §3.2 and not yet written.
-- **Server code:** `lib/pubmed.ts` is done (esearch + esummary, rate-limit queue, no
-  abstracts). **Not yet:** `lib/openalex.ts`, `lib/ranking.ts`, the feed route, the `/t/<topic>`
-  page, the `/label/<topic>` page, `npm run eval`, `scripts/seed-topics.ts`.
-- **iOS:** shell builds and tests headlessly. App → `SharedStore` (App Group with a local
-  fallback) → widget, with `FeedRanking` blending server quality and recency on-device. The
-  app has **no network layer yet** (`publishToWidget()` seeds sample data).
-- **Hosting:** not deployed. No Vercel project, no `sift.kalpkan.com` record, no UptimeRobot
-  monitor, no `projects.json` entry. **Budget: 2 deploys this session.**
-- **Key measured facts** (details and commands in `docs/plan.md` appendix): `neuromodulation`
-  = 280 papers/7 days but `neuromodulation[tiab]` = 88; about half of week-1 papers have no
-  publication type yet; OpenAlex citation counts are zero for essentially every paper in its
-  first 30 days (useless for ranking, useful for evaluation); OpenAlex lags PubMed by days.
+The market research came back **against Sift being a product** (`docs/market-research.md`
+§2.3–§2.6). The identical app already ships twice — AI Sentinel: Frontier has 0 ratings,
+MediPub has 17 in three years — and the closest competitor shut down in November 2024 with,
+by its own account, millions of users. Faculty rank this exact mechanism 12th of 14 ways they
+keep up with their field.
+
+That is not a reason to bin it. It is built, it works, and it is a strong portfolio piece.
+It *is* a reason not to write much more code before **H1 and H2 in `STATUS.md`** are done.
+The next useful thing is a labelled evaluation set and an email list, not another feature.
+
+## What is true right now
+
+- **Live:** https://sift.kalpkan.com — `/`, `/t/<slug>`, `/api/feed`, `/api/topics`,
+  `/api/refresh`, `/api/health`. On the hub at https://kalpkan.com and on the status page.
+- **Repo:** `KalpKan/sift` (public), local `/Users/kalp/projects/sift`
+  (`~/projects/adwidget` is a symlink to it). `main` pushed and clean.
+- **Database:** Supabase Project B (`platform`, ref `yzppfufqaekgaxcrsqxp`), schema `sift`:
+  `topics`, `papers`, `topic_papers`, `refresh_runs`. RLS on all four with **no policies at
+  all** — the anon key reads nothing; everything goes through the server's service-role key.
+  5 topics seeded.
+- **Tests:** `npm test` → 216 passing. `xcodebuild … test` → 56 passing.
+- **Hosting:** Vercel project `sift` (`prj_7aFIqJgTgmbsaRRTLdfUIEfO4hfB`), 8 env vars set,
+  UptimeRobot monitor `804044195`.
+- **iOS:** builds and unit-tests headlessly. **Simulator only** — there is no Apple Developer
+  Program membership, so no device, no TestFlight, no App Group (the store falls back to a
+  local file, and there is a test for that).
 
 ## Exact next commands
 
 ```bash
-# 0. Environment (every new shell)
 cd /Users/kalp/projects/sift
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer   # xcode-select points at CLT
-set -a; source ~/.config/portfolio-ops/secrets.env; set +a         # SUPABASE_ACCESS_TOKEN etc.
+set -a; source ~/.config/portfolio-ops/secrets.env; set +a
 
-# 1. Sanity
-npm test && npm run lint && bash scripts/check-migrations.sh
-git status --short                                                  # expect ios/ and docs/widget-constraints.md untracked until committed
+# sanity — all four should be green
+npm test && npm run lint && npm run build && bash scripts/check-migrations.sh
 
-# 2. iOS shell builds and tests headlessly (once the other agent has finished ios/)
+# iOS
 xcodebuild -project ios/Sift.xcodeproj -scheme Sift \
-  -destination 'platform=iOS Simulator,name=iPhone 16' test 2>&1 | tail -20
-
-# 3. P0 step 1: write supabase/migrations/0003_sift_eval.sql from plan.md §3.2, extend
-#    lib/schema.test.ts, then apply it (runbook "Add a schema to Supabase Project B", step 2;
-#    [] means success). 0001 and 0002 are already applied — do not re-run them.
-q(){ curl -s -X POST https://api.supabase.com/v1/projects/yzppfufqaekgaxcrsqxp/database/query \
-  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" \
-  -d "$(jq -n --arg q "$1" '{query:$q}')"; }
-q "$(cat supabase/migrations/0003_sift_eval.sql)"
-q "select table_name from information_schema.tables where table_schema='sift' order by 1" | jq -c '.[]'
-
-# 4. Regenerate types (runbook "Regenerate Supabase types")
-npx supabase@2 gen types typescript --project-id yzppfufqaekgaxcrsqxp --schema sift > lib/database.types.ts
-
-# 5. Then in order (plan.md §5, P0): scripts/seed-topics.ts (field-tagged queries)
-#    → lib/openalex.ts → lib/ranking.ts (h1, tested) → app/api/feed/[topic]/route.ts
-#    (JSON must match ios/Shared/Feed.swift; score served as 0..1) → app/t/[topic]
-#    → app/label/[topic] + npm run eval → FeedModel.publishToWidget() fetches the route
-#    and saves to SharedStore; prove it in the simulator.
-
-# 6. Deploy 1 (after the feed route works locally). First run creates the Vercel project "sift".
-npx vercel@latest deploy --prod --yes --scope kks-projects-2edcb11a
-#    Env vars to set first (names only; values piped, never echoed — runbook "Rotate a secret"):
-#    NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, NEXT_PUBLIC_APP_SCHEMA=sift,
-#    SUPABASE_SERVICE_ROLE_KEY (server only), SIFT_ADMIN_TOKEN (openssl rand -hex 32),
-#    NEXT_PUBLIC_POSTHOG_KEY (--type config), NEXT_PUBLIC_POSTHOG_HOST=/ingest
-#    Then: runbook "Attach a domain to a Vercel project" for sift.kalpkan.com (DNS-only, grey cloud),
-#    runbook "Add an UptimeRobot monitor" on https://sift.kalpkan.com/api/health,
-#    runbook "Add a project to `projects.json`", rows in settings-map.md and SKILL.md system map.
-
-# 7. Deploy 2: after /label and the eval script. That is the session's deploy budget.
+  -destination 'id=10A042A7-D499-4613-91D1-A52B6A9A3E10' \
+  -derivedDataPath /tmp/siftdd test CODE_SIGNING_ALLOWED=NO
 ```
 
-## Blocked on Kalp
+## The next three tasks, in order
 
-| # | What | Why only he can decide | Blocks |
-|---|---|---|---|
-| H1 | **Apple Developer Program, $99 USD/year** | Money, and it is his account | Real-device install, lock-screen widget in real conditions, App Groups, TestFlight, App Store. **Not** P0 or most of P1 (simulator only). |
-| Q1 | Which fields he actually follows (the seeded three are guesses) | Only he knows | The E1 labelling pass in P0 is meaningless in a field he does not read |
-| Q2 | His definition of "important" (clinician / student / researcher lens) | Personal | The `h1` study-type weights |
-| Q3 | Public showcase feed vs. private | Portfolio choice | RLS policy on `topic_papers` (plan assumes public read) |
-| Q4 | Any LLM spend, ever, even opt-in | Money | Whether P2 option 3 exists at all |
-| Q5 | Create a free NCBI account for an API key (optional) | His account | Raises PubMed limit 3 → 10 req/s; not required |
-| Q6 | Two or three lab-mates willing to label 100 papers | His network | Whether E1 ever has more than one labeller |
-| Q7 | Preprints (bioRxiv/medRxiv via Europe PMC) in or out | Taste | A P1 source; PubMed itself has almost none |
-| Q8 | The name "Sift" (taken by several products) | Branding | Must be settled before H1, never after |
-| H2 | **25 minutes of labelling** at `/label/<topic>` once Deploy 2 is up (100 papers; 50 is the floor STATUS.md names) | It is the ground truth | The first real number for the ranker (plan.md §4.5, E1) |
+**1. Finish the last wire (30 minutes).** `SiftAPI` is written and tested against a recorded
+live response, but `FeedModel` in `ios/Sift/SiftApp.swift` still loads `Paper.samples` on
+launch. Call `SiftAPI.fetchFeed(topic:)` in a `.task`, write the result with
+`SharedStore.save(_:)`, then `WidgetCenter.shared.reloadTimelines(ofKind: SiftWidgetKind.papers)`,
+and keep the samples as the failure path so the widget is never empty. Watch out for the
+thing that already bit once: the server sends two different ISO 8601 shapes and
+`SiftAPI.decoder()` handles both — do not "simplify" it back to `.iso8601`.
+
+**2. H1 — label the eval set.** `docs/eval/eval-set.csv`, `y`/`n` in `would_read`, then score
+the ranker against it per `docs/eval/README.md`. **This decides whether anything else is
+worth doing.**
+
+**3. H2 — the email-list experiment.** Two papers a week, chosen by you, emailed to 15–20
+people in your lab. No code. See `docs/market-research.md` §2.7.
+
+## Known issues, honestly
+
+- **The ranker measures evidence tier, not importance.** A dull RCT re-testing a settled
+  question beats a landmark first-in-human case series, every time.
+- **Title cues match words, not meaning.** A live run put a *chronic ankle instability*
+  meta-analysis second on the neuromodulation feed and tagged it "chronic, not acute" —
+  matching the word "chronic". It only matched the topic at all through a tDCS MeSH term, so
+  that one is a *query* failure upstream of the ranker. Both are documented in `lib/ranking.ts`.
+- **Abstracts are not ours to show**, outside arXiv. NLM, Crossref and OpenAlex all disclaim
+  the right to license them onward; arXiv's CC0 metadata explicitly permits it. We show
+  titles only today, which is clean. The planned `efetch` step in P1 is a **legal** question.
+- **OpenAlex became metered in dollars in 2026** — roughly 1,000 calls/day keyless. Our
+  journal cache is well inside that, but it is no longer unlimited.
+- **A widget can never prove it was seen.** No impression callback exists in WidgetKit. Any
+  engagement number must come from taps.
+- **Not done this session:** a reviewer and verifier pass. The session ended first.
+
+## Two things that will cost you an hour if you forget them
+
+1. `xcode-select -p` points at CommandLineTools, so `xcodebuild` looks broken. Export
+   `DEVELOPER_DIR` instead of running `sudo xcode-select -s`.
+2. `vercel project add` creates a project with **no framework preset**, and its first deploy
+   fails with *"No Output Directory named public"*. `PATCH` the project to
+   `framework: nextjs` first. Doing it in that order is also what let all eight env vars be
+   set before the first deploy, so the whole app went live in a single one.
