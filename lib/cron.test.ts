@@ -101,15 +101,21 @@ describe("vercel.json ignoreCommand", () => {
   }
 
   async function run(dir: string, prev: string | undefined) {
-    const { readFileSync } = await import("node:fs");
     const { spawnSync } = await import("node:child_process");
     const path = await import("node:path");
-    const cmd = JSON.parse(readFileSync(path.resolve(__dirname, "..", "vercel.json"), "utf8")).ignoreCommand;
     const env: NodeJS.ProcessEnv = { ...process.env };
     if (prev === undefined) delete env.VERCEL_GIT_PREVIOUS_SHA;
     else env.VERCEL_GIT_PREVIOUS_SHA = prev;
-    return spawnSync("sh", ["-c", cmd], { cwd: dir, env, encoding: "utf8" }).status;
+    return spawnSync("sh", [path.resolve(__dirname, "..", "scripts", "vercel-ignore.sh")], { cwd: dir, env, encoding: "utf8" }).status;
   }
+
+  it("vercel.json runs scripts/vercel-ignore.sh, within Vercel's 256-character limit", async () => {
+    const { readFileSync } = await import("node:fs");
+    const path = await import("node:path");
+    const cmd: string = JSON.parse(readFileSync(path.resolve(__dirname, "..", "vercel.json"), "utf8")).ignoreCommand;
+    expect(cmd).toBe("sh scripts/vercel-ignore.sh");
+    expect(cmd.length).toBeLessThanOrEqual(256);
+  });
 
   it("builds (exit 1) when VERCEL_GIT_PREVIOUS_SHA is unset, even if the tip commit is docs-only", async () => {
     // A HEAD^ fallback would compare only the docs commit and skip the code commit before it.
