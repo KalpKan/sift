@@ -9,6 +9,9 @@
  */
 
 import { refreshTopic, type FeedStore } from "./feed";
+import { safeEqual } from "./safe-equal";
+
+export { safeEqual };
 import type { SourceClient } from "./pubmed";
 
 export const CRON_SECRET_ENV = "CRON_SECRET";
@@ -18,7 +21,7 @@ export function isAuthorizedCron(header: string | null, env: Record<string, stri
   const secret = env[CRON_SECRET_ENV]?.trim();
   if (!secret || !header) return false;
   const m = /^Bearer\s+(.+)$/i.exec(header.trim());
-  return m !== null && m[1].trim() === secret;
+  return m !== null && safeEqual(m[1].trim(), secret);
 }
 
 export type TopicRefresh = { topic: string; seen: number; added: number; error: string | null };

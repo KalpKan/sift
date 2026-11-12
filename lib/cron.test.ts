@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { CRON_SECRET_ENV, isAuthorizedCron, refreshAllTopics } from "./cron";
+import { CRON_SECRET_ENV, isAuthorizedCron, refreshAllTopics, safeEqual } from "./cron";
 import type { FeedStore, Topic } from "./feed";
 import type { SourceClient } from "./pubmed";
 
@@ -16,6 +16,15 @@ describe("isAuthorizedCron", () => {
     expect(isAuthorizedCron("Bearer ", {})).toBe(false);
     expect(isAuthorizedCron("Bearer undefined", {})).toBe(false);
     expect(isAuthorizedCron("Bearer ", { CRON_SECRET: "" })).toBe(false);
+  });
+});
+
+describe("safeEqual", () => {
+  it("compares in constant time, including strings of different lengths", () => {
+    expect(safeEqual("abc", "abc")).toBe(true);
+    expect(safeEqual("abc", "abd")).toBe(false);
+    expect(safeEqual("abc", "abcd")).toBe(false);
+    expect(safeEqual("", "")).toBe(true);
   });
 });
 

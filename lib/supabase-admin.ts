@@ -20,6 +20,7 @@ import { z } from "zod";
 import type { Database } from "./database.types";
 import type { Schema } from "./supabase";
 import type { Env } from "./env";
+import { safeEqual } from "./safe-equal";
 
 export type AdminSupabaseClient = SupabaseClient<Database, Schema>;
 
@@ -97,5 +98,5 @@ export function isAuthorizedRefresh(header: string | null, token: string | null)
   if (!header) return false;
   const match = /^Bearer\s+(.+)$/i.exec(header.trim());
   if (!match) return false;
-  return match[1].trim() === token;
+  return safeEqual(match[1].trim(), token);
 }

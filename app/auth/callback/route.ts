@@ -30,8 +30,13 @@ export async function GET(request: Request): Promise<Response> {
     const user = toAuthUser(data.user);
     // Same rule as every /api/me request: an existing owner passes, an allowed
     // email becomes the owner (with the default follows), anyone else is left
-    // signed in but sees /me's "private" page.
-    await resolveViewer(null, { ...ctx.viewer, userFromCookies: async () => user });
+    // signed in but sees /me's "private" page. A database failure here sends
+    // the reader back to /sign-in with an error, never to a 500.
+    try {
+      await resolveViewer(null, { ...ctx.viewer, userFromCookies: async () => user });
+    } catch {
+      return failed;
+    }
   }
   return NextResponse.redirect(new URL("/me", url.origin));
 }
