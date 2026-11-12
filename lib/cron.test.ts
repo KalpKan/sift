@@ -77,29 +77,55 @@ describe("vercel.json", () => {
 describe("vercel.json ignoreCommand", () => {
   // Exit 0 = skip the build, exit 1 = build. Anything else is a FAILED deploy
   // (seen 2026-11-12: a shallow clone without the previous SHA made git exit 128).
-  async function run(prev: string | undefined) {
+  // Runs against a throwaway repo whose tip commit is docs-only, after a code commit.
+  async function fixture() {
+    const { mkdtempSync, writeFileSync, mkdirSync } = await import("node:fs");
+    const { tmpdir } = await import("node:os");
+    const { execSync } = await import("node:child_process");
+    const path = await import("node:path");
+    const dir = mkdtempSync(path.join(tmpdir(), "sift-ignore-"));
+    const git = (c: string) => execSync(`git -c user.email=t@example.com -c user.name=t ${c}`, { cwd: dir, encoding: "utf8" }).trim();
+    git("init -q");
+    writeFileSync(path.join(dir, "a.ts"), "1");
+    git("add -A");
+    git("commit -q -m base");
+    const base = git("rev-parse HEAD");
+    writeFileSync(path.join(dir, "a.ts"), "2");
+    git("add -A");
+    git("commit -q -m code");
+    mkdirSync(path.join(dir, "docs"));
+    writeFileSync(path.join(dir, "docs", "x.md"), "d");
+    git("add -A");
+    git("commit -q -m docs");
+    return { dir, base, head: git("rev-parse HEAD") };
+  }
+
+  async function run(dir: string, prev: string | undefined) {
     const { readFileSync } = await import("node:fs");
     const { spawnSync } = await import("node:child_process");
     const path = await import("node:path");
-    const root = path.resolve(__dirname, "..");
-    const cmd = JSON.parse(readFileSync(path.join(root, "vercel.json"), "utf8")).ignoreCommand;
+    const cmd = JSON.parse(readFileSync(path.resolve(__dirname, "..", "vercel.json"), "utf8")).ignoreCommand;
     const env: NodeJS.ProcessEnv = { ...process.env };
     if (prev === undefined) delete env.VERCEL_GIT_PREVIOUS_SHA;
     else env.VERCEL_GIT_PREVIOUS_SHA = prev;
-    return spawnSync("sh", ["-c", cmd], { cwd: root, env, encoding: "utf8" }).status;
+    return spawnSync("sh", ["-c", cmd], { cwd: dir, env, encoding: "utf8" }).status;
   }
 
-  it("builds (exit 1) when VERCEL_GIT_PREVIOUS_SHA is unset, never falling back to HEAD^", async () => {
-    // HEAD^ would let a trailing docs-only commit hide code commits pushed with it.
-    expect(await run(undefined)).toBe(1);
-    expect(await run("")).toBe(1);
+  it("builds (exit 1) when VERCEL_GIT_PREVIOUS_SHA is unset, even if the tip commit is docs-only", async () => {
+    // A HEAD^ fallback would compare only the docs commit and skip the code commit before it.
+    const f = await fixture();
+    expect(await run(f.dir, undefined)).toBe(1);
+    expect(await run(f.dir, "")).toBe(1);
   });
 
   it("builds (exit 1), never errors, when the previous SHA is not in the clone", async () => {
-    expect(await run("0123456789abcdef0123456789abcdef01234567")).toBe(1);
+    const f = await fixture();
+    expect(await run(f.dir, "0123456789abcdef0123456789abcdef01234567")).toBe(1);
   });
 
-  it("skips (exit 0) when nothing outside docs/scripts/ios/*.md changed since the previous SHA", async () => {
-    expect(await run("HEAD")).toBe(0);
+  it("builds when code changed since the previous deploy, skips when only docs did", async () => {
+    const f = await fixture();
+    expect(await run(f.dir, f.base)).toBe(1);
+    expect(await run(f.dir, f.head)).toBe(0);
   });
 });
