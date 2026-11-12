@@ -24,7 +24,7 @@ sensitive to be put out there".
 ## How the vault encodes tags
 
 Tags are wikilinks on a `Tags:` line near the top of each note, e.g.
-`Tags: [[research]] [[brain]] [[dbs]]`, never hashtags (see the vault's own convention).
+`Tags: [[research]] [[example-topic]]`, never hashtags (see the vault's own convention).
 A note with only `#research` hashtags is **not** treated as research-tagged.
 
 Vault path: `/Users/kalp/Library/CloudStorage/GoogleDrive-masterofmath01@gmail.com/My Drive/Obsidian/KK's Mind`
@@ -64,7 +64,7 @@ the first sign-in (no owner row yet).
 - **Weight:** 0.3 for a tag on one research note, +0.1 per extra note, at most 0.6. In `p1` a
   weight of 1.0 is worth 40 ranking points, and all interest boosts on one paper cap at +40.
 - **Suggested topics:** terms on at least two distinct research notes that no topic covers (by
-  its words or its initials, so `dbs` is covered by Deep brain stimulation). Printed only.
+  its words or its initials, so an initialism tag is covered by the topic it abbreviates). Printed only.
 
 ## Where the output goes
 
@@ -79,5 +79,5 @@ dropped, 1 suggested topic. Not pushed: Kalp reads the dry run first (STATUS.md 
 
 ## Baseline, measured 2026-11-12 (read-only, tag names only)
 
-7 notes carry `[[research]]`. Co-tags include `dbs`, `seeg`, `neurotrophins`, `trka`,
-`p75-ntr`, `parkinsons`, `neurodegeneration`, `aging`, `mitochondria`, `gene therapy`.
+7 notes carry `[[research]]`. The tag names themselves are deliberately not recorded here: this
+repo is public, and the term list only ever goes to the private `sift.interests` rows.

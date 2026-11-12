@@ -116,7 +116,7 @@ the 2026-09-21 text stays as history.
 |---|---|
 | Sign-in | Google, on the platform's shared Project B `auth.users`. One allow-listed owner (`sift.profiles.role = 'owner'`). |
 | `sift` migration `0003` | `profiles`, `follows`, `ratings`, `opens`, `interests`. RLS keyed on `auth.uid()`, no anon policies. |
-| Personal ranker `p1` | `lib/personal.ts`, pure: `h1` plus boosts for interest terms (Obsidian + taps), minus mutes. Returns reasons ("matches your interest: dbs"). `lib/ranking.ts` stays the shared `h1`. |
+| Personal ranker `p1` | `lib/personal.ts`, pure: `h1` plus boosts for interest terms (Obsidian + taps), minus mutes. Returns reasons ("matches your interest: <term>"). `lib/ranking.ts` stays the shared `h1`. |
 | Private API | `/api/me/feed`, `/api/me/rate`, `/api/me/open`, `/api/me/interests`. 401 signed out, 403 non-owner. |
 | Private pages | `/me` (top 10 across his four fields, 👍/👎, open) and `/me/settings` (follows, interests with delete). |
 | Daily cron | `vercel.json`, once a day, refreshes every topic. |
