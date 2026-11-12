@@ -47,6 +47,12 @@ It never creates a topic.
 (`source = 'taps'`) and manual terms are never touched by the bridge. It refuses to run before
 the first sign-in (no owner row yet).
 
+**Push before you start rating.** A 👍/👎 learns only the interest terms that exist when it is
+first tapped: the server stores the terms that tap matched (`ratings.matched_terms`) and keeps
+them on every re-tap. A rating made before the Obsidian terms are pushed stores an empty list and
+never teaches those terms. (A stored `null` means "not computed" and is recomputed; an empty list
+is a real answer.)
+
 ## How it decides (as built, 2026-11-12)
 
 - **Which notes:** the first `Tags:` line within a note's first 30 lines must contain

@@ -32,7 +32,11 @@ on his iPhone (app + widget), ranked for him and learning from his 👍/👎 tap
 - **Obsidian bridge:** built and dry-run against the real vault (27 terms). **Not pushed** until
   Kalp has read the dry run (H7). The term list is never committed (public repo).
 - **Taps:** each rating row stores the terms its first tap matched (`ratings.matched_terms`,
-  migration 0004); tap weights are derived from those rows at read time, never stored.
+  0004; nullable since 0005, null = recompute); tap weights are derived from those rows at read
+  time, never stored. Owner creation needs a Google identity AND an OAuth sign-in in the
+  session's JWT `amr`; Project B must keep email confirmation on (`mailer_autoconfirm=false`).
+- **Analytics:** heatmaps and dead-click capture are off site-wide; posthog-js still loads only
+  after `window.load`.
 - **Analytics on private pages:** none except `paper_opened {pmid}` / `paper_rated {pmid, verdict}`
   (`lib/posthog-privacy.ts`); no replay, no autocapture on `/me`, `/sign-in`, `/auth`.
 - **iOS:** unchanged; simulator only until H3.
@@ -44,7 +48,8 @@ on his iPhone (app + widget), ranked for him and learning from his 👍/👎 tap
    `sift.ratings` rows with `shown_rank` and `ranker_version = 'p1'`, run `npm run eval` (n=5).
    Also check a second, non-owner Google account gets the "Private" page and `403` from
    `/api/me/feed`.
-2. **After H7:** `env -u NODE_OPTIONS node --env-file=.env.local scripts/obsidian-interests.mjs --push`,
+2. **After H7, and before Kalp's first 👍/👎** (a tap only learns terms that exist when it is
+   made): `env -u NODE_OPTIONS node --env-file=.env.local scripts/obsidian-interests.mjs --push`,
    then `curl` `/` and every `/t/<slug>` and confirm none of the pushed terms appear.
 3. **Reviewer + verifier pass on Phases 2 and 3** (the plan requires it; not yet run).
 4. **Phase 4 (iOS):** the last wire, `supabase-swift` Google sign-in with `sift://auth-callback`,
