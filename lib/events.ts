@@ -14,8 +14,8 @@ import { track } from "./track";
  */
 export const events = {
   /**
-   * A visitor opened a paper from a feed. This is the ONLY event Sift defines,
-   * and it is the only one worth defining: it is the single observation that
+   * A visitor opened a paper from a feed. Until the private radar this was the
+   * only event Sift defined, and the only one worth defining: it is the single observation that
    * says the ranking did its job. `rank` is the position it was shown at, so
    * "are the top three actually the ones people open?" is answerable — which
    * is the same question docs/eval/ asks offline.
@@ -23,4 +23,14 @@ export const events = {
    * Navigation is not here on purpose: autocapture already records pageviews.
    */
   paper_opened: (props: { topic: string; rank: number }) => track("paper_opened", props),
+
+  /**
+   * The same event from the private radar (/me). PMID only: the radar is
+   * personal, so nothing that could describe what Kalp reads or thinks about
+   * (a title, a topic of his, an interest term) is ever sent to analytics.
+   */
+  radar_paper_opened: ({ pmid }: { pmid: string }) => track("paper_opened", { pmid }),
+
+  /** A thumbs-up (1) or thumbs-down (-1) on the radar. PMID and verdict only. */
+  paper_rated: ({ pmid, verdict }: { pmid: string; verdict: 1 | -1 }) => track("paper_rated", { pmid, verdict }),
 } as const;
