@@ -18,7 +18,7 @@ describe("privacyBeforeSend", () => {
 
   it("drops autocapture, pageleave, pageview, rageclicks and replay snapshots on a private page", () => {
     for (const name of ["$autocapture", "$pageleave", "$pageview", "$rageclick", "$dead_click", "$snapshot", "$exception", "$web_vitals"]) {
-      expect(privacyBeforeSend(ev(name, { $el_text: "Delete dbs (from Obsidian)" }), "/me/settings"), name).toBeNull();
+      expect(privacyBeforeSend(ev(name, { $el_text: "Delete bci (from Obsidian)" }), "/me/settings"), name).toBeNull();
     }
   });
 
@@ -30,7 +30,7 @@ describe("privacyBeforeSend", () => {
   it("lets the radar's two events through with only their own fields and standard context", () => {
     expect(PRIVATE_EVENT_ALLOWLIST).toEqual(["paper_opened", "paper_rated"]);
     const out = privacyBeforeSend(
-      ev("paper_rated", { pmid: "41000001", verdict: 1, term: "dbs", title: "x", $el_text: "secret", $elements_chain: "a", $session_id: "s" }),
+      ev("paper_rated", { pmid: "41000001", verdict: 1, term: "bci", title: "x", $el_text: "secret", $elements_chain: "a", $session_id: "s" }),
       "/me",
     ) as unknown as { properties: Record<string, unknown> };
     expect(out.properties).toEqual({ pmid: "41000001", verdict: 1, $session_id: "s" });

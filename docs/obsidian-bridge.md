@@ -9,7 +9,7 @@ the bridge: if a change would break a rule below, the change is wrong.
 1. **Only `[[research]]`-tagged notes are read**, and never from `7 - Journal`, `0 - Inbox` or
    `1 - Rough Notes`, even if tagged. A `[[private]]` tag on a note excludes it outright.
 2. **Only tag names leave the Mac.** No note bodies, titles, quotes or file names. Generic tags
-   (`research`, `question`, `coursework`, course codes like `physpharm 4750`) are dropped.
+   (`research`, `question`, `coursework`, course codes like `chem 1234`) are dropped.
 3. **The bridge runs on Kalp's Mac only.** Vercel never sees the vault. The default mode is a
    dry run that prints exactly what would be sent. Pushing needs a separate flag.
 4. **Interests and ratings are private rows.** RLS is keyed on `auth.uid()`, and the anon key
@@ -56,10 +56,11 @@ the first sign-in (no owner row yet).
   `5 - Template`, and any dot folder, are skipped at any depth. Only `.md` files are read.
 - **What is kept from a note:** its tag names, nothing else. `readVault()` returns bare tag arrays;
   no path, title or body ever leaves that function.
-- **Dropped:** generic tags (`research`, `question`, `coursework`, `private`, `idea`, `todo`),
-  course codes (`physpharm 4750`), and tags too broad to rank on (`brain`, `biology`,
-  `physiology`, `neuroscience`, `neurons`, `evolution`, `genetics`, `cell biology`, `science`,
-  `medicine`, `therapeutics`, `clinical trials`). The dry run lists every dropped tag.
+- **Dropped:** generic tags (`GENERIC_TAGS`: `research`, `question`, `coursework`, `private`,
+  `idea`, `todo`), anything shaped like a course code (`<letters> <4 digits>[letter]`, e.g.
+  `chem 1234`, matched by pattern so no real code is listed anywhere), and whole-discipline or
+  kind-of-study words too broad to rank on (`BROAD_TAGS` in the script, e.g. `chemistry`). The
+  dry run lists every dropped tag.
 - **Copies count once:** two notes with an identical tag list (a source note and its main note)
   are one note.
 - **Weight:** 0.3 for a tag on one research note, +0.1 per extra note, at most 0.6. In `p1` a

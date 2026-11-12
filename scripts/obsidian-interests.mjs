@@ -57,14 +57,24 @@ export const GENERIC_TAGS = ["research", "question", "coursework", "private", "i
  * just useless as a boost, so they are dropped and listed in the dry run.
  */
 export const BROAD_TAGS = [
-  // whole disciplines
-  "brain", "biology", "physiology", "neuroscience", "neurons", "evolution", "genetics", "cell biology", "science", "medicine",
+  // whole disciplines and organs: a generic stoplist, not anyone's tag list
+  "anatomy", "biochemistry", "biology", "brain", "cell biology", "chemistry", "ecology", "evolution", "genetics",
+  "health", "immunology", "medicine", "neurons", "neuroscience", "pharmacology", "physics", "physiology",
+  "psychology", "science",
   // kinds of study rather than subjects: they would lift every trial or every drug paper
-  "therapeutics", "clinical trials",
+  "clinical trials", "therapeutics",
 ];
 
-/** A course code tag: "physpharm 4750", "biol 3415g", "mos-2242a". */
+/**
+ * A course code tag, by SHAPE so no real course is ever listed in this public
+ * file: 2-12 letters, an optional space or hyphen, 4 digits, an optional
+ * letter ("chem 1234", "abcdefghi 1234", "xy-1234b").
+ */
 const COURSE_CODE = /^[a-z]{2,12}[\s-]?\d{4}[a-z]?$/;
+
+export function isCourseCode(tag) {
+  return COURSE_CODE.test(tag);
+}
 
 /** How far down a note its Tags: line may sit ("near the top"). */
 const TAGS_WITHIN_LINES = 30;
@@ -135,7 +145,7 @@ export function readVault(vaultDir) {
 // Terms
 // ---------------------------------------------------------------------------
 
-/** Hyphen and space spellings are one term ("combination-therapy" = "combination therapy"). */
+/** Hyphen and space spellings are one term ("spindle-cells" = "spindle cells"). */
 const termKey = (t) => t.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean).join(" ");
 
 /** 0.3 for one note, +0.1 per extra note, at most 0.6. */
@@ -155,7 +165,7 @@ export function buildInterests(rawNotes) {
   for (const tags of notes) {
     const inThisNote = new Set();
     for (const tag of tags) {
-      if (GENERIC_TAGS.includes(tag) || COURSE_CODE.test(tag)) {
+      if (GENERIC_TAGS.includes(tag) || isCourseCode(tag)) {
         generic.add(tag);
         continue;
       }
@@ -186,7 +196,7 @@ export function buildInterests(rawNotes) {
 const singular = (w) => (w.length > 3 && w.endsWith("s") ? w.slice(0, -1) : w);
 const words = (s) => s.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean).map(singular);
 
-/** Does any topic already cover this term (its words, or its initials: "dbs")? */
+/** Does any topic already cover this term (its words, or its initials: "bci")? */
 function covered(term, topics) {
   const want = words(term);
   return topics.some((t) => {

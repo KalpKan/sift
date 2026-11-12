@@ -51,7 +51,7 @@ describe("RANKER_VERSION", () => {
 
 describe("normalizeTerm", () => {
   it("lower-cases, trims and collapses whitespace", () => {
-    expect(normalizeTerm("  Gene   Therapy ")).toBe("gene therapy");
+    expect(normalizeTerm("  Spindle   Cells ")).toBe("spindle cells");
   });
   it("strips wikilink brackets and a leading hash", () => {
     expect(normalizeTerm("[[BCI]]")).toBe("bci");
@@ -61,20 +61,20 @@ describe("normalizeTerm", () => {
 
 describe("termMatches", () => {
   it("matches whole words, case-insensitively", () => {
-    expect(termMatches("Adaptive BCI for Parkinson's disease", "bci")).toBe(true);
+    expect(termMatches("Adaptive BCI for tremor", "bci")).toBe(true);
     expect(termMatches("Results from the SBCIX cohort", "bci")).toBe(false);
   });
   it("matches multi-word terms across hyphens and spaces", () => {
-    expect(termMatches("AAV gene-therapy in lumen", "gene therapy")).toBe(true);
-    expect(termMatches("Gene therapy for SCA3", "gene therapy")).toBe(true);
-    expect(termMatches("Therapy for gene carriers", "gene therapy")).toBe(false);
+    expect(termMatches("AAV spindle-cells in lumen", "spindle cells")).toBe(true);
+    expect(termMatches("Spindle cells for SCA3", "spindle cells")).toBe(true);
+    expect(termMatches("Cells for spindle carriers", "spindle cells")).toBe(false);
   });
   it("matches a hyphenated term written as one word", () => {
     expect(termMatches("K2AB signalling after injury", "k2-ab")).toBe(true);
   });
   it("tolerates a plural on either side", () => {
     expect(termMatches("Zebrafish larvae in ageing", "zebrafish")).toBe(true);
-    expect(termMatches("Mitochondrion dynamics", "mitochondria")).toBe(false);
+    expect(termMatches("Fibre dynamics", "fibrous")).toBe(false);
     expect(termMatches("Organoids model the cortex", "organoid")).toBe(true);
   });
   it("never matches an empty term", () => {

@@ -15,14 +15,14 @@
  *
  * WHAT IT CANNOT SEE: MeSH terms and abstracts. PubMed's esummary, which is
  * all Sift fetches, carries neither, so a term only matches when the title or
- * the journal name says it. "dbs" will miss a paper titled "Subthalamic
- * stimulation in ...". That is the known ceiling of `p1`; efetch (MeSH +
+ * the journal name says it. "bci" will miss a paper titled "Intracortical
+ * speech decoding in ...". That is the known ceiling of `p1`; efetch (MeSH +
  * abstract) is the upgrade, and `npm run eval` is how to tell whether it is
  * needed.
  *
  * The caps are the design: an interest match is worth about as much as a
  * strong evidence signal (a systematic review is +32 in h1), never more than
- * MAX_BOOST, so a case report that happens to say "dbs" cannot leapfrog every
+ * MAX_BOOST, so a case report that happens to say "bci" cannot leapfrog every
  * meta-analysis in the feed.
  */
 
@@ -55,7 +55,7 @@ const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n
 // Terms
 // ---------------------------------------------------------------------------
 
-/** "[[Gene  Therapy]]" -> "gene therapy". The one canonical form stored. */
+/** "[[Spindle  Cells]]" -> "spindle cells". The one canonical form stored. */
 export function normalizeTerm(raw: string): string {
   return raw
     .replace(/^\s*#/, "")
@@ -65,7 +65,7 @@ export function normalizeTerm(raw: string): string {
     .replace(/\s+/g, " ");
 }
 
-/** Lower-case alphanumeric tokens: "p75NTR gene-therapy" -> ["p75ntr", "gene", "therapy"]. */
+/** Lower-case alphanumeric tokens: "K2AB spindle-cells" -> ["k2ab", "spindle", "cells"]. */
 function tokens(text: string): string[] {
   return text.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
 }
@@ -78,8 +78,8 @@ function singular(word: string): string {
 /**
  * Whole-word, case-insensitive. A multi-word or hyphenated term matches the
  * same words in sequence, separated by anything, or run together as one word
- * ("p75-ntr" matches "p75NTR"). Substrings never match ("dbs" is not in
- * "SDBSX").
+ * ("k2-ab" matches "K2AB"). Substrings never match ("bci" is not in
+ * "SBCIX").
  */
 export function termMatches(text: string, term: string): boolean {
   const want = tokens(term);

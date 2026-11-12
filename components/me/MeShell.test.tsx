@@ -6,7 +6,7 @@ describe("private pages are marked ph-no-capture at the root", () => {
   it("MeShell (every /me page, the private notice and the no-DB notice)", () => {
     const html = renderToStaticMarkup(
       <MeShell title="Settings" current="settings">
-        <p>dbs 0.40</p>
+        <p>bci 0.40</p>
       </MeShell>,
     );
     expect(html).toMatch(/^<div class="ph-no-capture /);

@@ -14,6 +14,7 @@ import {
   buildInterests,
   formatDryRun,
   hasPrivateTag,
+  isCourseCode,
   isExcludedPath,
   obsidianWeight,
   parseTags,
@@ -40,6 +41,13 @@ describe("parseTags", () => {
   it("ignores hashtags and wikilinks in the body", () => {
     expect(parseTags("Tags: #research #bci\n\n[[research]]")).toEqual([]);
     expect(parseTags("No tags line here [[research]]")).toEqual([]);
+  });
+});
+
+describe("isCourseCode", () => {
+  it("drops course codes by shape (<letters> <4 digits>[letter]), with no real code listed", () => {
+    for (const t of ["chem 1234", "abcdefghi 1234", "xy-1234b", "zz9999", "abcdefghijkl 4321a"]) expect(isCourseCode(t), t).toBe(true);
+    for (const t of ["bci", "kin-7", "k2-ab", "chem 12", "a 1234", "spindle cells", "1234 chem"]) expect(isCourseCode(t), t).toBe(false);
   });
 });
 

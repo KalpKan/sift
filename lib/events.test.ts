@@ -19,7 +19,7 @@ describe("events", () => {
   });
 
   it("drops any extra property a caller tries to slip in", () => {
-    events.paper_rated({ pmid: "1", verdict: 1, title: "secret", term: "dbs" } as never);
+    events.paper_rated({ pmid: "1", verdict: 1, title: "secret", term: "bci" } as never);
     expect(track).toHaveBeenLastCalledWith("paper_rated", { pmid: "1", verdict: 1 });
   });
 });

@@ -90,7 +90,7 @@ describe("the private-radar guard is wired into init", () => {
 
   it("passes before_send, which drops autocapture whenever the page is private", () => {
     const send = opts().before_send;
-    const auto = { event: "$autocapture", properties: { $el_text: "Delete dbs (from Obsidian)" } };
+    const auto = { event: "$autocapture", properties: { $el_text: "Delete bci (from Obsidian)" } };
     window.history.pushState({}, "", "/me/settings");
     expect(send(auto)).toBeNull();
     window.history.pushState({}, "", "/");
