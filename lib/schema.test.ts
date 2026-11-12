@@ -47,7 +47,9 @@ describe("sift core schema (0002)", () => {
     // Deny-by-default. Every read and write in this app happens server-side
     // with the service-role key, which bypasses RLS; anon and authenticated
     // see zero rows. Adding a policy must be a deliberate, reviewed change.
-    expect(sql).not.toContain("create policy");
+    // (0003's private radar tables DO carry owner-only policies, pinned by
+    // lib/radar-schema.test.ts; none may ever touch these four tables.)
+    expect(sql).not.toMatch(/create policy[^;]*\bon sift\.(topics|papers|topic_papers|refresh_runs)\b/);
   });
 
   describe("topics", () => {

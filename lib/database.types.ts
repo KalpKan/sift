@@ -14,6 +14,88 @@ export type Database = {
   }
   sift: {
     Tables: {
+      follows: {
+        Row: {
+          created_at: string
+          topic_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          topic_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          topic_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follows_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interests: {
+        Row: {
+          source: string
+          term: string
+          updated_at: string
+          user_id: string
+          weight: number
+        }
+        Insert: {
+          source: string
+          term: string
+          updated_at?: string
+          user_id: string
+          weight: number
+        }
+        Update: {
+          source?: string
+          term?: string
+          updated_at?: string
+          user_id?: string
+          weight?: number
+        }
+        Relationships: []
+      }
+      opens: {
+        Row: {
+          created_at: string
+          id: string
+          pmid: string
+          surface: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pmid: string
+          surface: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pmid?: string
+          surface?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opens_pmid_fkey"
+            columns: ["pmid"]
+            isOneToOne: false
+            referencedRelation: "papers"
+            referencedColumns: ["pmid"]
+          },
+        ]
+      }
       papers: {
         Row: {
           authors: string[] | null
@@ -52,6 +134,78 @@ export type Database = {
           url?: string | null
         }
         Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ratings: {
+        Row: {
+          created_at: string
+          pmid: string
+          ranker_version: string
+          recency_rank: number
+          shown_rank: number
+          surface: string
+          topic_id: string | null
+          updated_at: string
+          user_id: string
+          verdict: number
+        }
+        Insert: {
+          created_at?: string
+          pmid: string
+          ranker_version: string
+          recency_rank: number
+          shown_rank: number
+          surface: string
+          topic_id?: string | null
+          updated_at?: string
+          user_id: string
+          verdict: number
+        }
+        Update: {
+          created_at?: string
+          pmid?: string
+          ranker_version?: string
+          recency_rank?: number
+          shown_rank?: number
+          surface?: string
+          topic_id?: string | null
+          updated_at?: string
+          user_id?: string
+          verdict?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ratings_pmid_fkey"
+            columns: ["pmid"]
+            isOneToOne: false
+            referencedRelation: "papers"
+            referencedColumns: ["pmid"]
+          },
+          {
+            foreignKeyName: "ratings_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       refresh_runs: {
         Row: {
@@ -304,3 +458,4 @@ export const Constants = {
     Enums: {},
   },
 } as const
+

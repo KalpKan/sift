@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { readFileSync, readdirSync } from "node:fs";
+import { mkdtempSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { spawnSync } from "node:child_process";
 import path from "node:path";
 
 const dir = path.resolve(__dirname, "../supabase/migrations");
@@ -35,5 +37,63 @@ describe("every migration", () => {
       const sql = readFileSync(path.join(dir, f), "utf8");
       expect(sql, f).not.toMatch(/\bpublic\./);
     }
+  });
+});
+
+describe("every migration (0003 rules)", () => {
+  const all = readdirSync(dir)
+    .filter((f) => f.endsWith(".sql"))
+    .map((f) => readFileSync(path.join(dir, f), "utf8").toLowerCase().replace(/--.*$/gm, ""))
+    .join("\n");
+
+  it("enables row level security on every table it creates", () => {
+    const tables = [...all.matchAll(/create table if not exists (sift\.\w+)/g)].map((m) => m[1]);
+    expect(tables.length).toBeGreaterThanOrEqual(9);
+    for (const t of tables) expect(all, t).toContain(`alter table ${t} enable row level security`);
+  });
+
+  it("never writes a policy for anon or public", () => {
+    for (const p of all.match(/create policy[\s\S]*?;/g) ?? []) {
+      expect(p.replace(/\s+/g, " "), p).toMatch(/ to authenticated /);
+    }
+  });
+});
+
+describe("scripts/check-migrations.sh", () => {
+  const script = path.resolve(__dirname, "../scripts/check-migrations.sh");
+
+  function run(files: Record<string, string>): { code: number; out: string } {
+    const tmp = mkdtempSync(path.join(tmpdir(), "sift-mig-"));
+    for (const [name, body] of Object.entries(files)) writeFileSync(path.join(tmp, name), body);
+    const r = spawnSync("bash", [script], { env: { ...process.env, MIGRATIONS_DIR: tmp }, encoding: "utf8" });
+    return { code: r.status ?? -1, out: `${r.stdout}${r.stderr}` };
+  }
+
+  it("passes the real migrations", () => {
+    const r = spawnSync("bash", [script], { encoding: "utf8" });
+    expect(r.status, `${r.stdout}${r.stderr}`).toBe(0);
+  });
+
+  it("fails a table without row level security", () => {
+    const r = run({ "0001_x.sql": "create table if not exists sift.leaky (id int);" });
+    expect(r.code).toBe(1);
+    expect(r.out).toMatch(/row level security.*sift\.leaky/);
+  });
+
+  it("fails a policy granted to anon", () => {
+    const r = run({
+      "0001_x.sql":
+        "create table if not exists sift.t (id int);\nalter table sift.t enable row level security;\ncreate policy p on sift.t for select to anon using (true);",
+    });
+    expect(r.code).toBe(1);
+    expect(r.out).toMatch(/policy/);
+  });
+
+  it("passes an authenticated, auth.uid()-keyed policy", () => {
+    const r = run({
+      "0001_x.sql":
+        "create table if not exists sift.t (user_id uuid);\nalter table sift.t enable row level security;\ncreate policy p on sift.t for select to authenticated\n  using (user_id = (select auth.uid()));",
+    });
+    expect(r.code, r.out).toBe(0);
   });
 });
