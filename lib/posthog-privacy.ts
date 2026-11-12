@@ -5,8 +5,11 @@
  * (docs/analytics.md). On Sift's private pages (/me, /me/settings, /sign-in,
  * /auth/*) that would record Kalp's interest terms and weights, his email,
  * paper titles and "matches your interest: <term>" reasons: replay copies the
- * DOM and autocapture sends element text and aria-labels. Three layers:
+ * DOM and autocapture sends element text and aria-labels. Four layers:
  *
+ *   0. Heatmaps and dead-click capture are OFF site-wide (lib/posthog.ts):
+ *      their batches can carry coordinates from a private page while being
+ *      sent from a public one, which no per-event path check can catch.
  *   1. `privacyBeforeSend` (PostHog's before_send): on a private path, every
  *      event is dropped except the radar's own `paper_opened` / `paper_rated`,
  *      and those keep only `pmid`, `verdict` and PostHog's `$session_id`-style

@@ -31,6 +31,11 @@ describe("POSTHOG_INIT_OPTIONS (the analytics contract)", () => {
     expect(POSTHOG_INIT_OPTIONS.ui_host).toBe("https://us.posthog.com");
   });
 
+  it("never captures heatmaps or dead clicks (their batches can carry points from /me)", () => {
+    expect(POSTHOG_INIT_OPTIONS.capture_heatmaps).toBe(false);
+    expect(POSTHOG_INIT_OPTIONS.capture_dead_clicks).toBe(false);
+  });
+
   it("autocaptures, captures pageviews, and masks every input in replays", () => {
     expect(POSTHOG_INIT_OPTIONS.autocapture).toBe(true);
     expect(POSTHOG_INIT_OPTIONS.capture_pageview).toBe(true);

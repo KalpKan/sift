@@ -9,7 +9,8 @@ import { isPrivatePath, privacyBeforeSend, syncRecording } from "./posthog-priva
  *   cookie banner is needed on a personal portfolio.
  * - First-party: `api_host: "/ingest"` is rewritten by Next.js to PostHog's
  *   US ingest hosts (see `posthogRewrites`), which ad blockers do not catch.
- * - Autocapture on, pageviews on, session replay on with every input masked.
+ * - Autocapture on, pageviews on, session replay on with every input masked;
+ *   heatmaps and dead-click capture off.
  * - EXCEPT on the private radar (/me, /sign-in, /auth): lib/posthog-privacy.ts
  *   drops every event there but the radar's own two, and replay is off there.
  */
@@ -21,6 +22,12 @@ export const POSTHOG_INIT_OPTIONS = {
   capture_pageview: true,
   capture_pageleave: true,
   session_recording: { maskAllInputs: true },
+  // Off for the whole site: heatmap batches and dead-click events carry the
+  // URL and coordinates of wherever they happened, and a batch sent from a
+  // public page could hold points from /me. Autocapture + replay are enough
+  // for a portfolio app.
+  capture_heatmaps: false,
+  capture_dead_clicks: false,
   disable_surveys: true,
 } satisfies Partial<PostHogConfig>;
 
