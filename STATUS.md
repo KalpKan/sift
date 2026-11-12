@@ -9,13 +9,16 @@ The server turns PubMed's firehose into a short, ranked feed; the iPhone app and
 
 ## Needs Kalp (human checkpoints)
 
+*Revised 2026-11-12, when Sift became Kalp's research radar (`docs/spec.md`, last section).*
+
 | # | What | Why it needs you | Blocking what |
 |---|---|---|---|
-| **H1** | **Label `docs/eval/eval-set.csv`** — 53 real papers from your own three fields; put `y`/`n` in the `would_read` column. About 10 minutes. | This is the only thing that can tell us whether Sift is any good. 272 automated tests cannot. The bar is **precision@5 ≥ 0.6 and 2× a plain newest-first feed** — newest-first is exactly what a free PubMed alert gives you, so if Sift lands within one paper of it, it has no reason to exist and we stop. | Knowing whether to continue at all |
-| **H2** | **Run the three zero-cost experiments** in `docs/market-research.md` §2.7 — especially the second: pick two papers a week yourself and email them to 15–20 people in your lab. | The research says the product is not viable but the *filter* might still be. An email list tests your judgement with no code, no App Store and no $99. | Whether there is a product here at all |
-| **H3** | **Apple Developer Program, $99/yr** | No TestFlight, no install on your real iPhone, no App Group entitlement. Everything runs in the simulator on a local-file fallback. **Nothing has been bought.** | Sift on your actual Lock Screen |
-| **H4** | **Review the 5 curated PubMed queries** in `scripts/seed-topics.mjs` | They are my guesses at what you want to read, and query tuning is worth more than ranking: field-tagging alone cut neuromodulation from 280 to 109 papers a week. | Feed quality |
-| **H5** | **Decide the name** | "Sift" is taken by several products. Fine as a subdomain, a problem the day it goes on the App Store. Cheap now, expensive later. | App Store, if ever |
+| **H1** | **Tap 👍/👎 on about 50 papers** over the first two weeks of using `/me` (and the app). Replaces labelling `eval-set.csv`. | The taps are the only evidence of whether the ranking beats newest-first. Gate: precision@3 ≥ 0.6 and one paper in three better than newest-first. | Knowing whether ranking or UI comes next |
+| ~~H2~~ | ~~Email-list experiment~~ — **dropped 2026-11-12**; Sift is his own radar first. | | |
+| **H3** | **Buy the Apple Developer Program ($99/yr), then tell an agent.** Kalp said 2026-11-12 he will. | Team ID, App Group, install on your iPhone. | Sift on your real lock screen |
+| ~~H4~~ | ~~Review the queries~~ — **answered 2026-11-12**: follow BCI, neural engineering, DBS, stem cells (new). | | |
+| **H5** | **Decide the name.** "Sift" is taken by several products. | Cheap now, expensive after the App Store. | App Store, if ever |
+| **H6** | **Possibly one dashboard click** to allow `https://sift.kalpkan.com/auth/callback` (and `sift://auth-callback`) as Supabase Auth redirects, if the Management API cannot set it. | Google sign-in needs it. | `/me` and app sign-in |
 
 ## Done
 
@@ -43,3 +46,4 @@ The server turns PubMed's firehose into a short, ranked feed; the iPhone app and
 |---|---|
 | 2026-09-21 | Repo created from `KalpKan/portfolio-template`; 28/28 template tests green. |
 | 2026-09-21 | Pivoted to Sift. Backend + web app built TDD: 28 -> 216 tests. Schema applied, topics seeded, live feed verified end to end. Not deployed (2-deploy budget held by Kalp). |
+| 2026-11-12 | Re-scoped as Kalp's research radar (web + iOS, 👍/👎 learning, Obsidian `[[research]]` interests). Docs updated: `spec.md` scope revision, `plan.md` §7.1 + §8, new `obsidian-bridge.md`. |

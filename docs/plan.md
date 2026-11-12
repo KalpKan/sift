@@ -580,6 +580,62 @@ Only you can answer these; the plan makes a default guess where it had to.
   of P1. It unlocks: a real device, the lock-screen widget in real conditions, App Groups,
   TestFlight for lab-mates, the App Store. The plan does not assume it.
 
+### 7.1 Answers, 2026-11-12
+
+- **Q1 (fields):** brain-computer interfaces, neural engineering, deep brain stimulation, and a
+  new **stem cells** topic. Neuromodulation and SCA stay public but are not in his feed.
+- **Q2 (what "important" means):** not stated up front; his 👍/👎 taps reveal the lens, and
+  his Obsidian `[[research]]` tags seed it (see §8).
+- **Q3 (public or private):** both. Public topic pages stay as the case study; his personal
+  feed is private behind Google sign-in.
+- **Q4 (LLM spend):** unchanged, $0. Not raised.
+- **Q5 (NCBI key):** not answered; still optional.
+- **Q6 (lab-mates):** dropped for now. Sift is his own radar first.
+- **Q7 (preprints):** not answered; still a P2-sized job. BCI is where it matters.
+- **Q8 (name):** still open (STATUS.md H5).
+- **H1 / $99:** he will buy the Apple Developer Program. Device steps wait for it.
+
+---
+
+## 8. v2 architecture: the research radar (2026-11-12)
+
+`spec.md` "Scope revision, 2026-11-12" says what v2 is. This section says how it fits.
+
+```
+ Kalp's Mac                         Vercel (sift.kalpkan.com)             Supabase Project B, schema sift
+ ───────────                        ─────────────────────────             ───────────────────────────────
+ Obsidian vault ──(dry run, then    daily cron → /api/refresh ──────────▶ topics, papers, topic_papers
+   --push: tag names only)──────────────────────────────────────────────▶ interests (owner only, RLS)
+                                    /api/me/feed  ◀── h1 + p1 ◀────────── follows, interests
+ iPhone app ──bearer JWT──────────▶ /api/me/rate, /api/me/open ─────────▶ ratings, opens (owner only, RLS)
+   └ widget (top 3, reads the app's
+     shared store, never the network)
+ Browser ──cookie session─────────▶ /me, /me/settings
+                                    npm run eval (local) ◀──────────────── ratings
+```
+
+**8.1 Personal ranking.** `p1(paper) = h1(paper) + Σ w(term) for interest terms hit in the
+title, MeSH terms or journal − mutes`, capped so `h1`'s evidence signals still matter. Each
+hit adds a reason string. A 👍 nudges the weights of that paper's matched terms up by 0.05 and
+a 👎 nudges them down. Obsidian terms start at a fixed weight that scales with how many
+research notes use the tag. Deterministic, pure, unit-tested.
+
+**8.2 Merged feed.** Every followed topic, deduped by PMID, scored by `p1`, top N. The iOS
+"one paper from the last 48 h" rule applies. Each paper carries `shownRank`, `recencyRank`
+and `rankerVersion`, so a tap records what Kalp saw and what newest-first would have shown.
+
+**8.3 Ratings are the eval.** `sift.ratings` is unique per (user, pmid); a re-tap updates.
+`npm run eval` re-ranks the rated papers three ways (`p1`, `h1`, newest-first) and prints
+precision@3, precision@10 and n. The gate is in `spec.md`.
+
+**8.4 Obsidian bridge.** A local script reads only `[[research]]`-tagged notes and sends only
+tag names. Contract and usage: `obsidian-bridge.md`.
+
+**8.5 Auth.** The web uses `@supabase/ssr` cookies; iOS uses `supabase-swift` with Google
+OAuth through `ASWebAuthenticationSession` and a `sift://auth-callback` redirect, sending the
+access token as a bearer. The server verifies the JWT, then checks `sift.profiles` for the
+owner row.
+
 ---
 
 ## Appendix: the measurements

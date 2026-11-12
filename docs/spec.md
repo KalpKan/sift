@@ -94,3 +94,40 @@ It changes **what comes next**, and the answer is not more app:
 4. The site is live on `sift.kalpkan.com` with `/api/health` and an UptimeRobot monitor.
 5. The widget renders a real feed in the simulator.
 6. `STATUS.md` and `docs/RESUME.md` are accurate enough for a cold start.
+
+---
+
+## Scope revision, 2026-11-12: the research radar
+
+Kalp decided what Sift is now. This section wins over everything above it where they disagree;
+the 2026-09-21 text stays as history.
+
+| Decision | Answer |
+|---|---|
+| Purpose | **Kalp's own research radar first.** Portfolio value follows from real use. The lab email-list experiment (old H2) is dropped. |
+| Surfaces | **iOS app + web app.** Kalp will buy the Apple Developer Program ($99/yr); this is his explicit exception to the platform's no-paid-tiers rule, for this item only. |
+| Fields he follows | **Brain-computer interfaces, neural engineering, deep brain stimulation, stem cells (new).** Neuromodulation and SCA stay as public topics, not in his feed. |
+| Learning | **👍/👎 taps while reading.** Taps both tune the ranking and grade it. No separate labelling chore (the blank `eval-set.csv` showed a chore will not get done). |
+| Obsidian | His "KK's Mind" vault supplies interest terms, **only from notes tagged `[[research]]`**, under the privacy contract in `obsidian-bridge.md`. Nothing sensitive is ever published. |
+
+### In scope for v2
+
+| Piece | What it does |
+|---|---|
+| Sign-in | Google, on the platform's shared Project B `auth.users`. One allow-listed owner (`sift.profiles.role = 'owner'`). |
+| `sift` migration `0003` | `profiles`, `follows`, `ratings`, `opens`, `interests`. RLS keyed on `auth.uid()`, no anon policies. |
+| Personal ranker `p1` | `lib/personal.ts`, pure: `h1` plus boosts for interest terms (Obsidian + taps), minus mutes. Returns reasons ("matches your interest: dbs"). `lib/ranking.ts` stays the shared `h1`. |
+| Private API | `/api/me/feed`, `/api/me/rate`, `/api/me/open`, `/api/me/interests`. 401 signed out, 403 non-owner. |
+| Private pages | `/me` (top 10 across his four fields, 👍/👎, open) and `/me/settings` (follows, interests with delete). |
+| Daily cron | `vercel.json`, once a day, refreshes every topic. |
+| Built-in eval | `npm run eval` scores `p1`, `h1` and newest-first on the papers he rated. |
+| Obsidian bridge | `scripts/obsidian-interests.mjs`, Mac only, dry run by default. |
+| iOS | Live feed (the last wire), Google sign-in, 👍/👎, widget shows the personal top 3, widget taps recorded as opens. Device install after the $99 membership. |
+
+Public pages (`/`, `/t/<slug>`) stay the generic case study and never personalise.
+
+### The new acceptance gate (replaces E1)
+
+After **at least 50 ratings**, `p1`'s precision@3 must be **≥ 0.6** and beat newest-first by
+**at least one paper in three**. If it does not, ranking work comes before any more UI. Known
+bias, printed with every result: Kalp only rates what he was shown.
