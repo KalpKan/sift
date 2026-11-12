@@ -50,7 +50,8 @@ the first sign-in (no owner row yet).
 ## How it decides (as built, 2026-11-12)
 
 - **Which notes:** the first `Tags:` line within a note's first 30 lines must contain
-  `[[research]]` (case-insensitive) and must not contain `[[private]]`. Wikilinks in the body and
+  `[[research]]` (case-insensitive), and `[[private]]` must not appear **anywhere** in the note
+  (fail closed: a private link in the body excludes it too). Wikilinks in the body and
   hashtags never count. Folders named `7 - Journal`, `0 - Inbox`, `1 - Rough Notes` and
   `5 - Template`, and any dot folder, are skipped at any depth. Only `.md` files are read.
 - **What is kept from a note:** its tag names, nothing else. `readVault()` returns bare tag arrays;

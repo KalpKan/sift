@@ -6,7 +6,8 @@
  * The contract is docs/obsidian-bridge.md and it is binding:
  *   1. Only notes whose Tags: line has [[research]] are read, never from
  *      7 - Journal, 0 - Inbox or 1 - Rough Notes (at any depth), and never a
- *      note tagged [[private]]. Templates and dot folders are skipped too.
+ *      note with [[private]] ANYWHERE in it (fail closed: a private link in
+ *      the body counts). Templates and dot folders are skipped too.
  *   2. Only tag names leave the Mac: no bodies, titles, quotes or file names.
  *      Generic tags (research, question, coursework, course codes) are dropped.
  *   3. Runs here only. The default is a dry run that prints exactly what would
@@ -70,6 +71,11 @@ export function parseTags(text) {
     .filter(Boolean);
 }
 
+/** [[private]] (or [[private|alias]]) anywhere in the note, any case. */
+export function hasPrivateTag(text) {
+  return /\[\[\s*private\s*(\|[^\]]*)?\]\]/i.test(text);
+}
+
 export function isExcludedPath(relPath) {
   const parts = relPath.split(/[\\/]/).slice(0, -1);
   return parts.some(
@@ -98,8 +104,10 @@ export function readVault(vaultDir) {
         continue;
       }
       if (!name.toLowerCase().endsWith(".md") || isExcludedPath(relPath)) continue;
-      const tags = parseTags(readFileSync(abs, "utf8"));
-      if (!tags.includes("research") || tags.includes("private")) continue;
+      const text = readFileSync(abs, "utf8");
+      if (hasPrivateTag(text)) continue;
+      const tags = parseTags(text);
+      if (!tags.includes("research")) continue;
       notes.push([...new Set(tags)]);
     }
   };

@@ -13,6 +13,7 @@ import {
   GENERIC_TAGS,
   buildInterests,
   formatDryRun,
+  hasPrivateTag,
   isExcludedPath,
   obsidianWeight,
   parseTags,
@@ -29,16 +30,25 @@ const noSecrets = (s: string) => expect(s.toLowerCase()).not.toMatch(/secret/);
 
 describe("parseTags", () => {
   it("reads the wikilinks on the Tags: line, lower-cased, aliases dropped", () => {
-    expect(parseTags("Status: x\nTags: [[Research]] [[DBS]] [[ngf|nerve growth factor]]\n\nbody [[other]]")).toEqual([
+    expect(parseTags("Status: x\nTags: [[Research]] [[BCI]] [[lumen|lumen alias]]\n\nbody [[other]]")).toEqual([
       "research",
-      "dbs",
-      "ngf",
+      "bci",
+      "lumen",
     ]);
   });
 
   it("ignores hashtags and wikilinks in the body", () => {
-    expect(parseTags("Tags: #research #dbs\n\n[[research]]")).toEqual([]);
+    expect(parseTags("Tags: #research #bci\n\n[[research]]")).toEqual([]);
     expect(parseTags("No tags line here [[research]]")).toEqual([]);
+  });
+});
+
+describe("hasPrivateTag", () => {
+  it("finds [[private]] anywhere in a note, any case, so a stray tag fails closed", () => {
+    expect(hasPrivateTag("Tags: [[research]]\n\nbody [[Private]] text")).toBe(true);
+    expect(hasPrivateTag("Tags: [[research]] [[private]]")).toBe(true);
+    expect(hasPrivateTag("Tags: [[research]]\n\nmy private thoughts, no link")).toBe(false);
+    expect(hasPrivateTag("[[private|alias]]")).toBe(true);
   });
 });
 
@@ -49,7 +59,7 @@ describe("isExcludedPath", () => {
     expect(isExcludedPath("6 - Main Notes/7 - Journal/deep.md")).toBe(true);
     expect(isExcludedPath("0 - inbox/x.md")).toBe(true);
     expect(isExcludedPath(".obsidian/x.md")).toBe(true);
-    expect(isExcludedPath("6 - Main Notes/dbs.md")).toBe(false);
+    expect(isExcludedPath("6 - Main Notes/note-a.md")).toBe(false);
   });
 });
 
@@ -57,7 +67,7 @@ describe("readVault + buildInterests on the fixture vault", () => {
   const notes = readVault(VAULT);
   const built = buildInterests(notes);
 
-  it("keeps only [[research]] notes without [[private]], outside excluded folders", () => {
+  it("keeps only [[research]] notes with no [[private]] anywhere in them, outside excluded folders", () => {
     expect(built.notesRead).toBe(5);
   });
 
@@ -67,20 +77,20 @@ describe("readVault + buildInterests on the fixture vault", () => {
 
   it("turns the kept notes' tags into terms, weighted by how many notes use them", () => {
     expect(built.terms).toEqual([
-      { term: "aging", weight: 0.4, notes: 2 },
-      { term: "dbs", weight: 0.4, notes: 2 },
-      { term: "seeg", weight: 0.4, notes: 2 },
-      { term: "combination therapy", weight: 0.3, notes: 1 },
-      { term: "neurotrophins", weight: 0.3, notes: 1 },
-      { term: "ngf", weight: 0.3, notes: 1 },
-      { term: "p75-ntr", weight: 0.3, notes: 1 },
+      { term: "bci", weight: 0.4, notes: 2 },
+      { term: "glia", weight: 0.4, notes: 2 },
+      { term: "zebrafish", weight: 0.4, notes: 2 },
+      { term: "k2-ab", weight: 0.3, notes: 1 },
+      { term: "kin-7", weight: 0.3, notes: 1 },
+      { term: "lumen", weight: 0.3, notes: 1 },
+      { term: "spindle cells", weight: 0.3, notes: 1 },
     ]);
   });
 
   it("drops the generic tags and the too-broad ones, and says which", () => {
     expect(GENERIC_TAGS).toEqual(expect.arrayContaining(["research", "question", "coursework", "private"]));
     expect(BROAD_TAGS).toContain("brain");
-    expect(built.droppedGeneric).toEqual(["coursework", "physpharm 4750", "question", "research"]);
+    expect(built.droppedGeneric).toEqual(["chem 1234", "coursework", "question", "research"]);
     expect(built.droppedBroad).toEqual(["brain"]);
   });
 
@@ -90,7 +100,7 @@ describe("readVault + buildInterests on the fixture vault", () => {
 
   it("never carries a note title, body or file name", () => {
     const s = JSON.stringify(built);
-    for (const leak of ["dbs-question", "neurotrophins.md", "Main Notes", "Source Material", "Does SEEG mapping", "quote"]) {
+    for (const leak of ["note-a", "note-b.md", "Main Notes", "Source Material", "Does glia mapping", "quote"]) {
       expect(s).not.toContain(leak);
     }
   });
@@ -106,23 +116,23 @@ describe("suggestTopics", () => {
   it("suggests frequent terms that no topic covers, never creating anything", () => {
     const terms = buildInterests(readVault(VAULT)).terms;
     const out = suggestTopics(terms, TOPICS);
-    // "dbs" is covered by deep-brain-stimulation (its initials), so it is not suggested.
-    expect(out).toEqual(["aging", "seeg"]);
+    // "bci" is covered by brain-computer-interfaces (its initials), so it is not suggested.
+    expect(out).toEqual(["glia", "zebrafish"]);
   });
 });
 
 describe("planPush", () => {
   it("upserts the current terms and deletes only Obsidian terms that left the vault", () => {
     const plan = planPush(
-      [{ term: "dbs", weight: 0.4, notes: 2 }],
+      [{ term: "bci", weight: 0.4, notes: 2 }],
       [
-        { term: "dbs", source: "obsidian" },
+        { term: "bci", source: "obsidian" },
         { term: "gone", source: "obsidian" },
         { term: "gone", source: "taps" },
         { term: "mine", source: "manual" },
       ],
     );
-    expect(plan).toEqual({ upserts: [{ term: "dbs", weight: 0.4, source: "obsidian" }], deletes: ["gone"] });
+    expect(plan).toEqual({ upserts: [{ term: "bci", weight: 0.4, source: "obsidian" }], deletes: ["gone"] });
   });
 });
 
@@ -134,13 +144,13 @@ describe("the script, end to end", () => {
     delete env.SUPABASE_SERVICE_ROLE_KEY;
     const r = spawnSync(process.execPath, [SCRIPT], { env, encoding: "utf8" });
     expect(r.status, r.stderr).toBe(0);
-    expect(r.stdout).toContain("dbs");
+    expect(r.stdout).toContain("zebrafish");
     expect(r.stdout).toContain("0.40");
     expect(r.stdout).toMatch(/research notes read: 5 \(4 distinct/);
     expect(r.stdout).toMatch(/nothing sent/i);
-    expect(r.stdout).toMatch(/suggested topics: aging, seeg/);
+    expect(r.stdout).toMatch(/suggested topics: glia, zebrafish/);
     noSecrets(r.stdout + r.stderr);
-    for (const leak of ["dbs-question", "Main Notes", ".md"]) expect(r.stdout).not.toContain(leak);
+    for (const leak of ["note-a", "Main Notes", ".md"]) expect(r.stdout).not.toContain(leak);
   });
 
   it("refuses --push without the service-role key, and still leaks nothing", () => {
@@ -162,7 +172,7 @@ describe("the script, end to end", () => {
 
 describe("formatDryRun", () => {
   it("states the contract in its own output", () => {
-    const out = formatDryRun(buildInterests(readVault(VAULT)), ["aging"]);
+    const out = formatDryRun(buildInterests(readVault(VAULT)), ["glia"]);
     expect(out).toMatch(/Only tag names/);
     expect(out).toMatch(/nothing sent/i);
   });
