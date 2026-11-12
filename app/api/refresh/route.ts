@@ -6,12 +6,40 @@
 //
 // FAILS CLOSED: with no token configured the route answers 503 and refuses,
 // rather than being an open endpoint anyone can use to hammer NCBI from our IP.
+//
+// GET /api/refresh -> { refreshed: [{ topic, seen, added, error }] }
+//
+// The daily Vercel cron (vercel.json). Vercel sends GET with
+// `Authorization: Bearer $CRON_SECRET`; every active topic is refreshed
+// (lib/cron.ts). Also fails closed: no CRON_SECRET, no run.
+import { isAuthorizedCron, refreshAllTopics } from "@/lib/cron";
 import { clampLimit, getFeed } from "@/lib/feed";
 import { pubmed } from "@/lib/pubmed";
 import { getStore } from "@/lib/supabase-store";
 import { isAuthorizedRefresh, readRefreshToken } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
+// Six topics x two NCBI calls at 3 requests a second, plus the upserts.
+export const maxDuration = 120;
+
+export async function GET(request: Request) {
+  if (!process.env.CRON_SECRET?.trim()) {
+    return Response.json({ error: "cron is disabled: CRON_SECRET is not set" }, { status: 503 });
+  }
+  if (!isAuthorizedCron(request.headers.get("authorization"))) {
+    return Response.json({ error: "unauthorized" }, { status: 401, headers: { "WWW-Authenticate": "Bearer" } });
+  }
+  const store = getStore();
+  if (!store) return Response.json({ error: "database not configured" }, { status: 503 });
+  const refreshed = await refreshAllTopics({ store, source: pubmed(), now: new Date() });
+  const failed = refreshed.filter((r) => r.error).length;
+  // 500 only when every topic failed, so a single flaky topic does not mark
+  // the whole cron run red in the Vercel dashboard.
+  return Response.json(
+    { refreshed },
+    { status: failed > 0 && failed === refreshed.length ? 500 : 200, headers: { "Cache-Control": "no-store" } },
+  );
+}
 
 export async function POST(request: Request) {
   const token = readRefreshToken();
