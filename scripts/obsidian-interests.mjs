@@ -23,12 +23,28 @@
  */
 
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { TOPICS } from "./seed-topics.mjs";
 
-export const DEFAULT_VAULT =
-  "/Users/kalp/Library/CloudStorage/GoogleDrive-masterofmath01@gmail.com/My Drive/Obsidian/KK's Mind";
+/**
+ * The vault on Google Drive for desktop: ~/Library/CloudStorage/GoogleDrive-<account>/My Drive/
+ * Obsidian/KK's Mind. Found by looking, so no account address is written into this public repo.
+ */
+export function defaultVault(home = os.homedir()) {
+  const root = path.join(home, "Library", "CloudStorage");
+  const rel = path.join("My Drive", "Obsidian", "KK's Mind");
+  try {
+    for (const d of readdirSync(root).filter((n) => n.startsWith("GoogleDrive-")).sort()) {
+      const candidate = path.join(root, d, rel);
+      if (existsSync(candidate)) return candidate;
+    }
+  } catch {
+    // no CloudStorage folder: not this Mac
+  }
+  return null;
+}
 
 /** Never read, even if tagged [[research]] (contract rule 1), plus templates. */
 export const EXCLUDED_FOLDERS = ["7 - Journal", "0 - Inbox", "1 - Rough Notes", "5 - Template"];
@@ -274,8 +290,8 @@ async function push(built) {
 // ---------------------------------------------------------------------------
 
 async function main() {
-  const vault = process.env.SIFT_VAULT_PATH || DEFAULT_VAULT;
-  if (!existsSync(vault)) {
+  const vault = process.env.SIFT_VAULT_PATH || defaultVault();
+  if (!vault || !existsSync(vault)) {
     console.error(`vault not found: set SIFT_VAULT_PATH (looked in the default "KK's Mind" path)`);
     process.exit(1);
   }

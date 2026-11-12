@@ -27,8 +27,8 @@ Tags are wikilinks on a `Tags:` line near the top of each note, e.g.
 `Tags: [[research]] [[example-topic]]`, never hashtags (see the vault's own convention).
 A note with only `#research` hashtags is **not** treated as research-tagged.
 
-Vault path: `/Users/kalp/Library/CloudStorage/GoogleDrive-masterofmath01@gmail.com/My Drive/Obsidian/KK's Mind`
-(override with `SIFT_VAULT_PATH`).
+Vault path: `~/Library/CloudStorage/GoogleDrive-<account>/My Drive/Obsidian/KK's Mind`, found by
+the script at run time (override with `SIFT_VAULT_PATH`).
 
 ## Running it
 

@@ -177,3 +177,16 @@ describe("formatDryRun", () => {
     expect(out).toMatch(/nothing sent/i);
   });
 });
+
+describe("defaultVault", () => {
+  it("finds KK's Mind under any GoogleDrive-<account> folder, and null when there is none", async () => {
+    const { mkdtempSync, mkdirSync } = await import("node:fs");
+    const { tmpdir } = await import("node:os");
+    const { defaultVault } = await import("../scripts/obsidian-interests.mjs");
+    const home = mkdtempSync(path.join(tmpdir(), "sift-home-"));
+    expect(defaultVault(home)).toBeNull();
+    const v = path.join(home, "Library", "CloudStorage", "GoogleDrive-someone@example.com", "My Drive", "Obsidian", "KK's Mind");
+    mkdirSync(v, { recursive: true });
+    expect(defaultVault(home)).toBe(v);
+  });
+});
