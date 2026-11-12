@@ -89,6 +89,12 @@ describe("vercel.json ignoreCommand", () => {
     return spawnSync("sh", ["-c", cmd], { cwd: root, env, encoding: "utf8" }).status;
   }
 
+  it("builds (exit 1) when VERCEL_GIT_PREVIOUS_SHA is unset, never falling back to HEAD^", async () => {
+    // HEAD^ would let a trailing docs-only commit hide code commits pushed with it.
+    expect(await run(undefined)).toBe(1);
+    expect(await run("")).toBe(1);
+  });
+
   it("builds (exit 1), never errors, when the previous SHA is not in the clone", async () => {
     expect(await run("0123456789abcdef0123456789abcdef01234567")).toBe(1);
   });
