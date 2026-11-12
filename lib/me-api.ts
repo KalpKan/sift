@@ -14,7 +14,6 @@ import { z } from "zod";
 import { resolveViewer, type AuthUser, type ViewerDeps } from "./access";
 import { clampLimit, toFeedPaper, type FeedPaper, type Topic } from "./feed";
 import {
-  MAX_BOOST,
   RANKER_VERSION,
   combineInterests,
   matchTerms,
@@ -25,7 +24,6 @@ import {
   type InterestSource,
   type TapRating,
 } from "./personal";
-import { QUALITY_RANGE, WEIGHTS } from "./ranking";
 
 // ---------------------------------------------------------------------------
 // The store the handlers need
@@ -80,8 +78,10 @@ export type MeContext = { radar: RadarStore; viewer: ViewerDeps; now: Date };
 
 /**
  * One paper in the private feed: the public FeedPaper plus what the eval needs.
- * `score` here is p1 on a fixed 0..1 scale (P1_SCALE), because the iPhone app
- * sorts by `score`; h1 stays available as `h1` (raw) and `h1Quality` (0..1).
+ * `score` here is the SERVER'S RANK on a 0..1 scale, 1 - (shownRank - 1) / N,
+ * because the iPhone app sorts by `score`: sorting by it reproduces the
+ * server's order exactly, the 48-hour rule included. The p1 number is in
+ * `orderScore`, h1 in `h1` (raw) and `h1Quality` (0..1).
  */
 export type MePaper = FeedPaper & {
   h1: number;
@@ -160,13 +160,6 @@ const surfaceSchema = z.enum(["web", "ios", "widget"]);
 
 export const ME_FEED_NAME = "My radar";
 
-/**
- * The most a p1 score can be: h1's top quality, its full recency bonus, plus
- * the interest cap. Dividing by it puts p1 on a fixed 0..1 scale, monotonic in
- * p1 and comparable across days (unlike dividing by today's best paper).
- */
-export const P1_SCALE = QUALITY_RANGE.max + WEIGHTS.recencyMax + MAX_BOOST;
-
 /** Build the private feed. Exported for the /me page, which renders it directly. */
 export async function buildMeFeed(
   ctx: Pick<MeContext, "radar" | "now">,
@@ -197,10 +190,8 @@ export async function buildMeFeed(
       const base = toFeedPaper({ ...p.paper, reasons: p.reasons, score: p.paper.score }, kinds.get(p.topic) ?? p.kind);
       return {
         ...base,
-        // p1, 0..1: what the app sorts by. (The app should still show server
-        // order and send shownRank as given: the 48-hour rule can lift a paper
-        // above a higher score.)
-        score: Math.round(Math.min(1, Math.max(0, p.p1 / P1_SCALE)) * 1000) / 1000,
+        // Rank, 0..1, strictly falling with shownRank: what the app sorts by.
+        score: Math.round((1 - (p.shownRank - 1) / ranked.length) * 10000) / 10000,
         // The number the web list shows, which for this feed is p1.
         orderScore: p.p1,
         h1: p.h1,

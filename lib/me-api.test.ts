@@ -10,7 +10,6 @@ import {
   handleOpen,
   handleRate,
   type MeContext,
-  P1_SCALE,
   type RadarStore,
   type RatingRow,
 } from "./me-api";
@@ -199,15 +198,33 @@ describe("GET /api/me/feed", () => {
     }
     expect(first.shownRank).toBe(1);
     expect(first.orderScore).toBe(66 + 0.5 * POINTS_PER_WEIGHT);
-    // `score` is p1 on a fixed 0..1 scale (the app sorts by it); h1 stays available.
-    expect(first.score).toBeCloseTo((66 + 0.5 * POINTS_PER_WEIGHT) / P1_SCALE, 3);
+    // `score` is the server's rank on a 0..1 scale (the app sorts by it); h1 stays available.
+    expect(first.score).toBe(1);
     expect(first.h1).toBe(66);
     expect(typeof first.h1Quality).toBe("number");
-    // Without the 48-hour rule moving anything, score falls as shownRank rises.
-    const scores = body.papers.map((p: { score: number }) => p.score);
-    expect([...scores].sort((a, b) => b - a)).toEqual(scores);
     expect(first.reasons[0]).toBe("matches your interest: zebrafish");
     expect(first.verdict).toBeNull();
+  });
+
+  it("score is 1 - (shownRank - 1) / N: strictly falling with shownRank, even where the 48-hour rule lifted a paper", async () => {
+    const old = (pmid: string, score: number) => paper(pmid, { score, publishedOn: "2026-10-20", firstSeenAt: "2026-10-21T00:00:00Z" });
+    // Raw h1 above 110 (a Lancet meta-analysis "in patients" scores 133) must not
+    // collapse to a tie at 1.0; a recent low scorer is lifted into slot 3.
+    const r = memoryRadar({
+      owners: ["u-kalp"],
+      byTopic: { "stem-cells": [old("1", 140), old("2", 133), old("3", 131), old("4", 130), paper("5", { score: 20, publishedOn: "2026-11-12" })] },
+    });
+    await r.store.createOwner("u-kalp", ["stem-cells"]);
+    const body = await (await handleFeed(get("/api/me/feed"), ctx(r.store, kalp))).json();
+    const rows = body.papers.map((p: { id: string; shownRank: number; score: number }) => [p.id, p.shownRank, p.score]);
+    expect(rows).toEqual([
+      ["1", 1, 1],
+      ["2", 2, 0.8],
+      ["5", 3, 0.6],
+      ["3", 4, 0.4],
+      ["4", 5, 0.2],
+    ]);
+    for (let i = 1; i < rows.length; i++) expect(rows[i][2]).toBeLessThan(rows[i - 1][2]);
   });
 
   it("is never cached by a CDN", async () => {

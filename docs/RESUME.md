@@ -49,11 +49,12 @@ on his iPhone (app + widget), ranked for him and learning from his 👍/👎 tap
 3. **Reviewer + verifier pass on Phases 2 and 3** (the plan requires it; not yet run).
 4. **Phase 4 (iOS):** the last wire, `supabase-swift` Google sign-in with `sift://auth-callback`,
    bearer token to `/api/me/*`, 👍/👎, widget = personal top 3. Note for Phase 4: `/api/me/feed`
-   now puts p1 (0..1, `P1_SCALE`) in `score` (h1 is in `h1` / `h1Quality`), but the app's
-   `FeedRanking.rank` still blends in its own recency, and the 48-hour rule can lift a paper above
-   a higher score. **The app must show the radar in server order (`shownRank`) and send
-   `shownRank` exactly as given** with each 👍/👎, or the eval's record of what was on screen is
-   wrong (`SiftApp.swift:33`, `SiftWidget.swift:61` sort today).
+   puts the server's rank in `score` (`1 - (shownRank - 1) / N`, strictly falling), so sorting by
+   `score` reproduces server order, 48-hour rule included; p1 itself is `orderScore`, h1 is `h1` /
+   `h1Quality`. The app's `FeedRanking.rank` still blends in its own recency, so **the app must
+   show the radar in server order (`shownRank`) and send `shownRank` exactly as given** with each
+   👍/👎, or the eval's record of what was on screen is wrong (`SiftApp.swift:33`,
+   `SiftWidget.swift:61` sort today).
 5. Watch the cron: one `refresh_runs` row per topic per day for three days.
 
 ## How the private pieces fit (files)
