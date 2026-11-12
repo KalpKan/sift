@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run --pool=forks --maxWorkers=1"
+    "test": "vitest run --pool=forks --maxWorkers=1",
+    "eval": "tsx --env-file=.env.local scripts/eval.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
