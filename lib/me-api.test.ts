@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { AuthUser, ViewerDeps } from "./access";
 import type { StoredPaper, Topic } from "./feed";
-import type { Interest, InterestRow, InterestSource } from "./personal";
+import type { InterestRow, InterestSource } from "./personal";
 import { POINTS_PER_WEIGHT, TAP_STEP } from "./personal";
 import {
   handleFeed,
@@ -10,6 +10,7 @@ import {
   handleOpen,
   handleRate,
   type MeContext,
+  P1_SCALE,
   type RadarStore,
   type RatingRow,
 } from "./me-api";
@@ -40,6 +41,9 @@ function memoryRadar(seed: { owners?: string[]; byTopic?: Record<string, StoredP
   const opens: Array<{ userId: string; pmid: string; surface: string }> = [];
   const byTopic = seed.byTopic ?? {};
   const allPapers = new Map(Object.values(byTopic).flat().map((p) => [p.pmid, p]));
+  const seedInterests = (id: string, source: InterestSource, rows: Array<{ term: string; weight: number }>) => {
+    for (const r of rows) interests.push({ userId: id, term: r.term, weight: r.weight, source });
+  };
   const store: RadarStore = {
     async isOwner(id) { return owners.has(id); },
     async createOwner(id, slugs) {
@@ -59,21 +63,20 @@ function memoryRadar(seed: { owners?: string[]; byTopic?: Record<string, StoredP
       interests.splice(i, 1);
       return 1;
     },
-    async upsertInterests(id, source: InterestSource, rows: Interest[]) {
-      for (const r of rows) {
-        const hit = interests.find((x) => x.userId === id && x.term === r.term && x.source === source);
-        if (hit) hit.weight = r.weight;
-        else interests.push({ userId: id, term: r.term, weight: r.weight, source });
-      }
-    },
     async getPaper(pmid) { const p = allPapers.get(pmid); return p ? { pmid, title: p.title, journal: p.journal } : null; },
     async getRatings(id) {
-      return new Map([...ratings.values()].filter((r) => r.userId === id).map((r) => [r.pmid, r.verdict]));
+      return new Map(
+        [...ratings.values()].filter((r) => r.userId === id).map((r) => [r.pmid, { verdict: r.verdict, matchedTerms: r.matchedTerms }]),
+      );
     },
-    async upsertRating(row) { ratings.set(`${row.userId}:${row.pmid}`, row); },
+    async upsertRating(row, { keepMatchedTerms }) {
+      const key = `${row.userId}:${row.pmid}`;
+      const prev = ratings.get(key);
+      ratings.set(key, keepMatchedTerms && prev ? { ...row, matchedTerms: prev.matchedTerms } : row);
+    },
     async insertOpen(row) { opens.push(row); },
   };
-  return { store, owners, follows, interests, ratings, opens };
+  return { store, owners, follows, interests, ratings, opens, seedInterests };
 }
 
 function ctx(radar: RadarStore, user: AuthUser | null, over: Partial<ViewerDeps> = {}): MeContext {
@@ -140,7 +143,7 @@ describe("every /api/me route", () => {
 describe("GET /api/me/feed", () => {
   const byTopic = {
     "brain-computer-interfaces": [paper("101", { score: 70, title: "Speech BCI in people with ALS" }), paper("102", { score: 50 })],
-    "deep-brain-stimulation": [paper("101", { score: 65 }), paper("201", { score: 66, title: "Neurotrophins and DBS", publishedOn: "2026-11-12" })],
+    "deep-brain-stimulation": [paper("101", { score: 65 }), paper("201", { score: 66, title: "Zebrafish and BCI", publishedOn: "2026-11-12" })],
     neuromodulation: [paper("999", { score: 99 })],
   };
 
@@ -165,7 +168,7 @@ describe("GET /api/me/feed", () => {
   it("answers in the shape ios/Shared/Feed.swift decodes, plus the eval fields", async () => {
     const r = memoryRadar({ byTopic });
     await r.store.createOwner("u-kalp", ["deep-brain-stimulation", "brain-computer-interfaces"]);
-    await r.store.upsertInterests("u-kalp", "obsidian", [{ term: "neurotrophins", weight: 0.5 }]);
+    r.seedInterests("u-kalp", "obsidian", [{ term: "zebrafish", weight: 0.5 }]);
     const body = await (await handleFeed(get("/api/me/feed"), ctx(r.store, kalp))).json();
 
     // Feed: id, name, query, papers, updatedAt (ISO 8601 with zone).
@@ -196,7 +199,14 @@ describe("GET /api/me/feed", () => {
     }
     expect(first.shownRank).toBe(1);
     expect(first.orderScore).toBe(66 + 0.5 * POINTS_PER_WEIGHT);
-    expect(first.reasons[0]).toBe("matches your interest: neurotrophins");
+    // `score` is p1 on a fixed 0..1 scale (the app sorts by it); h1 stays available.
+    expect(first.score).toBeCloseTo((66 + 0.5 * POINTS_PER_WEIGHT) / P1_SCALE, 3);
+    expect(first.h1).toBe(66);
+    expect(typeof first.h1Quality).toBe("number");
+    // Without the 48-hour rule moving anything, score falls as shownRank rises.
+    const scores = body.papers.map((p: { score: number }) => p.score);
+    expect([...scores].sort((a, b) => b - a)).toEqual(scores);
+    expect(first.reasons[0]).toBe("matches your interest: zebrafish");
     expect(first.verdict).toBeNull();
   });
 
@@ -208,39 +218,55 @@ describe("GET /api/me/feed", () => {
 });
 
 describe("POST /api/me/rate", () => {
-  const byTopic = { "deep-brain-stimulation": [paper("201", { title: "Adaptive DBS and neurotrophins" })] };
+  const byTopic = { "deep-brain-stimulation": [paper("201", { title: "Adaptive BCI and glia" })] };
   const body = { pmid: "201", verdict: 1, surface: "web", shownRank: 2, recencyRank: 5, rankerVersion: "p1", topic: "deep-brain-stimulation" };
+  const rate = (r: ReturnType<typeof memoryRadar>, b: object) => handleRate(send("POST", "/api/me/rate", b), ctx(r.store, kalp));
+  const tapWeight = async (r: ReturnType<typeof memoryRadar>, term: string) => {
+    const res = await (await handleInterests(get("/api/me/interests"), ctx(r.store, kalp))).json();
+    return res.interests.find((i: InterestRow) => i.source === "taps" && i.term === term)?.weight ?? 0;
+  };
 
-  it("stores the rating with what was shown, and nudges matched terms by TAP_STEP", async () => {
+  it("stores the rating with what was shown and the terms it matched; no interest row is written", async () => {
     const r = memoryRadar({ owners: ["u-kalp"], byTopic });
-    await r.store.upsertInterests("u-kalp", "obsidian", [{ term: "dbs", weight: 0.4 }]);
-    const res = await handleRate(send("POST", "/api/me/rate", body), ctx(r.store, kalp));
+    r.seedInterests("u-kalp", "obsidian", [{ term: "bci", weight: 0.4 }, { term: "lumen", weight: 0.3 }]);
+    const res = await rate(r, body);
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ ok: true, pmid: "201", verdict: 1, nudged: ["dbs"] });
+    expect(await res.json()).toEqual({ ok: true, pmid: "201", verdict: 1, nudged: ["bci"] });
     expect(r.ratings.get("u-kalp:201")).toMatchObject({
       userId: "u-kalp", pmid: "201", verdict: 1, shownRank: 2, recencyRank: 5, rankerVersion: "p1", surface: "web", topicId: "t2",
+      matchedTerms: ["bci"],
     });
-    expect(r.interests.find((i) => i.source === "taps")).toMatchObject({ term: "dbs", weight: TAP_STEP });
+    expect(r.interests.some((i) => i.source === "taps")).toBe(false);
+    expect(await tapWeight(r, "bci")).toBe(TAP_STEP);
   });
 
-  it("a re-tap updates the one row, and flipping the verdict undoes the old nudge", async () => {
+  it("a re-tap changes nothing; flipping undoes exactly the first tap, even if the term set changed since", async () => {
     const r = memoryRadar({ owners: ["u-kalp"], byTopic });
-    await r.store.upsertInterests("u-kalp", "obsidian", [{ term: "dbs", weight: 0.4 }]);
-    await handleRate(send("POST", "/api/me/rate", body), ctx(r.store, kalp));
-    await handleRate(send("POST", "/api/me/rate", body), ctx(r.store, kalp));
-    expect(r.interests.find((i) => i.source === "taps")?.weight).toBe(TAP_STEP);
-    await handleRate(send("POST", "/api/me/rate", { ...body, verdict: -1 }), ctx(r.store, kalp));
+    r.seedInterests("u-kalp", "obsidian", [{ term: "bci", weight: 0.4 }]);
+    await rate(r, body);
+    await rate(r, body);
+    expect(await tapWeight(r, "bci")).toBe(TAP_STEP);
+    r.seedInterests("u-kalp", "manual", [{ term: "glia", weight: 0.2 }]);
+    await rate(r, { ...body, verdict: -1 });
     expect(r.ratings.size).toBe(1);
-    expect(r.ratings.get("u-kalp:201")?.verdict).toBe(-1);
-    expect(r.interests.find((i) => i.source === "taps")?.weight).toBe(-TAP_STEP);
+    expect(r.ratings.get("u-kalp:201")).toMatchObject({ verdict: -1, matchedTerms: ["bci"] });
+    expect(await tapWeight(r, "bci")).toBe(-TAP_STEP);
+    expect(await tapWeight(r, "glia")).toBe(0);
+  });
+
+  it("concurrent taps on different papers both count (nothing is read-modify-written)", async () => {
+    const r = memoryRadar({ owners: ["u-kalp"], byTopic: { "deep-brain-stimulation": [paper("201", { title: "BCI one" }), paper("202", { title: "BCI two" })] } });
+    r.seedInterests("u-kalp", "obsidian", [{ term: "bci", weight: 0.4 }]);
+    await Promise.all([rate(r, body), rate(r, { ...body, pmid: "202" })]);
+    expect(await tapWeight(r, "bci")).toBe(2 * TAP_STEP);
   });
 
   it("400s a malformed body and 404s an unknown paper", async () => {
     const r = memoryRadar({ owners: ["u-kalp"], byTopic });
-    expect((await handleRate(send("POST", "/api/me/rate", { ...body, verdict: 2 }), ctx(r.store, kalp))).status).toBe(400);
-    expect((await handleRate(send("POST", "/api/me/rate", { ...body, surface: "fax" }), ctx(r.store, kalp))).status).toBe(400);
-    expect((await handleRate(send("POST", "/api/me/rate", { ...body, pmid: "abc" }), ctx(r.store, kalp))).status).toBe(400);
-    expect((await handleRate(send("POST", "/api/me/rate", { ...body, pmid: "404" }), ctx(r.store, kalp))).status).toBe(404);
+    expect((await rate(r, { ...body, verdict: 2 })).status).toBe(400);
+    expect((await rate(r, { ...body, surface: "fax" })).status).toBe(400);
+    expect((await rate(r, { ...body, pmid: "abc" })).status).toBe(400);
+    expect((await rate(r, { ...body, pmid: "404" })).status).toBe(404);
     const bad = new Request("https://sift.kalpkan.com/api/me/rate", { method: "POST", headers: { "content-type": "application/json" }, body: "{" });
     expect((await handleRate(bad, ctx(r.store, kalp))).status).toBe(400);
   });
@@ -256,21 +282,31 @@ describe("POST /api/me/open", () => {
 });
 
 describe("/api/me/interests", () => {
-  it("GET lists the rows and the combined weights; DELETE removes one", async () => {
-    const r = memoryRadar({ owners: ["u-kalp"] });
-    await r.store.upsertInterests("u-kalp", "obsidian", [{ term: "dbs", weight: 0.4 }, { term: "aging", weight: 0.3 }]);
-    await r.store.upsertInterests("u-kalp", "taps", [{ term: "dbs", weight: 0.1 }]);
+  it("GET lists stored rows plus the weights taps derived, and the combined weights", async () => {
+    const r = memoryRadar({ owners: ["u-kalp"], byTopic: { "stem-cells": [paper("7", { title: "BCI note" })] } });
+    r.seedInterests("u-kalp", "obsidian", [{ term: "bci", weight: 0.4 }, { term: "spindle", weight: 0.3 }]);
+    await handleRate(send("POST", "/api/me/rate", { pmid: "7", verdict: 1, surface: "web", shownRank: 1, recencyRank: 1, rankerVersion: "p1" }), ctx(r.store, kalp));
     const body = await (await handleInterests(get("/api/me/interests"), ctx(r.store, kalp))).json();
-    expect(body.combined).toEqual([{ term: "dbs", weight: 0.5 }, { term: "aging", weight: 0.3 }]);
-    expect(body.interests).toHaveLength(3);
+    expect(body.combined).toEqual([{ term: "bci", weight: 0.45 }, { term: "spindle", weight: 0.3 }]);
+    expect(body.interests).toEqual([
+      { term: "bci", weight: 0.4, source: "obsidian" },
+      { term: "bci", weight: TAP_STEP, source: "taps" },
+      { term: "spindle", weight: 0.3, source: "obsidian" },
+    ]);
+  });
 
-    const del = await handleInterests(send("DELETE", "/api/me/interests?term=aging&source=obsidian", undefined), ctx(r.store, kalp));
-    expect(del.status).toBe(200);
-    expect(r.interests.map((i) => i.term)).toEqual(["dbs", "dbs"]);
-    const again = await handleInterests(send("DELETE", "/api/me/interests?term=aging&source=obsidian", undefined), ctx(r.store, kalp));
-    expect(again.status).toBe(404);
-    const bad = await handleInterests(send("DELETE", "/api/me/interests?term=aging&source=nope", undefined), ctx(r.store, kalp));
-    expect(bad.status).toBe(400);
+  it("DELETE takes {term, source} in the JSON body and removes one stored row", async () => {
+    const r = memoryRadar({ owners: ["u-kalp"] });
+    r.seedInterests("u-kalp", "obsidian", [{ term: "bci", weight: 0.4 }, { term: "spindle", weight: 0.3 }]);
+    const del = (b: unknown) => handleInterests(send("DELETE", "/api/me/interests", b), ctx(r.store, kalp));
+    expect((await del({ term: "spindle", source: "obsidian" })).status).toBe(200);
+    expect(r.interests.map((i) => i.term)).toEqual(["bci"]);
+    expect((await del({ term: "spindle", source: "obsidian" })).status).toBe(404);
+    // Tap weights are derived, so there is no taps row to delete: re-rate instead.
+    expect((await del({ term: "bci", source: "taps" })).status).toBe(400);
+    expect((await del({ term: "bci" })).status).toBe(400);
+    const viaQuery = await handleInterests(send("DELETE", "/api/me/interests?term=bci&source=obsidian", undefined), ctx(r.store, kalp));
+    expect(viaQuery.status).toBe(400);
   });
 });
 

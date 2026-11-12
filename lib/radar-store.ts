@@ -15,7 +15,7 @@ import type { AdminSupabaseClient } from "./supabase-admin";
 import { getAdminSupabase } from "./supabase-admin";
 import { rowToStoredPaper, rowToTopic } from "./supabase-store";
 import type { StoredPaper, Topic } from "./feed";
-import type { Candidate, Interest, InterestRow, InterestSource } from "./personal";
+import type { Candidate, InterestRow } from "./personal";
 import type { RadarStore, RatingRow, Verdict } from "./me-api";
 
 /**
@@ -133,16 +133,6 @@ export function createRadarStore(client: AdminSupabaseClient): RadarStore {
       return (data ?? []).length;
     },
 
-    async upsertInterests(userId, source: InterestSource, rows: readonly Interest[]) {
-      if (rows.length === 0) return;
-      const now = new Date().toISOString();
-      const { error } = await client.from("interests").upsert(
-        rows.map((r) => ({ user_id: userId, term: r.term, weight: r.weight, source, updated_at: now })),
-        { onConflict: "user_id,term,source" },
-      );
-      fail("upsertInterests", error);
-    },
-
     async getPaper(pmid) {
       const { data, error } = await client.from("papers").select("pmid, title, journal").eq("pmid", pmid).maybeSingle();
       fail("getPaper", error);
@@ -150,26 +140,30 @@ export function createRadarStore(client: AdminSupabaseClient): RadarStore {
     },
 
     async getRatings(userId) {
-      const { data, error } = await client.from("ratings").select("pmid, verdict").eq("user_id", userId);
+      const { data, error } = await client.from("ratings").select("pmid, verdict, matched_terms").eq("user_id", userId);
       fail("getRatings", error);
-      return new Map((data ?? []).map((r) => [r.pmid, r.verdict as Verdict]));
+      return new Map(
+        (data ?? []).map((r) => [r.pmid, { verdict: r.verdict as Verdict, matchedTerms: r.matched_terms ?? [] }]),
+      );
     },
 
-    async upsertRating(row: RatingRow) {
-      const { error } = await client.from("ratings").upsert(
-        {
-          user_id: row.userId,
-          pmid: row.pmid,
-          topic_id: row.topicId,
-          verdict: row.verdict,
-          shown_rank: row.shownRank,
-          recency_rank: row.recencyRank,
-          ranker_version: row.rankerVersion,
-          surface: row.surface,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "user_id,pmid" },
-      );
+    async upsertRating(row: RatingRow, { keepMatchedTerms }) {
+      // One INSERT ... ON CONFLICT (user_id, pmid) DO UPDATE: atomic per paper.
+      // PostgREST updates only the columns sent, so leaving matched_terms out
+      // of a re-tap keeps what the first tap wrote.
+      const payload = {
+        user_id: row.userId,
+        pmid: row.pmid,
+        topic_id: row.topicId,
+        verdict: row.verdict,
+        shown_rank: row.shownRank,
+        recency_rank: row.recencyRank,
+        ranker_version: row.rankerVersion,
+        surface: row.surface,
+        updated_at: new Date().toISOString(),
+        ...(keepMatchedTerms ? {} : { matched_terms: row.matchedTerms }),
+      };
+      const { error } = await client.from("ratings").upsert(payload, { onConflict: "user_id,pmid" });
       fail("upsertRating", error);
     },
 

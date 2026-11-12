@@ -14,17 +14,18 @@ import { z } from "zod";
 import { resolveViewer, type AuthUser, type ViewerDeps } from "./access";
 import { clampLimit, toFeedPaper, type FeedPaper, type Topic } from "./feed";
 import {
+  MAX_BOOST,
   RANKER_VERSION,
-  applyTapDeltas,
   combineInterests,
-  personalScore,
+  matchTerms,
+  radarInterests,
   rankPersonal,
-  tapDeltas,
   type Candidate,
-  type Interest,
   type InterestRow,
   type InterestSource,
+  type TapRating,
 } from "./personal";
+import { QUALITY_RANGE, WEIGHTS } from "./ranking";
 
 // ---------------------------------------------------------------------------
 // The store the handlers need
@@ -42,6 +43,8 @@ export type RatingRow = {
   recencyRank: number;
   rankerVersion: string;
   surface: Surface;
+  /** The interest terms the FIRST tap matched; kept on every re-tap (migration 0004). */
+  matchedTerms: string[];
 };
 
 export interface RadarStore {
@@ -54,14 +57,18 @@ export interface RadarStore {
   setFollows(userId: string, topicIds: readonly string[]): Promise<void>;
   /** The h1-ranked papers from each topic's latest refresh (lib/radar-store.ts). */
   readCandidates(topics: readonly Topic[], now: Date): Promise<Candidate[]>;
+  /** Stored Obsidian / manual rows. Tap weights are never stored; they are derived from ratings. */
   listInterests(userId: string): Promise<InterestRow[]>;
   /** Returns how many rows were deleted. */
   deleteInterest(userId: string, term: string, source: InterestSource): Promise<number>;
-  upsertInterests(userId: string, source: InterestSource, rows: readonly Interest[]): Promise<void>;
   getPaper(pmid: string): Promise<{ pmid: string; title: string; journal: string | null } | null>;
-  /** pmid -> verdict, for this user. */
-  getRatings(userId: string): Promise<Map<string, Verdict>>;
-  upsertRating(row: RatingRow): Promise<void>;
+  /** pmid -> { verdict, matchedTerms }, for this user. */
+  getRatings(userId: string): Promise<Map<string, TapRating>>;
+  /**
+   * One atomic upsert per (user, pmid). With keepMatchedTerms the stored
+   * matched_terms are left as the first tap wrote them.
+   */
+  upsertRating(row: RatingRow, opts: { keepMatchedTerms: boolean }): Promise<void>;
   insertOpen(row: { userId: string; pmid: string; surface: Surface }): Promise<void>;
 }
 
@@ -71,8 +78,14 @@ export type MeContext = { radar: RadarStore; viewer: ViewerDeps; now: Date };
 // Wire format
 // ---------------------------------------------------------------------------
 
-/** One paper in the private feed: the public FeedPaper plus what the eval needs. */
+/**
+ * One paper in the private feed: the public FeedPaper plus what the eval needs.
+ * `score` here is p1 on a fixed 0..1 scale (P1_SCALE), because the iPhone app
+ * sorts by `score`; h1 stays available as `h1` (raw) and `h1Quality` (0..1).
+ */
 export type MePaper = FeedPaper & {
+  h1: number;
+  h1Quality: number;
   /** The followed topic that ranked it highest. */
   topic: string;
   shownRank: number;
@@ -147,6 +160,13 @@ const surfaceSchema = z.enum(["web", "ios", "widget"]);
 
 export const ME_FEED_NAME = "My radar";
 
+/**
+ * The most a p1 score can be: h1's top quality, its full recency bonus, plus
+ * the interest cap. Dividing by it puts p1 on a fixed 0..1 scale, monotonic in
+ * p1 and comparable across days (unlike dividing by today's best paper).
+ */
+export const P1_SCALE = QUALITY_RANGE.max + WEIGHTS.recencyMax + MAX_BOOST;
+
 /** Build the private feed. Exported for the /me page, which renders it directly. */
 export async function buildMeFeed(
   ctx: Pick<MeContext, "radar" | "now">,
@@ -162,7 +182,7 @@ export async function buildMeFeed(
   ]);
   const followed = topics.filter((t) => followIds.includes(t.id));
   const candidates = followed.length ? await radar.readCandidates(followed, now) : [];
-  const ranked = rankPersonal(candidates, interests, { now, limit });
+  const ranked = rankPersonal(candidates, radarInterests(interests, [...ratings.values()]), { now, limit });
   const kinds = new Map(followed.map((t) => [t.slug, t.kind]));
 
   const newest = candidates.map((c) => c.paper.rankedAt).sort().at(-1);
@@ -173,16 +193,25 @@ export async function buildMeFeed(
     query: followed.map((t) => t.name).join(", "),
     updatedAt: new Date(newest ?? now.toISOString()).toISOString(),
     rankerVersion: RANKER_VERSION,
-    papers: ranked.map((p) => ({
-      ...toFeedPaper({ ...p.paper, reasons: p.reasons, score: p.paper.score }, kinds.get(p.topic) ?? p.kind),
-      // The number the list is sorted by, which for this feed is p1.
-      orderScore: p.p1,
-      topic: p.topic,
-      shownRank: p.shownRank,
-      recencyRank: p.recencyRank,
-      rankerVersion: RANKER_VERSION,
-      verdict: ratings.get(p.paper.pmid) ?? null,
-    })),
+    papers: ranked.map((p) => {
+      const base = toFeedPaper({ ...p.paper, reasons: p.reasons, score: p.paper.score }, kinds.get(p.topic) ?? p.kind);
+      return {
+        ...base,
+        // p1, 0..1: what the app sorts by. (The app should still show server
+        // order and send shownRank as given: the 48-hour rule can lift a paper
+        // above a higher score.)
+        score: Math.round(Math.min(1, Math.max(0, p.p1 / P1_SCALE)) * 1000) / 1000,
+        // The number the web list shows, which for this feed is p1.
+        orderScore: p.p1,
+        h1: p.h1,
+        h1Quality: base.score,
+        topic: p.topic,
+        shownRank: p.shownRank,
+        recencyRank: p.recencyRank,
+        rankerVersion: RANKER_VERSION,
+        verdict: ratings.get(p.paper.pmid)?.verdict ?? null,
+      };
+    }),
   };
 }
 
@@ -225,27 +254,29 @@ export async function handleRate(request: Request, ctx: MeContext): Promise<Resp
   ]);
   const previous = ratings.get(body.pmid) ?? null;
 
-  await ctx.radar.upsertRating({
-    userId,
-    pmid: body.pmid,
-    topicId: topics.find((t) => t.slug === body.topic)?.id ?? null,
-    verdict: body.verdict,
-    shownRank: body.shownRank,
-    recencyRank: body.recencyRank,
-    rankerVersion: body.rankerVersion,
-    surface: body.surface,
-  });
+  // The server decides which terms a tap moves, from the paper as stored and
+  // the WHOLE Obsidian/manual term set (a term whose weight has reached 0 must
+  // still be learnable), never from anything the client says. A re-tap keeps
+  // the first tap's terms, so flipping a verdict undoes exactly that tap.
+  const matched = previous
+    ? [...previous.matchedTerms]
+    : matchTerms(paper, interests.filter((i) => i.source !== "taps").map((i) => i.term));
 
-  // The server decides which terms a tap nudges, from the paper as stored,
-  // never from anything the client says.
-  const s = personalScore(paper, 0, combineInterests(interests));
-  const touched = [...s.matched, ...s.muted];
-  const deltas = tapDeltas(previous, body.verdict, touched);
-  if (deltas.length) {
-    const taps = new Map(interests.filter((i) => i.source === "taps").map((i) => [i.term, i.weight]));
-    await ctx.radar.upsertInterests(userId, "taps", applyTapDeltas(taps, deltas));
-  }
-  return json({ ok: true, pmid: body.pmid, verdict: body.verdict, nudged: deltas.map((d) => d.term) });
+  await ctx.radar.upsertRating(
+    {
+      userId,
+      pmid: body.pmid,
+      topicId: topics.find((t) => t.slug === body.topic)?.id ?? null,
+      verdict: body.verdict,
+      shownRank: body.shownRank,
+      recencyRank: body.recencyRank,
+      rankerVersion: body.rankerVersion,
+      surface: body.surface,
+      matchedTerms: matched,
+    },
+    { keepMatchedTerms: previous !== null },
+  );
+  return json({ ok: true, pmid: body.pmid, verdict: body.verdict, nudged: matched });
 }
 
 // ---------------------------------------------------------------------------
@@ -270,7 +301,8 @@ export async function handleOpen(request: Request, ctx: MeContext): Promise<Resp
 
 const deleteInterestSchema = z.object({
   term: z.string().min(1).max(64),
-  source: z.enum(["obsidian", "taps", "manual"]),
+  // Tap weights are derived from ratings, so there is no taps row to delete.
+  source: z.enum(["obsidian", "manual"]),
 });
 
 export async function handleInterests(request: Request, ctx: MeContext): Promise<Response> {
@@ -279,18 +311,19 @@ export async function handleInterests(request: Request, ctx: MeContext): Promise
   const userId = g.user.id;
 
   if (request.method === "DELETE") {
-    const q = new URL(request.url).searchParams;
-    const parsed = deleteInterestSchema.safeParse({ term: q.get("term") ?? undefined, source: q.get("source") ?? undefined });
-    if (!parsed.success) return error(400, "expected ?term=<term>&source=obsidian|taps|manual");
+    // In the body, not the query string, so a term never lands in an access log.
+    const parsed = deleteInterestSchema.safeParse(await readJson(request));
+    if (!parsed.success) return error(400, "expected a JSON body {term, source: obsidian|manual}");
     const n = await ctx.radar.deleteInterest(userId, parsed.data.term, parsed.data.source);
     if (n === 0) return error(404, "no such interest");
     return json({ ok: true, deleted: n });
   }
 
-  const rows = await ctx.radar.listInterests(userId);
+  const [rows, ratings] = await Promise.all([ctx.radar.listInterests(userId), ctx.radar.getRatings(userId)]);
+  const all = radarInterests(rows, [...ratings.values()]);
   return json({
-    interests: [...rows].sort((a, b) => a.term.localeCompare(b.term) || a.source.localeCompare(b.source)),
-    combined: combineInterests(rows),
+    interests: [...all].sort((a, b) => a.term.localeCompare(b.term) || a.source.localeCompare(b.source)),
+    combined: combineInterests(all),
   });
 }
 

@@ -6,13 +6,14 @@ import {
   POINTS_PER_WEIGHT,
   RANKER_VERSION,
   TAP_STEP,
-  applyTapDeltas,
   combineInterests,
   isRecent,
   normalizeTerm,
   personalScore,
+  matchTerms,
+  radarInterests,
   rankPersonal,
-  tapDeltas,
+  tapWeights,
   termMatches,
   type Candidate,
 } from "./personal";
@@ -53,26 +54,26 @@ describe("normalizeTerm", () => {
     expect(normalizeTerm("  Gene   Therapy ")).toBe("gene therapy");
   });
   it("strips wikilink brackets and a leading hash", () => {
-    expect(normalizeTerm("[[DBS]]")).toBe("dbs");
-    expect(normalizeTerm("#seeg")).toBe("seeg");
+    expect(normalizeTerm("[[BCI]]")).toBe("bci");
+    expect(normalizeTerm("#glia")).toBe("glia");
   });
 });
 
 describe("termMatches", () => {
   it("matches whole words, case-insensitively", () => {
-    expect(termMatches("Adaptive DBS for Parkinson's disease", "dbs")).toBe(true);
-    expect(termMatches("Results from the SDBSX cohort", "dbs")).toBe(false);
+    expect(termMatches("Adaptive BCI for Parkinson's disease", "bci")).toBe(true);
+    expect(termMatches("Results from the SBCIX cohort", "bci")).toBe(false);
   });
   it("matches multi-word terms across hyphens and spaces", () => {
-    expect(termMatches("AAV gene-therapy in mice", "gene therapy")).toBe(true);
+    expect(termMatches("AAV gene-therapy in lumen", "gene therapy")).toBe(true);
     expect(termMatches("Gene therapy for SCA3", "gene therapy")).toBe(true);
     expect(termMatches("Therapy for gene carriers", "gene therapy")).toBe(false);
   });
   it("matches a hyphenated term written as one word", () => {
-    expect(termMatches("p75NTR signalling after injury", "p75-ntr")).toBe(true);
+    expect(termMatches("K2AB signalling after injury", "k2-ab")).toBe(true);
   });
   it("tolerates a plural on either side", () => {
-    expect(termMatches("Neurotrophin signalling in ageing", "neurotrophins")).toBe(true);
+    expect(termMatches("Zebrafish larvae in ageing", "zebrafish")).toBe(true);
     expect(termMatches("Mitochondrion dynamics", "mitochondria")).toBe(false);
     expect(termMatches("Organoids model the cortex", "organoid")).toBe(true);
   });
@@ -84,16 +85,16 @@ describe("termMatches", () => {
 describe("combineInterests", () => {
   it("sums one term's weights across sources and clamps to [-1, 1]", () => {
     const out = combineInterests([
-      { term: "dbs", weight: 0.4, source: "obsidian" },
-      { term: "dbs", weight: 0.15, source: "taps" },
-      { term: "aging", weight: 0.9, source: "obsidian" },
-      { term: "aging", weight: 0.9, source: "manual" },
-      { term: "mice", weight: -0.5, source: "manual" },
+      { term: "bci", weight: 0.4, source: "obsidian" },
+      { term: "bci", weight: 0.15, source: "taps" },
+      { term: "spindle", weight: 0.9, source: "obsidian" },
+      { term: "spindle", weight: 0.9, source: "manual" },
+      { term: "lumen", weight: -0.5, source: "manual" },
     ]);
     expect(out).toEqual([
-      { term: "aging", weight: 1 },
-      { term: "dbs", weight: 0.55 },
-      { term: "mice", weight: -0.5 },
+      { term: "spindle", weight: 1 },
+      { term: "bci", weight: 0.55 },
+      { term: "lumen", weight: -0.5 },
     ]);
   });
   it("drops terms whose weights cancel out", () => {
@@ -106,23 +107,23 @@ describe("combineInterests", () => {
 
 describe("personalScore", () => {
   const interests = [
-    { term: "dbs", weight: 0.5 },
-    { term: "parkinsons", weight: 0.25 },
-    { term: "mice", weight: -0.5 },
+    { term: "bci", weight: 0.5 },
+    { term: "glia", weight: 0.25 },
+    { term: "lumen", weight: -0.5 },
   ];
 
   it("adds weight x POINTS_PER_WEIGHT for each interest hit in the title or journal, with a reason each", () => {
-    const s = personalScore({ title: "Adaptive DBS in Parkinsons", journal: "Brain" }, 60, interests);
+    const s = personalScore({ title: "Adaptive BCI in Glia", journal: "Brain" }, 60, interests);
     expect(s.score).toBe(60 + 0.75 * POINTS_PER_WEIGHT);
-    expect(s.matched).toEqual(["dbs", "parkinsons"]);
-    expect(s.reasons).toEqual(["matches your interest: dbs", "matches your interest: parkinsons"]);
+    expect(s.matched).toEqual(["bci", "glia"]);
+    expect(s.reasons).toEqual(["matches your interest: bci", "matches your interest: glia"]);
   });
 
   it("subtracts for a muted term and says so", () => {
-    const s = personalScore({ title: "DBS in mice", journal: null }, 60, interests);
+    const s = personalScore({ title: "BCI in lumen", journal: null }, 60, interests);
     expect(s.score).toBe(60 + 0.5 * POINTS_PER_WEIGHT - 0.5 * POINTS_PER_WEIGHT);
-    expect(s.muted).toEqual(["mice"]);
-    expect(s.reasons).toContain("you muted: mice");
+    expect(s.muted).toEqual(["lumen"]);
+    expect(s.reasons).toContain("you muted: lumen");
   });
 
   it("caps the boost and the mute so h1's evidence signals still matter", () => {
@@ -150,24 +151,24 @@ describe("isRecent", () => {
 describe("rankPersonal", () => {
   it("dedupes by PMID across topics, keeping the higher h1 and its topic", () => {
     const out = rankPersonal(
-      [cand(paper({ pmid: "1", score: 50 }), "bci"), cand(paper({ pmid: "1", score: 70 }), "dbs"), cand(paper({ pmid: "2", score: 60 }))],
+      [cand(paper({ pmid: "1", score: 50 }), "bci"), cand(paper({ pmid: "1", score: 70 }), "bci"), cand(paper({ pmid: "2", score: 60 }))],
       [],
       { now: NOW, limit: 10 },
     );
     expect(out.map((p) => p.paper.pmid)).toEqual(["1", "2"]);
-    expect(out[0].topic).toBe("dbs");
+    expect(out[0].topic).toBe("bci");
     expect(out[0].h1).toBe(70);
   });
 
   it("re-orders by p1, so an interest match can overtake a better-evidenced paper", () => {
     const out = rankPersonal(
-      [cand(paper({ pmid: "1", score: 80, title: "A meta-analysis of tremor" })), cand(paper({ pmid: "2", score: 65, title: "Neurotrophins after DBS" }))],
-      [{ term: "neurotrophins", weight: 0.6, source: "obsidian" }],
+      [cand(paper({ pmid: "1", score: 80, title: "A meta-analysis of tremor" })), cand(paper({ pmid: "2", score: 65, title: "Zebrafish after BCI" }))],
+      [{ term: "zebrafish", weight: 0.6, source: "obsidian" }],
       { now: NOW, limit: 10 },
     );
     expect(out.map((p) => p.paper.pmid)).toEqual(["2", "1"]);
     expect(out[0].p1).toBe(65 + 0.6 * POINTS_PER_WEIGHT);
-    expect(out[0].reasons).toEqual(["matches your interest: neurotrophins", "review"]);
+    expect(out[0].reasons).toEqual(["matches your interest: zebrafish", "review"]);
   });
 
   it("numbers shownRank 1..n and recencyRank by newest-first over the whole candidate set", () => {
@@ -218,25 +219,70 @@ describe("rankPersonal", () => {
   });
 });
 
-describe("tap learning", () => {
-  it("a thumbs-up nudges each matched term up by TAP_STEP, a thumbs-down down", () => {
-    expect(tapDeltas(null, 1, ["dbs", "seeg"])).toEqual([{ term: "dbs", delta: TAP_STEP }, { term: "seeg", delta: TAP_STEP }]);
-    expect(tapDeltas(null, -1, ["dbs"])).toEqual([{ term: "dbs", delta: -TAP_STEP }]);
-  });
-  it("a re-tap with the same verdict changes nothing, and flipping undoes the old nudge", () => {
-    expect(tapDeltas(1, 1, ["dbs"])).toEqual([]);
-    expect(tapDeltas(1, -1, ["dbs"])).toEqual([{ term: "dbs", delta: -2 * TAP_STEP }]);
-  });
-  it("applies deltas to the existing taps weights, clamped to [-1, 1] and rounded", () => {
-    const now = applyTapDeltas(new Map([["dbs", 0.98], ["x", 0.1]]), [
-      { term: "dbs", delta: 0.05 },
-      { term: "x", delta: -0.05 },
-      { term: "new", delta: 0.05 },
+describe("tap learning (derived from rating rows, never accumulated)", () => {
+  it("matchTerms finds every term of the raw set in the title or journal, weight irrelevant", () => {
+    expect(matchTerms({ title: "Glia and BCI decoding", journal: "Zebrafish Reports" }, ["bci", "glia", "zebrafish", "lumen"])).toEqual([
+      "bci",
+      "glia",
+      "zebrafish",
     ]);
-    expect(now).toEqual([
-      { term: "dbs", weight: 1 },
-      { term: "x", weight: 0.05 },
-      { term: "new", weight: 0.05 },
+  });
+
+  it("each rating moves every term it matched by TAP_STEP in its direction", () => {
+    expect(
+      tapWeights(
+        [
+          { verdict: 1, matchedTerms: ["bci", "glia"] },
+          { verdict: 1, matchedTerms: ["bci"] },
+          { verdict: -1, matchedTerms: ["glia"] },
+        ],
+        ["bci", "glia"],
+      ),
+    ).toEqual([{ term: "bci", weight: 2 * TAP_STEP, source: "taps" }]);
+  });
+
+  it("flipping a verdict undoes exactly what that rating moved (the row is the record)", () => {
+    const up = tapWeights([{ verdict: 1, matchedTerms: ["glia"] }], ["glia"]);
+    const flipped = tapWeights([{ verdict: -1, matchedTerms: ["glia"] }], ["glia"]);
+    expect(up).toEqual([{ term: "glia", weight: TAP_STEP, source: "taps" }]);
+    expect(flipped).toEqual([{ term: "glia", weight: -TAP_STEP, source: "taps" }]);
+  });
+
+  it("only counts terms still in the Obsidian/manual set, so deleting a term deletes what taps learned", () => {
+    expect(tapWeights([{ verdict: 1, matchedTerms: ["gone"] }], ["glia"])).toEqual([]);
+  });
+
+  it("clamps to [-1, 1]", () => {
+    const many = Array.from({ length: 30 }, () => ({ verdict: 1 as const, matchedTerms: ["bci"] }));
+    expect(tapWeights(many, ["bci"])).toEqual([{ term: "bci", weight: 1, source: "taps" }]);
+  });
+
+  it("a term taps have driven to zero still matches, so later taps can revive it", () => {
+    // Obsidian 0.1 + two thumbs-down (-0.1) = 0: combined weight gone, term still in the set.
+    const rows = [{ term: "glia", weight: 0.1, source: "obsidian" as const }];
+    const ratings = [
+      { verdict: -1 as const, matchedTerms: ["glia"] },
+      { verdict: -1 as const, matchedTerms: ["glia"] },
+    ];
+    expect(combineInterests(radarInterests(rows, ratings))).toEqual([]);
+    expect(matchTerms({ title: "Glia again", journal: null }, rows.map((r) => r.term))).toEqual(["glia"]);
+    const revived = [...ratings, { verdict: 1 as const, matchedTerms: ["glia"] }, { verdict: 1 as const, matchedTerms: ["glia"] }, { verdict: 1 as const, matchedTerms: ["glia"] }];
+    expect(combineInterests(radarInterests(rows, revived))).toEqual([{ term: "glia", weight: 0.15 }]);
+  });
+
+  it("radarInterests ignores any legacy stored taps rows and adds the derived ones", () => {
+    const out = radarInterests(
+      [
+        { term: "bci", weight: 0.4, source: "obsidian" },
+        { term: "bci", weight: 0.9, source: "taps" },
+        { term: "lumen", weight: -0.5, source: "manual" },
+      ],
+      [{ verdict: 1, matchedTerms: ["bci"] }],
+    );
+    expect(out).toEqual([
+      { term: "bci", weight: 0.4, source: "obsidian" },
+      { term: "lumen", weight: -0.5, source: "manual" },
+      { term: "bci", weight: TAP_STEP, source: "taps" },
     ]);
   });
 });

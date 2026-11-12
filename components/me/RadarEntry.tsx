@@ -19,6 +19,9 @@ type Verdict = 1 | -1;
 export default function RadarEntry({ paper }: { paper: MePaper }) {
   const [verdict, setVerdict] = useState<Verdict | null>(paper.verdict);
   const [failed, setFailed] = useState(false);
+  // One rating request at a time per paper: the server keeps one row per
+  // paper, so a double tap must not race two upserts.
+  const [pending, setPending] = useState(false);
   const href = paper.url ?? `https://pubmed.ncbi.nlm.nih.gov/${paper.pmid}/`;
   const meta = [paper.authorsShort, paper.journal, formatDate(paper.published)].filter(Boolean).join(" · ");
 
@@ -33,7 +36,9 @@ export default function RadarEntry({ paper }: { paper: MePaper }) {
   }
 
   async function rate(next: Verdict) {
+    if (pending) return;
     const before = verdict;
+    setPending(true);
     setVerdict(next);
     setFailed(false);
     try {
@@ -55,6 +60,8 @@ export default function RadarEntry({ paper }: { paper: MePaper }) {
     } catch {
       setVerdict(before);
       setFailed(true);
+    } finally {
+      setPending(false);
     }
   }
 
@@ -62,12 +69,13 @@ export default function RadarEntry({ paper }: { paper: MePaper }) {
     <button
       type="button"
       onClick={() => rate(v)}
+      disabled={pending}
       aria-pressed={verdict === v}
       aria-label={label}
       title={label}
       className={`px-2 py-1 text-base leading-none transition-opacity ${
         verdict === v ? "opacity-100" : "opacity-40 hover:opacity-80"
-      }`}
+      } disabled:cursor-wait`}
     >
       {glyph}
     </button>

@@ -262,30 +262,40 @@ export function rankPersonal(
 // ---------------------------------------------------------------------------
 // Learning from taps
 // ---------------------------------------------------------------------------
+//
+// Tap weights are DERIVED from the rating rows, never accumulated. Each
+// rating stores the terms its first tap matched (sift.ratings.matched_terms,
+// migration 0004); a term's tap weight is the sum of verdict x TAP_STEP over
+// the ratings that matched it. So:
+//   - a re-tap with the same verdict changes nothing (one row per paper);
+//   - flipping a verdict undoes exactly what that rating moved;
+//   - two taps at once cannot lose a nudge (each is its own atomic upsert);
+//   - deleting a term in settings also forgets what taps taught it, because
+//     only terms still in the Obsidian/manual set are counted.
 
-/**
- * What one tap changes. A thumbs-up nudges every matched term up by TAP_STEP;
- * a thumbs-down nudges them down. Re-tapping the same verdict changes nothing,
- * and flipping a verdict first undoes the old nudge, so a rating is counted
- * once however many times it is tapped.
- */
-export function tapDeltas(
-  previous: -1 | 1 | null,
-  next: -1 | 1,
-  matched: readonly string[],
-): Array<{ term: string; delta: number }> {
-  const step = (next - (previous ?? 0)) * TAP_STEP;
-  if (step === 0) return [];
-  return matched.map((term) => ({ term, delta: round(step) }));
+/** The interest terms that appear in this paper's title or journal. Weight is irrelevant: a term at 0 still matches. */
+export function matchTerms(paper: { title: string; journal: string | null }, terms: readonly string[]): string[] {
+  const text = `${paper.title} ${paper.journal ?? ""}`;
+  return [...new Set(terms.map(normalizeTerm))].filter((t) => t && termMatches(text, t));
 }
 
-/** New `source = 'taps'` weights for the touched terms, clamped and rounded. */
-export function applyTapDeltas(
-  existing: ReadonlyMap<string, number>,
-  deltas: ReadonlyArray<{ term: string; delta: number }>,
-): Interest[] {
-  return deltas.map(({ term, delta }) => ({
-    term,
-    weight: round(clamp((existing.get(term) ?? 0) + delta, -1, 1)),
-  }));
+export type TapRating = { verdict: 1 | -1; matchedTerms: readonly string[] };
+
+export function tapWeights(ratings: readonly TapRating[], universe: readonly string[]): InterestRow[] {
+  const known = new Set(universe.map(normalizeTerm));
+  const sums = new Map<string, number>();
+  for (const r of ratings) {
+    for (const raw of new Set(r.matchedTerms.map(normalizeTerm))) {
+      if (known.has(raw)) sums.set(raw, (sums.get(raw) ?? 0) + r.verdict * TAP_STEP);
+    }
+  }
+  return [...sums.entries()]
+    .map(([term, w]) => ({ term, weight: round(clamp(w, -1, 1)), source: "taps" as const }))
+    .filter((r) => r.weight !== 0);
+}
+
+/** The terms p1 ranks with: stored Obsidian/manual rows plus the weights taps derive. */
+export function radarInterests(rows: readonly InterestRow[], ratings: readonly TapRating[]): InterestRow[] {
+  const base = rows.filter((r) => r.source !== "taps");
+  return [...base, ...tapWeights(ratings, base.map((r) => r.term))];
 }

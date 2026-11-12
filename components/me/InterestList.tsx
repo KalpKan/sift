@@ -11,8 +11,10 @@ const SOURCE: Record<Row["source"], string> = {
 };
 
 /**
- * Every interest row, each deletable (docs/obsidian-bridge.md, rule 4). This
- * page is the only place interests are ever rendered.
+ * Every interest, Obsidian and hand-typed rows deletable (docs/obsidian-bridge.md,
+ * rule 4); deleting one also forgets what taps taught it. Tap weights are
+ * derived from ratings, so they change by re-rating, not deleting. This page is
+ * the only place interests are ever rendered.
  */
 export default function InterestList({ interests }: { interests: Row[] }) {
   const [rows, setRows] = useState(interests);
@@ -20,8 +22,11 @@ export default function InterestList({ interests }: { interests: Row[] }) {
 
   async function remove(row: Row) {
     setError(false);
-    const q = new URLSearchParams({ term: row.term, source: row.source });
-    const res = await fetch(`/api/me/interests?${q}`, { method: "DELETE" }).catch(() => null);
+    const res = await fetch("/api/me/interests", {
+      method: "DELETE",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ term: row.term, source: row.source }),
+    }).catch(() => null);
     if (res && (res.ok || res.status === 404)) {
       setRows((rs) => rs.filter((r) => !(r.term === row.term && r.source === row.source)));
     } else {
@@ -48,6 +53,9 @@ export default function InterestList({ interests }: { interests: Row[] }) {
                 {SOURCE[r.source]} · <span className="tabular">{r.weight > 0 ? "+" : ""}{r.weight.toFixed(2)}</span>
               </span>
             </span>
+            {r.source === "taps" ? (
+              <span className="text-xs text-ink-faint">re-rate to change</span>
+            ) : (
             <button
               type="button"
               onClick={() => remove(r)}
@@ -56,6 +64,7 @@ export default function InterestList({ interests }: { interests: Row[] }) {
             >
               Delete
             </button>
+            )}
           </li>
         ))}
       </ul>

@@ -19,13 +19,7 @@
  * he was shown p1's top 10, so the rated set is already p1-shaped.
  */
 
-import {
-  TAP_STEP,
-  combineInterests,
-  personalScore,
-  termMatches,
-  type InterestRow,
-} from "./personal";
+import { combineInterests, matchTerms, personalScore, tapWeights, type InterestRow } from "./personal";
 
 export const GATE = { minRatings: 50, minP3: 0.6, minLiftOverNewest: 1 / 3 } as const;
 
@@ -38,6 +32,8 @@ export type RatedPaper = {
   h1: number;
   /** Published (else first seen) as epoch ms: newest-first's key. */
   publishedMs: number;
+  /** The terms this rating's tap moved (sift.ratings.matched_terms); recomputed when absent. */
+  matchedTerms?: string[];
 };
 
 export type MethodResult = { order: string[]; p3: number | null; p10: number | null };
@@ -61,30 +57,19 @@ function result(ordered: RatedPaper[]): MethodResult {
 }
 
 /**
- * Leave-one-out p1 score. Tap weights are rebuilt from the ratings themselves
- * (each tap moves every term its paper matches by TAP_STEP in its direction),
- * minus the paper's own tap; the stored `taps` rows are used only for which
- * terms exist, never for their learned weights.
+ * Leave-one-out p1 score: h1 + the Obsidian / hand-typed terms + the tap
+ * weights derived from every OTHER rating (lib/personal.ts tapWeights, the
+ * same rule the live radar uses), so a paper's own tap never helps rank it.
  */
 function p1LeaveOneOut(papers: readonly RatedPaper[], interests: readonly InterestRow[]): Map<string, number> {
   const fixed = interests.filter((i) => i.source !== "taps");
-  const terms = [...new Set(combineInterests(interests.map((i) => ({ ...i, weight: 1 }))).map((i) => i.term))];
-  const text = (p: RatedPaper) => `${p.title} ${p.journal ?? ""}`;
-  const hits = new Map(papers.map((p) => [p.pmid, terms.filter((t) => termMatches(text(p), t))]));
-
-  const total = new Map<string, number>();
-  for (const p of papers) for (const t of hits.get(p.pmid)!) total.set(t, (total.get(t) ?? 0) + p.verdict * TAP_STEP);
-
+  const universe = fixed.map((i) => i.term);
+  const taps = papers.map((p) => ({ verdict: p.verdict, matchedTerms: p.matchedTerms ?? matchTerms(p, universe) }));
   const out = new Map<string, number>();
-  for (const p of papers) {
-    const own = new Set(hits.get(p.pmid));
-    const taps: InterestRow[] = [...total.entries()].map(([term, w]) => ({
-      term,
-      weight: Math.max(-1, Math.min(1, own.has(term) ? w - p.verdict * TAP_STEP : w)),
-      source: "taps",
-    }));
-    out.set(p.pmid, personalScore(p, p.h1, combineInterests([...fixed, ...taps])).score);
-  }
+  papers.forEach((p, i) => {
+    const others = taps.filter((_, j) => j !== i);
+    out.set(p.pmid, personalScore(p, p.h1, combineInterests([...fixed, ...tapWeights(others, universe)])).score);
+  });
   return out;
 }
 

@@ -30,7 +30,7 @@ async function main() {
   for (const { user_id } of owners) {
     const { data: ratings, error: rErr } = await db
       .from("ratings")
-      .select("pmid, verdict, papers!inner(title, journal, published_on, first_seen_at)")
+      .select("pmid, verdict, matched_terms, papers!inner(title, journal, published_on, first_seen_at)")
       .eq("user_id", user_id);
     if (rErr) throw new Error(rErr.message);
     const pmids = (ratings ?? []).map((r) => r.pmid);
@@ -54,6 +54,7 @@ async function main() {
         journal: p.journal,
         h1: h1.get(r.pmid) ?? 0,
         publishedMs: ms(p.published_on) || ms(p.first_seen_at),
+        matchedTerms: r.matched_terms ?? undefined,
       };
     });
 

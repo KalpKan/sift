@@ -27,30 +27,43 @@ describe("evaluate", () => {
   });
 
   it("p1 uses the Obsidian and hand-typed terms", () => {
-    const xs = [rated("1", -1, { h1: 60 }), rated("2", 1, { h1: 50, title: "DBS in PD" })];
-    const r = evaluate(xs, [{ term: "dbs", weight: 0.5, source: "obsidian" }]);
+    const xs = [rated("1", -1, { h1: 60 }), rated("2", 1, { h1: 50, title: "BCI in PD" })];
+    const r = evaluate(xs, [{ term: "bci", weight: 0.5, source: "obsidian" }]);
     expect(r.methods.p1.order).toEqual(["2", "1"]);
   });
 
   it("p1's tap learning is leave-one-out: a paper's own tap never helps rank it", () => {
-    // Only paper 2 matches "seeg", and only paper 2 was tapped up. In-sample,
-    // its own tap would lift it; leave-one-out, nothing else taught "seeg".
-    const xs = [rated("1", 1, { h1: 60 }), rated("2", 1, { h1: 59, title: "SEEG mapping" })];
-    const r = evaluate(xs, [{ term: "seeg", weight: 0, source: "taps" }]);
+    // Only paper 2 matches "glia", and only paper 2 was tapped up. In-sample,
+    // its own tap would lift it; leave-one-out, nothing else taught "glia".
+    const xs = [rated("1", 1, { h1: 60 }), rated("2", 1, { h1: 59, title: "Glia mapping" })];
+    const r = evaluate(xs, [{ term: "glia", weight: 0, source: "manual" }]);
     expect(r.methods.p1.order).toEqual(["1", "2"]);
   });
 
   it("p1 does learn from the OTHER taps", () => {
     const xs = [
       rated("1", 1, { h1: 70 }),
-      rated("2", 1, { h1: 40, title: "SEEG one" }),
-      rated("3", 1, { h1: 40, title: "SEEG two" }),
+      rated("2", 1, { h1: 40, title: "Glia one" }),
+      rated("3", 1, { h1: 40, title: "Glia two" }),
       rated("4", -1, { h1: 41 }),
     ];
-    // Each SEEG paper gets +TAP_STEP from the other one's tap: 40 + 0.05*40 = 42 > 41.
-    const r = evaluate(xs, [{ term: "seeg", weight: 0.01, source: "taps" }]);
+    // Each glia paper gets +TAP_STEP from the other one's tap: 40 + 0.05*40 = 42 > 41.
+    // (The term is in the set at weight 0: present, but worth nothing by itself.)
+    const r = evaluate(xs, [{ term: "glia", weight: 0, source: "manual" }]);
     expect(40 + TAP_STEP * POINTS_PER_WEIGHT).toBeGreaterThan(41);
     expect(r.methods.p1.order.slice(0, 3)).toEqual(["1", "3", "2"]);
+  });
+
+  it("uses the stored matched_terms when a rating has them (what the tap really moved)", () => {
+    // Both glia papers were tapped before "glia" was an interest, so their
+    // stored matched_terms are empty and they taught nothing.
+    const xs = [
+      rated("1", 1, { h1: 70 }),
+      rated("2", 1, { h1: 40, title: "Glia one", matchedTerms: [] }),
+      rated("3", 1, { h1: 40, title: "Glia two", matchedTerms: [] }),
+      rated("4", -1, { h1: 41 }),
+    ];
+    expect(evaluate(xs, [{ term: "glia", weight: 0, source: "manual" }]).methods.p1.order).toEqual(["1", "4", "3", "2"]);
   });
 
   it("reports the gate: not enough ratings below 50", () => {
