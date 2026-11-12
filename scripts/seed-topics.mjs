@@ -29,6 +29,8 @@
  *     deep brain stimulation       37 ->  29
  *     spinocerebellar ataxia        4 ->   5
  *     neural engineering             —->  16
+ *     stem cells (2026-11-12)      464 -> 125    (608 with MeSH but no
+ *                                               nervous-system clause)
  * Field-tagging pays off enormously for broad words and barely at all for
  * specific ones, which is exactly what you would expect and worth knowing
  * before writing the next query.
@@ -127,6 +129,24 @@ const TOPICS = [
       'OR "Electrocorticography"[MeSH Terms]',
       'OR "Optogenetics"[MeSH Terms]',
       'OR "Neural Prostheses"[MeSH Terms])',
+    ].join(" "),
+  },
+  {
+    slug: "stem-cells",
+    name: "Stem cells",
+    kind: "clinical",
+    description: "Stem cells, iPSCs and organoids, aimed at the brain and nervous system.",
+    // Added 2026-11-12 at Kalp's request. Unrestricted, stem cells are a
+    // firehose: 464 papers in 7 days naive, 608 with the MeSH headings added.
+    // The nervous-system clause keeps it in Kalp's lane (neural repair, iPSC
+    // disease models, brain organoids) and cuts it to 125. A narrower
+    // therapy-only variant measured 61 but dropped the basic neural stem cell
+    // biology, so it was not chosen.
+    pubmed_query: [
+      '("Stem Cells"[MeSH Terms] OR "Induced Pluripotent Stem Cells"[MeSH Terms]',
+      'OR "stem cell*"[Title/Abstract] OR "organoid*"[Title/Abstract])',
+      'AND ("Nervous System"[MeSH Terms] OR "Nervous System Diseases"[MeSH Terms]',
+      'OR "neural"[Title/Abstract] OR "neuron*"[Title/Abstract] OR "brain"[Title/Abstract])',
     ].join(" "),
   },
 ];
