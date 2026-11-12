@@ -4,7 +4,9 @@
 #   2. once NEXT_PUBLIC_APP_SCHEMA is set, no `__APP__` placeholder may remain;
 #   3. every table created is followed (in some migration) by `enable row level security`;
 #   4. every `create policy` is granted `to authenticated` and keyed on `auth.uid()`:
-#      a policy for anon or public would open personal rows to the public anon key.
+#      a policy for anon or public would open personal rows to the public anon key;
+#   5. every `create policy X on T` is preceded by `drop policy if exists X on T`, so a
+#      migration can be re-applied (the Management API route has no migration ledger).
 # Exit 0 = clean. Runs in CI and in the "Apply the migrations" README step.
 # MIGRATIONS_DIR overrides the folder (lib/migrations.test.ts uses it on fixtures).
 set -euo pipefail
@@ -28,10 +30,19 @@ for t in $(printf '%s\n' "$all" | grep -oE 'create table if not exists [a-z_]+\.
   fi
 done
 
-# One policy per line: join lines, then split on `;`.
+# One statement per line: join lines, then split on `;`.
+dropped=" "
 while IFS= read -r stmt; do
   case "$stmt" in
+    *"drop policy if exists"*)
+      key="$(printf '%s' "$stmt" | sed -E 's/.*drop policy if exists ([a-z0-9_]+) on ([a-z0-9_.]+).*/\1 on \2/')"
+      dropped="$dropped|$key|" ;;
     *"create policy"*)
+      key="$(printf '%s' "$stmt" | sed -E 's/.*create policy ([a-z0-9_]+) on ([a-z0-9_.]+).*/\1 on \2/')"
+      case "$dropped" in
+        *"|$key|"*) ;;
+        *) echo "error: add 'drop policy if exists $key;' before 'create policy $key' so the migration can be re-run" >&2; status=1 ;;
+      esac
       if ! printf '%s' "$stmt" | grep -qE ' to authenticated ' || ! printf '%s' "$stmt" | grep -qF 'auth.uid()'; then
         echo "error: policy must be 'to authenticated' and keyed on auth.uid(): $(printf '%s' "$stmt" | sed 's/^ *//' | cut -c1-120)" >&2; status=1
       fi ;;

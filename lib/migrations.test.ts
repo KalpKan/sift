@@ -92,8 +92,41 @@ describe("scripts/check-migrations.sh", () => {
   it("passes an authenticated, auth.uid()-keyed policy", () => {
     const r = run({
       "0001_x.sql":
-        "create table if not exists sift.t (user_id uuid);\nalter table sift.t enable row level security;\ncreate policy p on sift.t for select to authenticated\n  using (user_id = (select auth.uid()));",
+        "create table if not exists sift.t (user_id uuid);\nalter table sift.t enable row level security;\ndrop policy if exists p on sift.t;\ncreate policy p on sift.t for select to authenticated\n  using (user_id = (select auth.uid()));",
     });
     expect(r.code, r.out).toBe(0);
+  });
+});
+
+describe("policies are re-runnable", () => {
+  const script = path.resolve(__dirname, "../scripts/check-migrations.sh");
+  function run(sql: string) {
+    const tmp = mkdtempSync(path.join(tmpdir(), "sift-mig-"));
+    writeFileSync(path.join(tmp, "0001_x.sql"), sql);
+    const r = spawnSync("bash", [script], { env: { ...process.env, MIGRATIONS_DIR: tmp }, encoding: "utf8" });
+    return { code: r.status ?? -1, out: `${r.stdout}${r.stderr}` };
+  }
+  const table = "create table if not exists sift.t (user_id uuid);\nalter table sift.t enable row level security;\n";
+  const policy = "create policy p on sift.t for select to authenticated\n  using (user_id = (select auth.uid()));\n";
+
+  it("check-migrations fails a create policy without a preceding drop policy if exists", () => {
+    const r = run(table + policy);
+    expect(r.code).toBe(1);
+    expect(r.out).toMatch(/drop policy if exists p on sift\.t/);
+  });
+
+  it("check-migrations passes when every create policy is preceded by its drop", () => {
+    const r = run(table + "drop policy if exists p on sift.t;\n" + policy);
+    expect(r.code, r.out).toBe(0);
+  });
+
+  it("every create policy in the real migrations has its drop policy if exists", () => {
+    const all = readdirSync(dir)
+      .filter((f) => f.endsWith(".sql"))
+      .map((f) => readFileSync(path.join(dir, f), "utf8").toLowerCase())
+      .join("\n");
+    for (const m of all.matchAll(/create policy (\w+) on (sift\.\w+)/g)) {
+      expect(all, m[0]).toContain(`drop policy if exists ${m[1]} on ${m[2]};`);
+    }
   });
 });

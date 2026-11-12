@@ -26,6 +26,10 @@
 --   a stranger who signs in to the shared project through another app cannot
 --   park rows in Sift's tables either. `(select auth.uid())` is the form the
 --   Supabase linter recommends: it is evaluated once per statement, not per row.
+--
+-- RE-RUNNABLE: every `create policy` is preceded by `drop policy if exists`
+-- (scripts/check-migrations.sh enforces it), and every table and index uses
+-- `if not exists`, so applying this file twice is a no-op.
 
 -- ---------------------------------------------------------------------------
 -- profiles
@@ -38,6 +42,7 @@ create table if not exists sift.profiles (
 
 alter table sift.profiles enable row level security;
 
+drop policy if exists profiles_select_own on sift.profiles;
 create policy profiles_select_own on sift.profiles
   for select to authenticated
   using (user_id = (select auth.uid()));
@@ -122,42 +127,58 @@ alter table sift.interests enable row level security;
 -- ---------------------------------------------------------------------------
 -- Policies for the four data tables: own rows only, and only for an owner.
 -- ---------------------------------------------------------------------------
+drop policy if exists follows_select_own on sift.follows;
 create policy follows_select_own on sift.follows for select to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));
+drop policy if exists follows_insert_own on sift.follows;
 create policy follows_insert_own on sift.follows for insert to authenticated
   with check (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));
+drop policy if exists follows_update_own on sift.follows;
 create policy follows_update_own on sift.follows for update to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())))
   with check (user_id = (select auth.uid()));
+drop policy if exists follows_delete_own on sift.follows;
 create policy follows_delete_own on sift.follows for delete to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));
 
+drop policy if exists ratings_select_own on sift.ratings;
 create policy ratings_select_own on sift.ratings for select to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));
+drop policy if exists ratings_insert_own on sift.ratings;
 create policy ratings_insert_own on sift.ratings for insert to authenticated
   with check (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));
+drop policy if exists ratings_update_own on sift.ratings;
 create policy ratings_update_own on sift.ratings for update to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())))
   with check (user_id = (select auth.uid()));
+drop policy if exists ratings_delete_own on sift.ratings;
 create policy ratings_delete_own on sift.ratings for delete to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));
 
+drop policy if exists opens_select_own on sift.opens;
 create policy opens_select_own on sift.opens for select to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));
+drop policy if exists opens_insert_own on sift.opens;
 create policy opens_insert_own on sift.opens for insert to authenticated
   with check (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));
+drop policy if exists opens_update_own on sift.opens;
 create policy opens_update_own on sift.opens for update to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())))
   with check (user_id = (select auth.uid()));
+drop policy if exists opens_delete_own on sift.opens;
 create policy opens_delete_own on sift.opens for delete to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));
 
+drop policy if exists interests_select_own on sift.interests;
 create policy interests_select_own on sift.interests for select to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));
+drop policy if exists interests_insert_own on sift.interests;
 create policy interests_insert_own on sift.interests for insert to authenticated
   with check (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));
+drop policy if exists interests_update_own on sift.interests;
 create policy interests_update_own on sift.interests for update to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())))
   with check (user_id = (select auth.uid()));
+drop policy if exists interests_delete_own on sift.interests;
 create policy interests_delete_own on sift.interests for delete to authenticated
   using (user_id = (select auth.uid()) and exists (select 1 from sift.profiles p where p.user_id = (select auth.uid())));

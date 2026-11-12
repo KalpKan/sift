@@ -98,3 +98,10 @@ describe("sift radar schema (0003)", () => {
     }
   });
 });
+
+describe("0004: ratings remember which terms a tap moved", () => {
+  const f4 = readFileSync(path.resolve(__dirname, "..", "supabase", "migrations", "0004_sift_rating_terms.sql"), "utf8").toLowerCase();
+  it("adds ratings.matched_terms, a non-null text array, idempotently", () => {
+    expect(f4).toMatch(/alter table sift\.ratings\s+add column if not exists matched_terms text\[\] not null default '\{\}'/);
+  });
+});
