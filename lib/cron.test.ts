@@ -73,3 +73,27 @@ describe("vercel.json", () => {
     expect(cfg.crons).toEqual([{ path: "/api/refresh", schedule: expect.stringMatching(/^\d{1,2} \d{1,2} \* \* \*$/) }]);
   });
 });
+
+describe("vercel.json ignoreCommand", () => {
+  // Exit 0 = skip the build, exit 1 = build. Anything else is a FAILED deploy
+  // (seen 2026-11-12: a shallow clone without the previous SHA made git exit 128).
+  async function run(prev: string | undefined) {
+    const { readFileSync } = await import("node:fs");
+    const { spawnSync } = await import("node:child_process");
+    const path = await import("node:path");
+    const root = path.resolve(__dirname, "..");
+    const cmd = JSON.parse(readFileSync(path.join(root, "vercel.json"), "utf8")).ignoreCommand;
+    const env: NodeJS.ProcessEnv = { ...process.env };
+    if (prev === undefined) delete env.VERCEL_GIT_PREVIOUS_SHA;
+    else env.VERCEL_GIT_PREVIOUS_SHA = prev;
+    return spawnSync("sh", ["-c", cmd], { cwd: root, env, encoding: "utf8" }).status;
+  }
+
+  it("builds (exit 1), never errors, when the previous SHA is not in the clone", async () => {
+    expect(await run("0123456789abcdef0123456789abcdef01234567")).toBe(1);
+  });
+
+  it("skips (exit 0) when nothing outside docs/scripts/ios/*.md changed since the previous SHA", async () => {
+    expect(await run("HEAD")).toBe(0);
+  });
+});
