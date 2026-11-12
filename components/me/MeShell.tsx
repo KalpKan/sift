@@ -18,7 +18,9 @@ export default function MeShell({
 }) {
   const link = "underline decoration-rule underline-offset-4 hover:decoration-rule-strong";
   return (
-    <div className="flex min-h-full flex-1 flex-col">
+    // ph-no-capture: PostHog's autocapture and its replay recorder both skip
+    // this subtree (lib/posthog-privacy.ts is the other two layers).
+    <div className="ph-no-capture flex min-h-full flex-1 flex-col">
       <main className="mx-auto w-full max-w-2xl flex-1 px-5 py-16 sm:px-8 sm:py-24">
         <nav className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-xs tracking-wide text-ink-faint">
           <Link href="/" className={link}>

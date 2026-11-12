@@ -9,7 +9,8 @@ export const metadata: Metadata = { title: "Sign in — Sift", robots: { index: 
 export default async function SignInPage({ searchParams }: PageProps<"/sign-in">) {
   const { error } = await searchParams;
   return (
-    <div className="flex min-h-full flex-1 flex-col">
+    // ph-no-capture: never autocaptured or replayed (lib/posthog-privacy.ts).
+    <div className="ph-no-capture flex min-h-full flex-1 flex-col">
       <main className="mx-auto w-full max-w-2xl flex-1 px-5 py-16 sm:px-8 sm:py-24">
         <p className="text-xs tracking-wide text-ink-faint">
           <Link href="/" className="underline decoration-rule underline-offset-4 hover:decoration-rule-strong">

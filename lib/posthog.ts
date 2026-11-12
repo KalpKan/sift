@@ -1,5 +1,6 @@
 import posthog from "posthog-js";
 import type { PostHogConfig } from "posthog-js";
+import { isPrivatePath, privacyBeforeSend, syncRecording } from "./posthog-privacy";
 
 /**
  * The analytics contract every app on kalpkan.com follows (docs/analytics.md).
@@ -9,6 +10,8 @@ import type { PostHogConfig } from "posthog-js";
  * - First-party: `api_host: "/ingest"` is rewritten by Next.js to PostHog's
  *   US ingest hosts (see `posthogRewrites`), which ad blockers do not catch.
  * - Autocapture on, pageviews on, session replay on with every input masked.
+ * - EXCEPT on the private radar (/me, /sign-in, /auth): lib/posthog-privacy.ts
+ *   drops every event there but the radar's own two, and replay is off there.
  */
 export const POSTHOG_INIT_OPTIONS = {
   api_host: "/ingest",
@@ -32,10 +35,21 @@ let initialised = false;
 export function initPostHog(key: string | undefined = process.env.NEXT_PUBLIC_POSTHOG_KEY): void {
   if (initialised || !key || typeof window === "undefined") return;
   initialised = true;
+  const here = window.location.pathname;
   posthog.init(key, {
     ...POSTHOG_INIT_OPTIONS,
     api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || POSTHOG_INIT_OPTIONS.api_host,
+    before_send: (result) => privacyBeforeSend(result, window.location.pathname),
+    // Never start the recorder on a private page; syncPrivacy starts it on leaving.
+    disable_session_recording: isPrivatePath(here),
   });
+  syncPrivacy(here);
+}
+
+/** Call on every client-side navigation (components/PostHogProvider.tsx). */
+export function syncPrivacy(pathname: string): void {
+  if (!initialised) return;
+  syncRecording(posthog, pathname);
 }
 
 /**

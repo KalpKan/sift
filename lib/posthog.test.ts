@@ -1,7 +1,18 @@
 import { describe, it, expect, vi } from "vitest";
 
+const seen = vi.hoisted(() => ({ opts: null as null | Record<string, unknown> }));
+
 vi.mock("posthog-js", () => ({
-  default: { init: vi.fn(), capture: vi.fn(), __loaded: false },
+  default: {
+    init: vi.fn((_key: string, opts: Record<string, unknown>) => {
+      seen.opts = opts;
+    }),
+    capture: vi.fn(),
+    __loaded: false,
+    sessionRecordingStarted: vi.fn(() => true),
+    stopSessionRecording: vi.fn(),
+    startSessionRecording: vi.fn(),
+  },
 }));
 
 import posthog from "posthog-js";
@@ -10,6 +21,7 @@ import {
   posthogRewrites,
   capture,
   initPostHog,
+  syncPrivacy,
 } from "./posthog";
 
 describe("POSTHOG_INIT_OPTIONS (the analytics contract)", () => {
@@ -71,3 +83,23 @@ describe("capture / initPostHog without a key", () => {
     );
   });
 });
+
+describe("the private-radar guard is wired into init", () => {
+  type InitOpts = { before_send: (r: unknown) => unknown; disable_session_recording: boolean };
+  const opts = () => seen.opts as unknown as InitOpts;
+
+  it("passes before_send, which drops autocapture whenever the page is private", () => {
+    const send = opts().before_send;
+    const auto = { event: "$autocapture", properties: { $el_text: "Delete dbs (from Obsidian)" } };
+    window.history.pushState({}, "", "/me/settings");
+    expect(send(auto)).toBeNull();
+    window.history.pushState({}, "", "/");
+    expect(send(auto)).toBe(auto);
+  });
+
+  it("syncPrivacy stops the recorder on a private path", () => {
+    syncPrivacy("/me");
+    expect(posthog.stopSessionRecording).toHaveBeenCalled();
+  });
+});
+

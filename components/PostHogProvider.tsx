@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 /**
@@ -12,6 +13,15 @@ import { useEffect } from "react";
  * the page). `lib/track.ts` is the matching lazy path for custom events.
  */
 export default function PostHogProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  // Client-side navigation does not reload the page, so the recorder that
+  // started on / would keep recording /me. Re-check privacy on every path
+  // change (lib/posthog-privacy.ts). A no-op until PostHog has booted.
+  useEffect(() => {
+    import("@/lib/posthog").then((m) => m.syncPrivacy(pathname ?? window.location.pathname));
+  }, [pathname]);
+
   useEffect(() => {
     let cancelled = false;
     const boot = () => {
