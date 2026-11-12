@@ -636,6 +636,25 @@ OAuth through `ASWebAuthenticationSession` and a `sift://auth-callback` redirect
 access token as a bearer. The server verifies the JWT, then checks `sift.profiles` for the
 owner row.
 
+**8.6 As built (2026-11-12), where it differs from the above.**
+- **`profiles` is select-only under RLS.** A self-insert policy would let any Google account on
+  the shared Project B make itself an owner; the owner row is written with the service role, only
+  for a confirmed email in `SIFT_OWNER_EMAILS`. The four data tables' policies also require an
+  owner row, so a stranger signed in through another app cannot park rows in Sift's tables.
+- **`/api/me/*` reads and writes with the service role and filters on the verified user id.**
+  RLS is the guard for direct PostgREST access with the anon key or a user JWT; the routes are
+  guarded by `lib/access.ts` (401/403). Papers and topics have no policies, so a user-scoped
+  client could not read them.
+- **No MeSH.** esummary carries no MeSH terms, so `p1` matches interest terms in the title and
+  journal only, and a tap nudges only the interest terms that matched (no new terms from taps).
+- **`interests` is keyed (user, term, source)**, so Obsidian, taps and hand-typed weights are
+  separate rows summed at ranking time; the bridge never touches taps or manual rows.
+- **Candidates are each followed topic's latest refresh** (ranked within 36 h of that topic's
+  newest `ranked_at`), because `topic_papers` is never pruned.
+- **`/api/me/follows`** (GET/PUT) was added for the settings page.
+- **The eval's `p1` learns from taps leave-one-out**, so a paper's own tap never helps rank it.
+- **Cron:** `GET /api/refresh` at `0 9 * * *` UTC (the existing `POST ?topic=` path is kept).
+
 ---
 
 ## Appendix: the measurements

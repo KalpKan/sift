@@ -39,7 +39,14 @@ fails. Read that before trusting it.
 | Web | `app/page.tsx`, `app/t/[slug]/page.tsx` | A journal's table of contents, not a dashboard. |
 | Schema | `supabase/migrations/0002_sift_core.sql` | `topics`, `papers`, `topic_papers`, `refresh_runs`. RLS on everywhere, **no policies at all**. |
 | Fixtures | `tests/fixtures/pubmed/`, `scripts/capture-fixtures.mjs` | Real recorded NCBI responses. **No test touches the network.** |
-| Evaluation | `docs/eval/` | 53 real papers for Kalp to label, so the ranker can be scored against something other than its own tests. |
+| Evaluation | `docs/eval/` | 53 real papers for Kalp to label, so the ranker can be scored against something other than its own tests. (Superseded 2026-11-12 by taps + `npm run eval`.) |
+| **Personal ranker `p1`** | `lib/personal.ts` | `h1` + capped boosts for Kalp's interest terms, minus mutes; the merged feed across followed topics; tap learning. Pure. |
+| Private API | `lib/me-api.ts`, `lib/access.ts`, `lib/radar-store.ts`, `app/api/me/*` | `/api/me/{feed,rate,open,interests,follows}`. 401 signed out, 403 non-owner. Cookie session or `Authorization: Bearer <supabase access token>`. |
+| Private pages | `app/me/page.tsx`, `app/me/settings/page.tsx`, `app/sign-in`, `app/auth/*`, `proxy.ts` | Google sign-in (Supabase Project B's shared `auth.users`), the radar, settings. |
+| Radar schema | `supabase/migrations/0003_sift_radar.sql` | `profiles`, `follows`, `ratings`, `opens`, `interests`. Owner-only RLS on `auth.uid()`, no anon policies. |
+| Daily cron | `vercel.json`, `lib/cron.ts` | `GET /api/refresh` at 09:00 UTC refreshes every topic. |
+| Eval | `lib/eval.ts`, `scripts/eval.ts` | `npm run eval`: precision@3/@10 for p1, h1 and newest-first on the papers Kalp rated. |
+| Obsidian bridge | `scripts/obsidian-interests.mjs` | Mac-only; `[[research]]` tag names → interest terms. Dry run by default. Contract: `docs/obsidian-bridge.md`. |
 
 ## The API
 
@@ -47,7 +54,18 @@ fails. Read that before trusting it.
 GET  /api/feed?topic=<slug>&limit=10   -> { topic, id, name, query, updatedAt, papers: [...] }
 GET  /api/topics                       -> { topics: [{ slug, name, description, kind, source }] }
 POST /api/refresh?topic=<slug>         -> forces a refresh. Bearer SIFT_REFRESH_TOKEN.
+GET  /api/refresh                      -> the daily cron: refreshes every topic. Bearer CRON_SECRET.
 GET  /api/health                       -> { ok, service, db, time }   (unchanged platform contract)
+
+Private (owner only; 401 signed out, 403 signed in as anyone else; never cached):
+GET    /api/me/feed?limit=10           -> same envelope as /api/feed; each paper adds
+                                          shownRank, recencyRank, rankerVersion, topic, verdict
+POST   /api/me/rate   {pmid, verdict: 1|-1, surface, shownRank, recencyRank, rankerVersion, topic?}
+POST   /api/me/open   {pmid, surface: web|ios|widget}
+GET    /api/me/interests               -> { interests: [{term, weight, source}], combined }
+DELETE /api/me/interests?term=&source=
+GET    /api/me/follows                 -> { topics: [{slug, name, followed}] }
+PUT    /api/me/follows {slugs: [...]}
 ```
 
 `/api/feed` serves from Postgres and only calls PubMed when the topic's newest ranking is more
@@ -69,11 +87,18 @@ rather than being an open endpoint anyone can use to hammer NCBI from our IP.
 
 ## Security model
 
-Every `sift` table has row level security enabled and **no policies**. That is the whole story:
-an RLS-enabled table with no permissive policy returns zero rows to `anon`, so the public anon
-key (still used by `/api/health`) can read nothing. All access is server-side with
-`SUPABASE_SERVICE_ROLE_KEY`, which bypasses RLS. `lib/schema.test.ts` asserts that no policy
-exists, so adding one has to be deliberate.
+The four public-content tables (`topics`, `papers`, `topic_papers`, `refresh_runs`) have row
+level security enabled and **no policies**: an RLS-enabled table with no permissive policy returns
+zero rows to `anon`, so the public anon key (still used by `/api/health`) can read nothing. All
+access to them is server-side with `SUPABASE_SERVICE_ROLE_KEY`, which bypasses RLS.
+`lib/schema.test.ts` asserts that no policy ever touches them.
+
+The five private radar tables (0003) are the opposite: policies `to authenticated` keyed on
+`user_id = auth.uid()` and gated on an owner row, no anon policy, and `profiles` is select-only so
+nobody can make themselves an owner. Owners are created server-side, only for a confirmed email in
+`SIFT_OWNER_EMAILS`. `scripts/check-migrations.sh` fails any table without RLS and any policy that
+is not `to authenticated` + `auth.uid()`. `lib/public-pages.test.ts` fails the build if `/` or
+`/t/<slug>` can reach a private module or render an interest or rating.
 
 ## How to run it
 
@@ -82,7 +107,8 @@ Node 22.
 ```bash
 npm install
 npm run dev     # http://localhost:3000
-npm test        # 216 tests, no network
+npm test        # 331 tests, no network
+npm run eval    # needs .env.local; reads ratings, prints the gate
 npm run lint
 npm run build
 bash scripts/check-migrations.sh
@@ -116,14 +142,16 @@ node scripts/capture-fixtures.mjs
 | `NEXT_PUBLIC_POSTHOG_KEY` / `_HOST` | Analytics; leave empty to run with it off |
 | `SUPABASE_SERVICE_ROLE_KEY` | **Server-only.** Bypasses RLS. Never import `lib/supabase-admin.ts` from a client component. |
 | `SIFT_REFRESH_TOKEN` | **Server-only.** Bearer token for `POST /api/refresh`. Unset = route disabled. |
+| `SIFT_OWNER_EMAILS` | **Server-only.** Comma-separated Google emails allowed to own the radar. Unset = nobody. |
+| `CRON_SECRET` | **Server-only, Production.** Vercel sends it to the daily cron. Unset = cron disabled. |
 
 Names only ever appear here and in `.env.example`; values live in Vercel and `.env.local`
 (gitignored).
 
 ## Analytics
 
-One event, `paper_opened({ topic, rank })`. It is the only observation that says the ranking did
-its job, and `rank` makes "are the top three actually the ones people open?" answerable.
+`paper_opened({ topic, rank })` from the public feeds. From the private radar, `paper_opened({ pmid })`
+and `paper_rated({ pmid, verdict })` only: no title, topic or interest term ever goes to analytics.
 
 There is deliberately no "paper seen" event. WidgetKit has no impression, visibility or
 on-screen callback of any kind (`docs/widget-constraints.md` #2), so any view count would be

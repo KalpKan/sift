@@ -1,6 +1,6 @@
 # Sift — pick up here
 
-*Last updated 2026-11-12. `docs/spec.md` (last section) says what v2 is, `docs/plan.md` §8
+*Last updated 2026-11-12 (evening, after Phases 2 and 3). `docs/spec.md` (last section) says what v2 is, `docs/plan.md` §8
 how it fits, `docs/obsidian-bridge.md` the privacy rules. This file is only "what is true right
 now and what to do next". The build plan approved by Kalp is
 `~/.claude/plans/i-need-a-place-fluttering-eagle.md`.*
@@ -12,25 +12,56 @@ interfaces, neural engineering, deep brain stimulation and stem cells, on the we
 on his iPhone (app + widget), ranked for him and learning from his 👍/👎 taps and from his
 `[[research]]`-tagged Obsidian notes. Public pages stay as the generic case study.
 
-## What is true right now
+## What is true right now (2026-11-12, after Phases 2 and 3)
 
-- **Live:** https://sift.kalpkan.com — `/`, `/t/<slug>`, `/api/feed`, `/api/topics`,
-  `/api/refresh`, `/api/health`. Health green, UptimeRobot `804044195`.
-- **Database:** Supabase Project B (`yzppfufqaekgaxcrsqxp`), schema `sift`: `topics`, `papers`,
-  `topic_papers`, `refresh_runs`. RLS on, no policies.
-- **iOS:** simulator only until Kalp buys the Apple Developer Program (STATUS.md H3).
+- **Live:** https://sift.kalpkan.com — public `/`, `/t/<slug>`, `/api/feed`, `/api/topics`,
+  `/api/refresh` (POST per topic with `SIFT_REFRESH_TOKEN`; GET = daily cron with `CRON_SECRET`),
+  `/api/health`; private `/me`, `/me/settings`, `/sign-in`, `/auth/callback`, `/auth/sign-out`,
+  `/api/me/{feed,rate,open,interests,follows}`. Health green, UptimeRobot `804044195`.
+- **Deploys:** the Vercel project is connected to `KalpKan/sift` since 2026-11-12, so a push to
+  `main` deploys (the `ignoreCommand` in `vercel.json` skips docs/scripts/iOS-only pushes).
+- **Database:** Supabase Project B (`yzppfufqaekgaxcrsqxp`), schema `sift`. Public tables
+  `topics`, `papers`, `topic_papers`, `refresh_runs` (RLS, no policies). Private radar tables
+  `profiles`, `follows`, `ratings`, `opens`, `interests` (0003; owner-only RLS on `auth.uid()`).
+  **No owner row exists yet**: it is created on Kalp's first sign-in.
+- **Sign-in is blocked on STATUS.md H6:** Project B's Google provider is off and needs Kalp's
+  Google OAuth client ID + secret. The redirect allow-list already has
+  `https://sift.kalpkan.com/auth/callback` and `sift://auth-callback`.
+- **Cron:** `0 9 * * *` UTC on `GET /api/refresh`, registered. A manual run on 2026-11-12
+  refreshed all six topics with no errors.
+- **Obsidian bridge:** built and dry-run against the real vault (27 terms). **Not pushed** until
+  Kalp has read the dry run (H7). The term list is never committed (public repo).
+- **iOS:** unchanged; simulator only until H3.
 
-## Build order (each phase: build → reviewer → verifier)
+## Next steps
 
-1. **Phase 1 — topics.** Add `stem-cells` to `scripts/seed-topics.mjs`, measured with `--dry-run`.
-2. **Phase 2 — accounts, ratings, personal ranker.** Migration `0003_sift_radar.sql`, Google
-   sign-in, `lib/personal.ts` (`p1`), `/api/me/*`, `/me`, `/me/settings`, daily cron,
-   `npm run eval`. Deploy when green.
-3. **Phase 3 — Obsidian bridge.** `scripts/obsidian-interests.mjs`; show Kalp the dry run before
-   the first `--push`.
-4. **Phase 4 — iOS.** The last wire (`FeedModel` → `SiftAPI` → `SharedStore` → widget reload,
-   samples as the failure path; keep `SiftAPI.decoder()`'s two ISO 8601 shapes), Google sign-in,
-   👍/👎, personal widget. Device install after H3.
+1. **After H6** (Kalp enables Google on Project B): sign in at `/me` with an allowed email,
+   confirm a `sift.profiles` row and four `sift.follows` rows, tap 👍/👎 on 5 papers, confirm 5
+   `sift.ratings` rows with `shown_rank` and `ranker_version = 'p1'`, run `npm run eval` (n=5).
+   Also check a second, non-owner Google account gets the "Private" page and `403` from
+   `/api/me/feed`.
+2. **After H7:** `env -u NODE_OPTIONS node --env-file=.env.local scripts/obsidian-interests.mjs --push`,
+   then `curl` `/` and every `/t/<slug>` and confirm none of the pushed terms appear.
+3. **Reviewer + verifier pass on Phases 2 and 3** (the plan requires it; not yet run).
+4. **Phase 4 (iOS):** the last wire, `supabase-swift` Google sign-in with `sift://auth-callback`,
+   bearer token to `/api/me/*`, 👍/👎, widget = personal top 3. Note for Phase 4: the app's
+   `FeedRanking.rank` re-sorts by quality + recency; for `/api/me/feed` it should keep the
+   server's order (`shownRank`), or the shown rank stored with each tap will not match what was
+   on screen.
+5. Watch the cron: one `refresh_runs` row per topic per day for three days.
+
+## How the private pieces fit (files)
+
+- `lib/personal.ts`: `p1` = h1 + capped interest boosts (+40 max), mutes (−40 max), merged feed,
+  48-hour rule, tap learning (±0.05 per matched term). MeSH is not in esummary, so terms match
+  title + journal only.
+- `lib/access.ts`: owner allow-list (`SIFT_OWNER_EMAILS`), 401/403 resolution, bearer parsing.
+- `lib/me-api.ts`: every `/api/me/*` handler as a pure `(Request, ctx) => Response`, tested
+  against an in-memory store; `lib/radar-store.ts` is the Supabase store, `lib/me-context.ts`
+  wires them, `lib/auth-server.ts` reads the cookie session or bearer token.
+- `lib/eval.ts` + `scripts/eval.ts`: `npm run eval`.
+- `lib/cron.ts`: the daily refresh of every topic.
+- `scripts/obsidian-interests.mjs`: the bridge; contract `docs/obsidian-bridge.md`.
 
 ## Exact commands
 
@@ -41,6 +72,8 @@ alias node='env -u NODE_OPTIONS node'; alias npm='env -u NODE_OPTIONS npm'   # c
 set -a; source ~/.config/portfolio-ops/secrets.env; set +a
 
 npm test && npm run lint && npm run build && bash scripts/check-migrations.sh
+npm run eval                                         # needs .env.local
+node scripts/obsidian-interests.mjs                  # dry run, sends nothing
 xcodebuild -project ios/Sift.xcodeproj -scheme Sift \
   -destination 'id=10A042A7-D499-4613-91D1-A52B6A9A3E10' \
   -derivedDataPath /tmp/siftdd test CODE_SIGNING_ALLOWED=NO
