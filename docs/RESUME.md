@@ -31,6 +31,10 @@ on his iPhone (app + widget), ranked for him and learning from his 👍/👎 tap
   refreshed all six topics with no errors.
 - **Obsidian bridge:** built and dry-run against the real vault (27 terms). **Not pushed** until
   Kalp has read the dry run (H7). The term list is never committed (public repo).
+- **Taps:** each rating row stores the terms its first tap matched (`ratings.matched_terms`,
+  migration 0004); tap weights are derived from those rows at read time, never stored.
+- **Analytics on private pages:** none except `paper_opened {pmid}` / `paper_rated {pmid, verdict}`
+  (`lib/posthog-privacy.ts`); no replay, no autocapture on `/me`, `/sign-in`, `/auth`.
 - **iOS:** unchanged; simulator only until H3.
 
 ## Next steps
@@ -44,10 +48,12 @@ on his iPhone (app + widget), ranked for him and learning from his 👍/👎 tap
    then `curl` `/` and every `/t/<slug>` and confirm none of the pushed terms appear.
 3. **Reviewer + verifier pass on Phases 2 and 3** (the plan requires it; not yet run).
 4. **Phase 4 (iOS):** the last wire, `supabase-swift` Google sign-in with `sift://auth-callback`,
-   bearer token to `/api/me/*`, 👍/👎, widget = personal top 3. Note for Phase 4: the app's
-   `FeedRanking.rank` re-sorts by quality + recency; for `/api/me/feed` it should keep the
-   server's order (`shownRank`), or the shown rank stored with each tap will not match what was
-   on screen.
+   bearer token to `/api/me/*`, 👍/👎, widget = personal top 3. Note for Phase 4: `/api/me/feed`
+   now puts p1 (0..1, `P1_SCALE`) in `score` (h1 is in `h1` / `h1Quality`), but the app's
+   `FeedRanking.rank` still blends in its own recency, and the 48-hour rule can lift a paper above
+   a higher score. **The app must show the radar in server order (`shownRank`) and send
+   `shownRank` exactly as given** with each 👍/👎, or the eval's record of what was on screen is
+   wrong (`SiftApp.swift:33`, `SiftWidget.swift:61` sort today).
 5. Watch the cron: one `refresh_runs` row per topic per day for three days.
 
 ## How the private pieces fit (files)
