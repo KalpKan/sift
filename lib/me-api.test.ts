@@ -65,7 +65,12 @@ function memoryRadar(seed: { owners?: string[]; byTopic?: Record<string, StoredP
     async getPaper(pmid) { const p = allPapers.get(pmid); return p ? { pmid, title: p.title, journal: p.journal } : null; },
     async getRatings(id) {
       return new Map(
-        [...ratings.values()].filter((r) => r.userId === id).map((r) => [r.pmid, { verdict: r.verdict, matchedTerms: r.matchedTerms }]),
+        [...ratings.values()]
+          .filter((r) => r.userId === id)
+          .map((r) => {
+            const p = allPapers.get(r.pmid);
+            return [r.pmid, { verdict: r.verdict, matchedTerms: r.matchedTerms, title: p?.title ?? "", journal: p?.journal ?? null }];
+          }),
       );
     },
     async upsertRating(row, { keepMatchedTerms }) {
@@ -269,6 +274,16 @@ describe("POST /api/me/rate", () => {
     expect(r.ratings.get("u-kalp:201")).toMatchObject({ verdict: -1, matchedTerms: ["bci"] });
     expect(await tapWeight(r, "bci")).toBe(-TAP_STEP);
     expect(await tapWeight(r, "glia")).toBe(0);
+  });
+
+  it("a stored rating with matched_terms = null is recomputed: in the feed, and written on the next tap", async () => {
+    const r = memoryRadar({ owners: ["u-kalp"], byTopic });
+    r.seedInterests("u-kalp", "obsidian", [{ term: "bci", weight: 0.4 }]);
+    r.ratings.set("u-kalp:201", { ...(body as unknown as RatingRow), userId: "u-kalp", topicId: "t2", verdict: 1, matchedTerms: null });
+    expect(await tapWeight(r, "bci")).toBe(TAP_STEP);
+    await rate(r, { ...body, verdict: -1 });
+    expect(r.ratings.get("u-kalp:201")).toMatchObject({ verdict: -1, matchedTerms: ["bci"] });
+    expect(await tapWeight(r, "bci")).toBe(-TAP_STEP);
   });
 
   it("concurrent taps on different papers both count (nothing is read-modify-written)", async () => {

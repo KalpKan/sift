@@ -54,6 +54,7 @@ async function main() {
         journal: p.journal,
         h1: h1.get(r.pmid) ?? 0,
         publishedMs: ms(p.published_on) || ms(p.first_seen_at),
+        // null = not computed: lib/eval.ts recomputes it from the title.
         matchedTerms: r.matched_terms ?? undefined,
       };
     });

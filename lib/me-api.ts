@@ -41,8 +41,8 @@ export type RatingRow = {
   recencyRank: number;
   rankerVersion: string;
   surface: Surface;
-  /** The interest terms the FIRST tap matched; kept on every re-tap (migration 0004). */
-  matchedTerms: string[];
+  /** The interest terms the FIRST tap matched; kept on every re-tap (0004). Null = not computed (0005). */
+  matchedTerms: string[] | null;
 };
 
 export interface RadarStore {
@@ -60,8 +60,8 @@ export interface RadarStore {
   /** Returns how many rows were deleted. */
   deleteInterest(userId: string, term: string, source: InterestSource): Promise<number>;
   getPaper(pmid: string): Promise<{ pmid: string; title: string; journal: string | null } | null>;
-  /** pmid -> { verdict, matchedTerms }, for this user. */
-  getRatings(userId: string): Promise<Map<string, TapRating>>;
+  /** pmid -> the rating, with its paper's title and journal so a null matchedTerms can be recomputed. */
+  getRatings(userId: string): Promise<Map<string, StoredRating>>;
   /**
    * One atomic upsert per (user, pmid). With keepMatchedTerms the stored
    * matched_terms are left as the first tap wrote them.
@@ -71,6 +71,20 @@ export interface RadarStore {
 }
 
 export type MeContext = { radar: RadarStore; viewer: ViewerDeps; now: Date };
+
+/** A rating as stored: matchedTerms null means "not computed yet" (migration 0005). */
+export type StoredRating = {
+  verdict: Verdict;
+  matchedTerms: readonly string[] | null;
+  title: string;
+  journal: string | null;
+};
+
+/** The taps p1 learns from: stored matched terms, or recomputed ones where none were stored. */
+export function tapRatings(ratings: Iterable<StoredRating>, rows: readonly InterestRow[]): TapRating[] {
+  const universe = rows.filter((r) => r.source !== "taps").map((r) => r.term);
+  return [...ratings].map((r) => ({ verdict: r.verdict, matchedTerms: r.matchedTerms ?? matchTerms(r, universe) }));
+}
 
 // ---------------------------------------------------------------------------
 // Wire format
@@ -175,7 +189,7 @@ export async function buildMeFeed(
   ]);
   const followed = topics.filter((t) => followIds.includes(t.id));
   const candidates = followed.length ? await radar.readCandidates(followed, now) : [];
-  const ranked = rankPersonal(candidates, radarInterests(interests, [...ratings.values()]), { now, limit });
+  const ranked = rankPersonal(candidates, radarInterests(interests, tapRatings(ratings.values(), interests)), { now, limit });
   const kinds = new Map(followed.map((t) => [t.slug, t.kind]));
 
   const newest = candidates.map((c) => c.paper.rankedAt).sort().at(-1);
@@ -249,9 +263,8 @@ export async function handleRate(request: Request, ctx: MeContext): Promise<Resp
   // the WHOLE Obsidian/manual term set (a term whose weight has reached 0 must
   // still be learnable), never from anything the client says. A re-tap keeps
   // the first tap's terms, so flipping a verdict undoes exactly that tap.
-  const matched = previous
-    ? [...previous.matchedTerms]
-    : matchTerms(paper, interests.filter((i) => i.source !== "taps").map((i) => i.term));
+  const stored = previous?.matchedTerms ?? null;
+  const matched = stored ? [...stored] : matchTerms(paper, interests.filter((i) => i.source !== "taps").map((i) => i.term));
 
   await ctx.radar.upsertRating(
     {
@@ -265,7 +278,8 @@ export async function handleRate(request: Request, ctx: MeContext): Promise<Resp
       surface: body.surface,
       matchedTerms: matched,
     },
-    { keepMatchedTerms: previous !== null },
+    // Keep what the first tap stored; write it when nothing was stored (null).
+    { keepMatchedTerms: stored !== null },
   );
   return json({ ok: true, pmid: body.pmid, verdict: body.verdict, nudged: matched });
 }
@@ -311,7 +325,7 @@ export async function handleInterests(request: Request, ctx: MeContext): Promise
   }
 
   const [rows, ratings] = await Promise.all([ctx.radar.listInterests(userId), ctx.radar.getRatings(userId)]);
-  const all = radarInterests(rows, [...ratings.values()]);
+  const all = radarInterests(rows, tapRatings(ratings.values(), rows));
   return json({
     interests: [...all].sort((a, b) => a.term.localeCompare(b.term) || a.source.localeCompare(b.source)),
     combined: combineInterests(all),

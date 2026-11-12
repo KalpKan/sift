@@ -105,3 +105,13 @@ describe("0004: ratings remember which terms a tap moved", () => {
     expect(f4).toMatch(/alter table sift\.ratings\s+add column if not exists matched_terms text\[\] not null default '\{\}'/);
   });
 });
+
+describe("0005: matched_terms may be null (= not computed, recompute)", () => {
+  const f5 = readFileSync(path.resolve(__dirname, "..", "supabase", "migrations", "0005_sift_matched_terms_nullable.sql"), "utf8")
+    .toLowerCase()
+    .replace(/--.*$/gm, "");
+  it("drops the not-null and the '{}' default, idempotently", () => {
+    expect(f5).toMatch(/alter table sift\.ratings\s+alter column matched_terms drop not null/);
+    expect(f5).toMatch(/alter table sift\.ratings\s+alter column matched_terms drop default/);
+  });
+});

@@ -156,7 +156,7 @@ export type Database = {
       ratings: {
         Row: {
           created_at: string
-          matched_terms: string[]
+          matched_terms: string[] | null
           pmid: string
           ranker_version: string
           recency_rank: number
@@ -169,7 +169,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          matched_terms?: string[]
+          matched_terms?: string[] | null
           pmid: string
           ranker_version: string
           recency_rank: number
@@ -182,7 +182,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          matched_terms?: string[]
+          matched_terms?: string[] | null
           pmid?: string
           ranker_version?: string
           recency_rank?: number

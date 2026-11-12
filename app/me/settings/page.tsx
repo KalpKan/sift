@@ -4,6 +4,7 @@ import FollowsForm from "@/components/me/FollowsForm";
 import InterestList from "@/components/me/InterestList";
 import MeShell from "@/components/me/MeShell";
 import { getMeContext, pageViewer } from "@/lib/me-context";
+import { tapRatings } from "@/lib/me-api";
 import { radarInterests } from "@/lib/personal";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +25,7 @@ export default async function SettingsPage() {
     ctx.radar.getRatings(userId),
   ]);
   const followed = new Set(follows);
-  const sorted = radarInterests(rows, [...ratings.values()]).sort((a, b) => b.weight - a.weight || a.term.localeCompare(b.term));
+  const sorted = radarInterests(rows, tapRatings(ratings.values(), rows)).sort((a, b) => b.weight - a.weight || a.term.localeCompare(b.term));
 
   return (
     <MeShell title="Settings" current="settings" subtitle={viewer.user.email ?? undefined}>

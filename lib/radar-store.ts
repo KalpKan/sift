@@ -140,10 +140,16 @@ export function createRadarStore(client: AdminSupabaseClient): RadarStore {
     },
 
     async getRatings(userId) {
-      const { data, error } = await client.from("ratings").select("pmid, verdict, matched_terms").eq("user_id", userId);
+      const { data, error } = await client
+        .from("ratings")
+        .select("pmid, verdict, matched_terms, papers!inner(title, journal)")
+        .eq("user_id", userId);
       fail("getRatings", error);
       return new Map(
-        (data ?? []).map((r) => [r.pmid, { verdict: r.verdict as Verdict, matchedTerms: r.matched_terms ?? [] }]),
+        (data ?? []).map((r) => {
+          const p = r.papers as unknown as { title: string; journal: string | null };
+          return [r.pmid, { verdict: r.verdict as Verdict, matchedTerms: r.matched_terms ?? null, title: p.title, journal: p.journal }];
+        }),
       );
     },
 
