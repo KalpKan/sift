@@ -10,8 +10,8 @@ import {
   type ViewerDeps,
 } from "./access";
 
-const kalp: AuthUser = { id: "u-kalp", email: "Owner.One@example.com", emailConfirmed: true, providers: ["google"] };
-const stranger: AuthUser = { id: "u-x", email: "someone@example.com", emailConfirmed: true, providers: ["google"] };
+const kalp: AuthUser = { id: "u-kalp", email: "Owner.One@example.com", emailConfirmed: true, providers: ["google"], amr: ["oauth"] };
+const stranger: AuthUser = { id: "u-x", email: "someone@example.com", emailConfirmed: true, providers: ["google"], amr: ["oauth"] };
 
 function deps(over: Partial<ViewerDeps> = {}): ViewerDeps {
   return {
@@ -44,6 +44,19 @@ describe("owner allow-list", () => {
     expect(isAllowedOwner({ ...kalp, providers: ["email"] }, allowed)).toBe(false);
     expect(isAllowedOwner({ ...kalp, providers: [] }, allowed)).toBe(false);
     expect(isAllowedOwner({ ...kalp, providers: ["email", "google"] }, allowed)).toBe(true);
+  });
+
+  it("requires THIS session to be an OAuth sign-in (JWT amr), not just a Google identity on the account", () => {
+    const allowed = parseOwnerEmails("owner.one@example.com");
+    expect(isAllowedOwner({ ...kalp, amr: ["otp"] }, allowed)).toBe(false);
+    expect(isAllowedOwner({ ...kalp, amr: ["password"] }, allowed)).toBe(false);
+    expect(isAllowedOwner({ ...kalp, amr: [] }, allowed)).toBe(false);
+    expect(isAllowedOwner({ ...kalp, amr: ["password", "oauth"] }, allowed)).toBe(true);
+  });
+
+  it("an existing owner is not re-checked against amr (only creation is gated)", async () => {
+    const d = deps({ userFromCookies: vi.fn(async () => ({ ...kalp, amr: ["otp"] })), isOwner: vi.fn(async () => true) });
+    expect((await resolveViewer(null, d)).status).toBe(200);
   });
 
   it("never creates an owner for an allowed email that did not come through Google", async () => {

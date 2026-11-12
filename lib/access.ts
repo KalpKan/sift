@@ -34,6 +34,8 @@ export type AuthUser = {
   emailConfirmed: boolean;
   /** Identity providers on the account (app_metadata + identities), e.g. ["google"]. */
   providers: string[];
+  /** How THIS session authenticated: the JWT `amr` methods, e.g. ["oauth"]. */
+  amr: string[];
 };
 
 /** Sift's owner signs in with Google; an allowed email via any other provider is not enough. */
@@ -58,6 +60,9 @@ export function isAllowedOwner(user: AuthUser, allowed: ReadonlySet<string>): bo
   // for the same address another way (a magic link, a password). Only a
   // Google identity, where Google vouched for the address, becomes the owner.
   if (!user.providers.includes(OWNER_PROVIDER)) return false;
+  // And this very session must be an OAuth sign-in, not a magic link or a
+  // password session on an account that merely has Google linked somewhere.
+  if (!user.amr.includes("oauth")) return false;
   return allowed.has(user.email.trim().toLowerCase());
 }
 

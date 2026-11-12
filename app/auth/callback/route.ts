@@ -27,7 +27,7 @@ export async function GET(request: Request): Promise<Response> {
 
   const ctx = getMeContext();
   if (ctx) {
-    const user = toAuthUser(data.user);
+    const user = toAuthUser(data.user, data.session?.access_token);
     // Same rule as every /api/me request: an existing owner passes, an allowed
     // email becomes the owner (with the default follows), anyone else is left
     // signed in but sees /me's "private" page. A database failure here sends

@@ -15,8 +15,8 @@ import {
 } from "./me-api";
 
 const NOW = new Date("2026-11-12T12:00:00Z");
-const kalp: AuthUser = { id: "u-kalp", email: "owner.one@example.com", emailConfirmed: true, providers: ["google"] };
-const stranger: AuthUser = { id: "u-x", email: "x@example.com", emailConfirmed: true, providers: ["google"] };
+const kalp: AuthUser = { id: "u-kalp", email: "owner.one@example.com", emailConfirmed: true, providers: ["google"], amr: ["oauth"] };
+const stranger: AuthUser = { id: "u-x", email: "x@example.com", emailConfirmed: true, providers: ["google"], amr: ["oauth"] };
 
 function topic(slug: string, i: number): Topic {
   return { id: `t${i}`, slug, name: slug.replace(/-/g, " "), pubmedQuery: `q-${slug}`, description: null, kind: "clinical", source: "pubmed", isActive: true };
