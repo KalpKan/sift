@@ -10,8 +10,8 @@ import {
   type ViewerDeps,
 } from "./access";
 
-const kalp: AuthUser = { id: "u-kalp", email: "Kalpkansara123@gmail.com", emailConfirmed: true };
-const stranger: AuthUser = { id: "u-x", email: "someone@example.com", emailConfirmed: true };
+const kalp: AuthUser = { id: "u-kalp", email: "Owner.One@example.com", emailConfirmed: true, providers: ["google"] };
+const stranger: AuthUser = { id: "u-x", email: "someone@example.com", emailConfirmed: true, providers: ["google"] };
 
 function deps(over: Partial<ViewerDeps> = {}): ViewerDeps {
   return {
@@ -19,7 +19,7 @@ function deps(over: Partial<ViewerDeps> = {}): ViewerDeps {
     userFromCookies: vi.fn(async () => null),
     isOwner: vi.fn(async () => false),
     createOwner: vi.fn(async () => {}),
-    ownerEmails: parseOwnerEmails("masterofmath01@gmail.com, kalpkansara123@gmail.com"),
+    ownerEmails: parseOwnerEmails("owner.one@example.com, owner.two@example.com"),
     ...over,
   };
 }
@@ -32,11 +32,25 @@ describe("owner allow-list", () => {
   });
 
   it("allows only a confirmed email on the list", () => {
-    const allowed = parseOwnerEmails("kalpkansara123@gmail.com");
+    const allowed = parseOwnerEmails("owner.one@example.com");
     expect(isAllowedOwner(kalp, allowed)).toBe(true);
     expect(isAllowedOwner({ ...kalp, emailConfirmed: false }, allowed)).toBe(false);
     expect(isAllowedOwner(stranger, allowed)).toBe(false);
     expect(isAllowedOwner({ ...kalp, email: null }, allowed)).toBe(false);
+  });
+
+  it("allows only an account that signed in with Google, not just any confirmed email", () => {
+    const allowed = parseOwnerEmails("owner.one@example.com");
+    expect(isAllowedOwner({ ...kalp, providers: ["email"] }, allowed)).toBe(false);
+    expect(isAllowedOwner({ ...kalp, providers: [] }, allowed)).toBe(false);
+    expect(isAllowedOwner({ ...kalp, providers: ["email", "google"] }, allowed)).toBe(true);
+  });
+
+  it("never creates an owner for an allowed email that did not come through Google", async () => {
+    const viaEmail = { ...kalp, providers: ["email"] };
+    const d = deps({ userFromCookies: vi.fn(async () => viaEmail) });
+    expect(await resolveViewer(null, d)).toEqual({ status: 403, user: viaEmail });
+    expect(d.createOwner).not.toHaveBeenCalled();
   });
 
   it("an empty list allows nobody (fails closed)", () => {

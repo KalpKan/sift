@@ -16,7 +16,12 @@ import type { AuthUser } from "./access";
 import { readSupabaseEnv } from "./env";
 
 export function toAuthUser(u: User): AuthUser {
-  return { id: u.id, email: u.email ?? null, emailConfirmed: Boolean(u.email_confirmed_at) };
+  const meta = (u.app_metadata ?? {}) as { provider?: unknown; providers?: unknown };
+  const providers = new Set<string>();
+  if (typeof meta.provider === "string") providers.add(meta.provider);
+  if (Array.isArray(meta.providers)) for (const p of meta.providers) if (typeof p === "string") providers.add(p);
+  for (const i of u.identities ?? []) if (i.provider) providers.add(i.provider);
+  return { id: u.id, email: u.email ?? null, emailConfirmed: Boolean(u.email_confirmed_at), providers: [...providers] };
 }
 
 /** Cookie-backed client for Server Components and Route Handlers. Null without a DB env. */

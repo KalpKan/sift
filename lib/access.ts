@@ -28,7 +28,16 @@ export const DEFAULT_FOLLOWS = [
   "stem-cells",
 ] as const;
 
-export type AuthUser = { id: string; email: string | null; emailConfirmed: boolean };
+export type AuthUser = {
+  id: string;
+  email: string | null;
+  emailConfirmed: boolean;
+  /** Identity providers on the account (app_metadata + identities), e.g. ["google"]. */
+  providers: string[];
+};
+
+/** Sift's owner signs in with Google; an allowed email via any other provider is not enough. */
+export const OWNER_PROVIDER = "google";
 
 export function parseOwnerEmails(raw: string | undefined | null): Set<string> {
   return new Set(
@@ -45,6 +54,10 @@ export function readOwnerEmails(env: Record<string, string | undefined> = proces
 
 export function isAllowedOwner(user: AuthUser, allowed: ReadonlySet<string>): boolean {
   if (!user.email || !user.emailConfirmed) return false;
+  // Project B's auth.users is shared: another app could create an account
+  // for the same address another way (a magic link, a password). Only a
+  // Google identity, where Google vouched for the address, becomes the owner.
+  if (!user.providers.includes(OWNER_PROVIDER)) return false;
   return allowed.has(user.email.trim().toLowerCase());
 }
 
