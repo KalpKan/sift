@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Boots PostHog once on the client. Renders nothing extra; with no
@@ -14,19 +14,26 @@ import { useEffect } from "react";
  */
 export default function PostHogProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [booted, setBooted] = useState(false);
 
   // Client-side navigation does not reload the page, so the recorder that
   // started on / would keep recording /me. Re-check privacy on every path
-  // change (lib/posthog-privacy.ts). A no-op until PostHog has booted.
+  // change once PostHog has booted (lib/posthog-privacy.ts). Before boot there
+  // is nothing to stop, and importing here would pull posthog-js into
+  // hydration; initPostHog checks the path it boots on by itself.
   useEffect(() => {
+    if (!booted) return;
     import("@/lib/posthog").then((m) => m.syncPrivacy(pathname ?? window.location.pathname));
-  }, [pathname]);
+  }, [booted, pathname]);
 
   useEffect(() => {
     let cancelled = false;
     const boot = () => {
       if (cancelled) return;
-      import("@/lib/posthog").then((m) => m.initPostHog());
+      import("@/lib/posthog").then((m) => {
+        m.initPostHog();
+        if (!cancelled) setBooted(true);
+      });
     };
     if (document.readyState === "complete") boot();
     else window.addEventListener("load", boot, { once: true });
