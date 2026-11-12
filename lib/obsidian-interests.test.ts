@@ -1,0 +1,169 @@
+/**
+ * The Obsidian bridge against a fixture vault (tests/fixtures/vault). The
+ * privacy contract (docs/obsidian-bridge.md) is the spec: every fixture word
+ * containing "secret" sits somewhere the bridge must not read, so the first
+ * thing each test checks is that none of them leak.
+ */
+import { describe, expect, it } from "vitest";
+import { spawnSync } from "node:child_process";
+import path from "node:path";
+import {
+  BROAD_TAGS,
+  EXCLUDED_FOLDERS,
+  GENERIC_TAGS,
+  buildInterests,
+  formatDryRun,
+  isExcludedPath,
+  obsidianWeight,
+  parseTags,
+  planPush,
+  readVault,
+  suggestTopics,
+} from "../scripts/obsidian-interests.mjs";
+import { TOPICS } from "../scripts/seed-topics.mjs";
+
+const VAULT = path.resolve(__dirname, "..", "tests", "fixtures", "vault");
+const SCRIPT = path.resolve(__dirname, "..", "scripts", "obsidian-interests.mjs");
+
+const noSecrets = (s: string) => expect(s.toLowerCase()).not.toMatch(/secret/);
+
+describe("parseTags", () => {
+  it("reads the wikilinks on the Tags: line, lower-cased, aliases dropped", () => {
+    expect(parseTags("Status: x\nTags: [[Research]] [[DBS]] [[ngf|nerve growth factor]]\n\nbody [[other]]")).toEqual([
+      "research",
+      "dbs",
+      "ngf",
+    ]);
+  });
+
+  it("ignores hashtags and wikilinks in the body", () => {
+    expect(parseTags("Tags: #research #dbs\n\n[[research]]")).toEqual([]);
+    expect(parseTags("No tags line here [[research]]")).toEqual([]);
+  });
+});
+
+describe("isExcludedPath", () => {
+  it("excludes the journal, inbox, rough notes, templates and dot folders, at any depth", () => {
+    expect(EXCLUDED_FOLDERS).toEqual(expect.arrayContaining(["7 - Journal", "0 - Inbox", "1 - Rough Notes"]));
+    expect(isExcludedPath("7 - Journal/2026-11-01.md")).toBe(true);
+    expect(isExcludedPath("6 - Main Notes/7 - Journal/deep.md")).toBe(true);
+    expect(isExcludedPath("0 - inbox/x.md")).toBe(true);
+    expect(isExcludedPath(".obsidian/x.md")).toBe(true);
+    expect(isExcludedPath("6 - Main Notes/dbs.md")).toBe(false);
+  });
+});
+
+describe("readVault + buildInterests on the fixture vault", () => {
+  const notes = readVault(VAULT);
+  const built = buildInterests(notes);
+
+  it("keeps only [[research]] notes without [[private]], outside excluded folders", () => {
+    expect(built.notesRead).toBe(5);
+  });
+
+  it("counts a copied note (identical tag list) once", () => {
+    expect(built.distinctNotes).toBe(4);
+  });
+
+  it("turns the kept notes' tags into terms, weighted by how many notes use them", () => {
+    expect(built.terms).toEqual([
+      { term: "aging", weight: 0.4, notes: 2 },
+      { term: "dbs", weight: 0.4, notes: 2 },
+      { term: "seeg", weight: 0.4, notes: 2 },
+      { term: "combination therapy", weight: 0.3, notes: 1 },
+      { term: "neurotrophins", weight: 0.3, notes: 1 },
+      { term: "ngf", weight: 0.3, notes: 1 },
+      { term: "p75-ntr", weight: 0.3, notes: 1 },
+    ]);
+  });
+
+  it("drops the generic tags and the too-broad ones, and says which", () => {
+    expect(GENERIC_TAGS).toEqual(expect.arrayContaining(["research", "question", "coursework", "private"]));
+    expect(BROAD_TAGS).toContain("brain");
+    expect(built.droppedGeneric).toEqual(["coursework", "physpharm 4750", "question", "research"]);
+    expect(built.droppedBroad).toEqual(["brain"]);
+  });
+
+  it("leaks nothing from the journal, inbox, rough notes, private, hashtag-only, untagged or body-only notes", () => {
+    noSecrets(JSON.stringify(built));
+  });
+
+  it("never carries a note title, body or file name", () => {
+    const s = JSON.stringify(built);
+    for (const leak of ["dbs-question", "neurotrophins.md", "Main Notes", "Source Material", "Does SEEG mapping", "quote"]) {
+      expect(s).not.toContain(leak);
+    }
+  });
+});
+
+describe("obsidianWeight", () => {
+  it("starts at 0.3 and adds 0.1 per extra note, up to 0.6", () => {
+    expect([1, 2, 3, 4, 9].map(obsidianWeight)).toEqual([0.3, 0.4, 0.5, 0.6, 0.6]);
+  });
+});
+
+describe("suggestTopics", () => {
+  it("suggests frequent terms that no topic covers, never creating anything", () => {
+    const terms = buildInterests(readVault(VAULT)).terms;
+    const out = suggestTopics(terms, TOPICS);
+    // "dbs" is covered by deep-brain-stimulation (its initials), so it is not suggested.
+    expect(out).toEqual(["aging", "seeg"]);
+  });
+});
+
+describe("planPush", () => {
+  it("upserts the current terms and deletes only Obsidian terms that left the vault", () => {
+    const plan = planPush(
+      [{ term: "dbs", weight: 0.4, notes: 2 }],
+      [
+        { term: "dbs", source: "obsidian" },
+        { term: "gone", source: "obsidian" },
+        { term: "gone", source: "taps" },
+        { term: "mine", source: "manual" },
+      ],
+    );
+    expect(plan).toEqual({ upserts: [{ term: "dbs", weight: 0.4, source: "obsidian" }], deletes: ["gone"] });
+  });
+});
+
+describe("the script, end to end", () => {
+  const env: NodeJS.ProcessEnv = { ...process.env, SIFT_VAULT_PATH: VAULT };
+  delete env.NODE_OPTIONS;
+
+  it("dry-runs by default: prints terms and weights, sends nothing, needs no credentials", () => {
+    delete env.SUPABASE_SERVICE_ROLE_KEY;
+    const r = spawnSync(process.execPath, [SCRIPT], { env, encoding: "utf8" });
+    expect(r.status, r.stderr).toBe(0);
+    expect(r.stdout).toContain("dbs");
+    expect(r.stdout).toContain("0.40");
+    expect(r.stdout).toMatch(/research notes read: 5 \(4 distinct/);
+    expect(r.stdout).toMatch(/nothing sent/i);
+    expect(r.stdout).toMatch(/suggested topics: aging, seeg/);
+    noSecrets(r.stdout + r.stderr);
+    for (const leak of ["dbs-question", "Main Notes", ".md"]) expect(r.stdout).not.toContain(leak);
+  });
+
+  it("refuses --push without the service-role key, and still leaks nothing", () => {
+    const r = spawnSync(process.execPath, [SCRIPT, "--push"], {
+      env: { ...env, SUPABASE_SERVICE_ROLE_KEY: "", NEXT_PUBLIC_SUPABASE_URL: "" },
+      encoding: "utf8",
+    });
+    expect(r.status).toBe(1);
+    expect(r.stderr).toMatch(/--env-file=.env.local/);
+    noSecrets(r.stdout + r.stderr);
+  });
+
+  it("fails clearly when the vault is missing", () => {
+    const r = spawnSync(process.execPath, [SCRIPT], { env: { ...env, SIFT_VAULT_PATH: "/nonexistent/vault" }, encoding: "utf8" });
+    expect(r.status).toBe(1);
+    expect(r.stderr).toMatch(/vault not found/i);
+  });
+});
+
+describe("formatDryRun", () => {
+  it("states the contract in its own output", () => {
+    const out = formatDryRun(buildInterests(readVault(VAULT)), ["aging"]);
+    expect(out).toMatch(/Only tag names/);
+    expect(out).toMatch(/nothing sent/i);
+  });
+});

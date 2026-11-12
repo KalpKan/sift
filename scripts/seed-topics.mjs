@@ -41,6 +41,7 @@
  */
 
 import { createClient } from "@supabase/supabase-js";
+import { pathToFileURL } from "node:url";
 
 const DRY_RUN = process.argv.includes("--dry-run");
 
@@ -51,7 +52,7 @@ const DRY_RUN = process.argv.includes("--dry-run");
  * no usable type — so the ranker leans on journal, human-subject and scale
  * cues instead. Labelling a topic wrongly will quietly make its feed worse.
  */
-const TOPICS = [
+export const TOPICS = [
   {
     slug: "neuromodulation",
     name: "Neuromodulation",
@@ -222,7 +223,10 @@ async function main() {
   for (const t of data) console.log(`  ${t.slug} — ${t.name} [${t.kind}]`);
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+// Run only when executed, so scripts/obsidian-interests.mjs can import TOPICS.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
+}
