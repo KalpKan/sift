@@ -134,6 +134,8 @@ export type Network = {
   dormant: boolean;
   /** Map scale: also sizes the spike dash. */
   scale: number;
+  /** Cluster label font size in px, 0 when the variant draws no labels. */
+  labelPx: number;
 };
 
 // ---------------------------------------------------------------------------
@@ -469,6 +471,7 @@ export function buildNetwork(input: NetworkInput): Network {
     width,
     height,
     scale,
+    labelPx: dormant ? 0 : labelPx,
     dormant,
     clusters: cl.map((c) => ({
       id: c.id,
