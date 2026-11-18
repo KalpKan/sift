@@ -1,0 +1,193 @@
+<!doctype html>
+<!--
+  Reference sketch for docs/design/brain.md. Static: nothing here moves.
+  It exists to show the look (cell shapes, wiring, tokens, row anatomy) and to
+  carry a working copy of the seeded generator. Where this file and brain.md
+  disagree, brain.md wins. It is not app code and is not imported anywhere.
+  One spike per map is frozen mid-flight so the still shows what a spike is.
+-->
+<html lang="en"><head><title>Sift brain reference sketch</title><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--paper:#f9f7f2;--surface:#f1eee6;--surface-strong:#e7e3d8;--ink:#1b1916;--ink-muted:#524e47;--ink-faint:#6b675f;--rule:#e1ddd2;--rule-strong:#1b1916;--cell:#2b2824;--wire:#b8b2a5;
+--cluster-1:#2b5b96;--cluster-2:#17696f;--cluster-3:#2e6e3f;--cluster-4:#8a3c76;--spike:#c2361a;--reinforce:#8a5d00;--reinforce-wash:#e7decb;
+--serif:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root{--paper:#0e0f11;--surface:#17191c;--surface-strong:#212429;--ink:#ece9e2;--ink-muted:#aaa69d;--ink-faint:#8d8980;--rule:#26282c;--rule-strong:#5d6067;--cell:#6a6d73;--wire:#3b3e44;
+--cluster-1:#82b1ea;--cluster-2:#5ec6c0;--cluster-3:#84cf8e;--cluster-4:#e08fc6;--spike:#ff7a55;--reinforce:#f0c14b;--reinforce-wash:#322b1a}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans)}
+main{max-width:608px;margin:0 auto;padding:48px 32px}
+.narrow{max-width:350px;margin:40px auto;}
+nav{font-size:12px;color:var(--ink-faint);display:flex;gap:16px}
+h1{font-family:var(--serif);font-weight:400;font-size:34px;line-height:1.1;margin:20px 0 6px;letter-spacing:-0.01em}
+.sub{font-size:13px;color:var(--ink-muted);margin:0 0 16px}
+figure{margin:0;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule)}
+figcaption{font-family:var(--mono);font-size:11px;color:var(--ink-faint);padding:6px 0 8px;display:flex;gap:14px;border-top:1px solid var(--rule)}
+svg{display:block;width:100%;height:auto}
+.label{font:600 11px var(--sans);fill:var(--c)}
+.m .label{font-weight:500}
+.den{fill:none;stroke:var(--cell);stroke-linecap:round;opacity:.78}
+.fib{fill:none;stroke:var(--cell);stroke-width:.75;opacity:.42;stroke-linecap:round}
+.tract{fill:none;stroke:var(--wire);stroke-width:1;stroke-linecap:round}
+.soma{fill:var(--c);stroke:var(--c);stroke-linejoin:round}
+.halo{fill:var(--c);opacity:0}
+.newring{fill:none;stroke:var(--spike);stroke-width:1.25}
+.upring{fill:none;stroke:var(--reinforce);stroke-width:1.25}
+.up .fib{stroke:var(--reinforce);stroke-width:1.75;opacity:.9}
+.up .den{stroke-width:calc(var(--w)*1.6)}
+.down{opacity:.38}
+.down .soma{fill:var(--paper);stroke-width:1}
+.ghost .den,.ghost .fib{stroke:var(--wire);opacity:1}.ghost .soma{fill:var(--wire);stroke:var(--wire)}.ghost .halo{opacity:0!important}
+.spk{fill:none;stroke:var(--spike);stroke-width:2.25;stroke-linecap:round}
+@media (prefers-color-scheme:dark){.den{stroke:var(--c);opacity:.62}.fib{stroke:var(--c);opacity:.5}.halo.h1{opacity:.16}.halo.h2{opacity:.07}.down .halo{opacity:0}}
+.row{display:grid;grid-template-columns:44px 1fr 88px;column-gap:12px;padding:20px 0;border-bottom:1px solid var(--rule)}
+.rk{font:12px var(--mono);color:var(--ink-faint);display:flex;gap:10px;align-items:baseline;padding-top:5px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--c);display:inline-block;flex:none;transform:translateY(-1px)}
+.dot.new{box-shadow:0 0 0 2px var(--paper),0 0 0 3.25px var(--spike)}
+.dot.down{background:transparent;box-shadow:inset 0 0 0 1px var(--c)}
+h3{font:400 20px/1.3 var(--serif);margin:0}
+.meta{font-size:13px;line-height:1.45;color:var(--ink-muted);margin:6px 0 0}
+.meta b{font-weight:500;color:var(--c)}
+.why{font-size:12px;color:var(--ink-faint);margin:6px 0 0;display:flex;gap:12px}
+.why .nw{color:var(--spike);font-weight:500}
+.aside{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.btns{display:flex;gap:6px}
+.btn{width:36px;height:32px;border:1px solid var(--rule);border-radius:4px;background:none;font-size:15px;line-height:1;padding:0}
+.btn span{filter:grayscale(1);opacity:.65}
+.btn.on span{filter:none;opacity:1}
+.btn.up.on{background:var(--reinforce-wash);border-color:var(--reinforce)}
+.btn.dn.on{background:var(--surface-strong);border-color:var(--ink-muted)}
+.score{font:12px var(--mono);color:var(--ink-faint)}
+.m .row{grid-template-columns:28px 1fr;column-gap:10px;padding:18px 0}
+.m h3{font-size:18px;line-height:1.32}
+.m .rk{flex-direction:column;gap:7px;align-items:flex-start}
+.m .aside{grid-column:2;flex-direction:row;justify-content:space-between;align-items:center;margin-top:10px}
+.m .btn{width:44px;height:40px}
+</style></head><body>
+<main>
+<nav><span>Sift</span><span>My radar</span><span>Settings</span><span style="margin-left:auto">Sign out</span></nav>
+<h1>My radar</h1><p class="sub">4 fields · ranked 3 hours ago · ranker p1</p>
+<figure><div id="radar-wide"></div><figcaption><span>10 papers</span><span>3 new in 48 h</span><span>1 marked useful</span></figcaption></figure>
+<div id="rows"></div>
+<h1 style="margin-top:64px">Sift</h1>
+<figure><div id="hero-wide"></div></figure>
+<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:64px;border-bottom:1px solid var(--rule-strong)"><div><h1>Neuromodulation</h1><p class="sub">20 papers, ranked just now</p></div><div id="topic-wide" style="width:240px"></div></div>
+<p class="sub" style="margin-top:64px">Dormant map (no fields followed)</p><figure><div id="dormant-wide"></div></figure>
+<div id="motif" style="width:200px;margin-top:64px"></div>
+<button style="border:1px solid var(--rule-strong);background:none;color:var(--ink);font:18px var(--serif);padding:8px 16px">Sign in with Google</button>
+</main>
+<div class="narrow m">
+<h1 style="font-size:28px">My radar</h1><p class="sub">4 fields · ranked 3 hours ago</p>
+<figure><div id="radar-compact"></div><figcaption><span>10 papers</span><span>3 new in 48 h</span></figcaption></figure>
+<div id="rows-m"></div>
+<h1 style="margin-top:48px">Sift</h1>
+<figure><div id="hero-compact"></div></figure>
+<figure style="margin-top:40px"><div id="topic-compact"></div></figure>
+</div>
+<script>
+function xmur3(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return(h^=h>>>16)>>>0}}
+function rng(s){let a=xmur3(s)();return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const f=n=>Math.round(n*10)/10;
+const KINDS=['pyramidal','stellate','purkinje','bipolar'];
+function pol(x,y,ang,len){const a=(ang-90)*Math.PI/180;return[x+Math.cos(a)*len,y+Math.sin(a)*len]}
+// curved segment from (x,y) heading ang (0=up, clockwise) of length len; bend = perpendicular offset fraction
+function seg(x,y,ang,len,bend){const[ex,ey]=pol(x,y,ang,len);const[mx,my]=pol(x,y,ang,len*0.5);const[cx,cy]=pol(mx,my,ang+90,len*bend);return{d:`M${f(x)},${f(y)}Q${f(cx)},${f(cy)} ${f(ex)},${f(ey)}`,ex,ey}}
+function dendrites(kind,x,y,rs,R,detail,maxUp){
+  const out=[];const j=(a,b)=>a+(b-a)*R();const sgn=()=>R()<.5?-1:1;
+  const add=(x0,y0,ang,len,w)=>{const s=seg(x0,y0,ang,len,j(-.14,.14));out.push({d:s.d,w});return s};
+  if(kind==='pyramidal'){
+    const L=Math.min(5*rs,maxUp);const lean=j(-7,7);const t=add(x,y-rs*1.0,lean,L,1);
+    add(t.ex,t.ey,lean-j(24,40),1.6*rs,.75);add(t.ex,t.ey,lean+j(24,40),1.6*rs,.75);
+    if(detail>1){const[ox,oy]=pol(x,y-rs,lean,L*.55);add(ox,oy,lean+sgn()*j(48,62),1.5*rs,.75)}
+    for(const s of[-1,1]){const a=s*j(113,137);const[bx,by]=pol(x,y,a,rs*.9);const b=add(bx,by,a,2.2*rs,1);if(detail>1)add(b.ex,b.ey,a-s*j(20,35),1.0*rs,.75)}
+  }else if(kind==='stellate'){
+    const n=5,off=j(0,360);let k=0;
+    for(let i=0;i<n;i++){let a=(off+i*(360/n)+j(-14,14))%360;if(a>155&&a<205)a=a<180?150:210;const[bx,by]=pol(x,y,a,rs);const L=Math.min(j(2.2,3.0)*rs,(a<70||a>290)?maxUp:99);const s=add(bx,by,a,L,1);
+      if(detail>1||i%2===0){const[fx,fy]=pol(bx,by,a,L*.6);add(fx,fy,a+sgn()*j(28,42),1.1*rs,.75)}}
+  }else if(kind==='purkinje'){
+    for(const s of[-1,1]){const a=s*j(16,28);const[bx,by]=pol(x,y,a,rs);const L1=Math.min(2.2*rs,maxUp*.45);const t=add(bx,by,a,L1,1);
+      for(const s2 of[-1,1]){const a2=a+s2*j(22,34);const u=add(t.ex,t.ey,a2,Math.min(1.7*rs,maxUp*.33),.75);
+        if(detail>1)for(const s3 of[-1,1])add(u.ex,u.ey,a2+s3*j(18,30),Math.min(1.2*rs,maxUp*.22),.75)}}
+  }else{
+    const lean=j(-6,6);const t=add(x,y-rs*1.2,lean,Math.min(3.4*rs,maxUp),1);add(t.ex,t.ey,lean-j(24,36),1.2*rs,.75);add(t.ex,t.ey,lean+j(24,36),1.2*rs,.75);
+  }
+  return out;
+}
+function somaShape(kind,x,y,rs){
+  if(kind==='pyramidal')return`<path class="soma" stroke-width="${f(rs*.55)}" d="M${f(x)},${f(y-rs*.95)}L${f(x+rs*.8)},${f(y+rs*.55)}L${f(x-rs*.8)},${f(y+rs*.55)}Z"/>`;
+  if(kind==='bipolar')return`<ellipse class="soma" stroke-width="0" cx="${f(x)}" cy="${f(y)}" rx="${f(rs*.8)}" ry="${f(rs*1.2)}"/>`;
+  return`<circle class="soma" stroke-width="0" cx="${f(x)}" cy="${f(y)}" r="${f(rs)}"/>`;
+}
+// One generic layout. `v` is a row of the variant table in docs/design/brain.md.
+function build({clusters,neurons,v,dormant}){
+  const {W,cols,scale,detail,rMax,top,hubGap,rowH,labelGap,labelPx,labelW,arc}=v;
+  const n=clusters.length,rows=Math.ceil(n/cols);let s='';
+  const cl=clusters.map((c,i)=>{const row=Math.floor(i/cols);const inRow=Math.min(cols,n-row*cols);let col=i%cols;if(row%2===1)col=inRow-1-col; // second row runs right to left
+    const cw=W/inRow;const r=Math.min(cw*.36,rMax);
+    return{...c,i,cw,r,row,col,cx:cw*(col+.5),cy:top+rMax+row*rowH+(n>1?(i%2?5:-5):0),hx:cw*(col+.5),hy:top+2*rMax+hubGap+row*rowH,hue:i%4,kind:KINDS[i%4]}});
+  const H=v.H??(cl.length?Math.max(...cl.map(c=>c.hy)):0)+v.tail;
+  if(n>1){const pairs=[];for(let i=0;i<n-1;i++)pairs.push([cl[i],cl[i+1]]);if(n>2)pairs.push([cl[n-1],cl[0]]);
+    for(const[a,b]of pairs){const dx=b.hx-a.hx,dy=b.hy-a.hy;let d;
+      if(a.row===b.row&&Math.abs(a.col-b.col)===1)d=`C${f(a.hx+dx*.3)},${f(a.hy+14)} ${f(b.hx-dx*.3)},${f(b.hy+14)}`;
+      else if(a.row===b.row)d=`C${f(a.hx+dx*.12)},${f(a.hy+arc)} ${f(b.hx-dx*.12)},${f(b.hy+arc)}`;
+      else{const ex=(a.hx+b.hx)/2>W/2?W:0;d=`C${ex},${f(a.hy+dy*.25)} ${ex},${f(b.hy-dy*.45)}`}
+      s+=`<path class="tract" d="M${f(a.hx)},${f(a.hy)}${d} ${f(b.hx)},${f(b.hy)}"/>`}}
+  for(const c of cl){const mine=neurons.filter(x=>x.cluster===c.id).sort((a,b)=>a.rank-b.rank);const placed=[];
+    let g=`<g class="${dormant?'ghost':''}" style="--c:var(--cluster-${c.hue+1})">`;
+    for(const nu of mine){const R=rng(nu.id);const rs=(7-0.4*(nu.rank-1))*scale;let x,y,ok,tries=0,sep=2.8;
+      do{const a=R()*Math.PI*2,d=Math.sqrt(R())*(c.r-rs);x=c.cx+Math.cos(a)*d;y=c.cy+Math.sin(a)*d;ok=placed.every(p=>Math.hypot(p.x-x,p.y-y)>sep*Math.max(p.rs,rs)+4);if(++tries%30===0)sep*=.85}while(!ok&&tries<300);
+      placed.push({x,y,rs});
+      const dn=dendrites(c.kind,x,y,rs,R,detail,y-rs-6);
+      const sy=y+rs*(c.kind==='bipolar'?1.2:c.kind==='pyramidal'?.8:1);
+      const fib=`M${f(x)},${f(sy)}C${f(x+(R()-.5)*10)},${f(sy+(c.hy-sy)*.45)} ${f(c.hx+(x-c.hx)*.18)},${f(c.hy-22*scale)} ${f(c.hx)},${f(c.hy)}`;
+      const down=nu.verdict===-1,up=nu.verdict===1;
+      g+=`<g class="${up?'up':down?'down':''}" ${down?'':`opacity="${f(1-0.035*(nu.rank-1))}"`}>`;
+      g+=`<path class="fib" d="${fib}"/>`;
+      g+=`<path class="den" style="--w:1" stroke-width="1" d="${dn.filter(q=>q.w===1).map(q=>q.d).join('')}"/>`;
+      const thin=dn.filter(q=>q.w!==1).map(q=>q.d).join('');if(thin)g+=`<path class="den" style="--w:.75" stroke-width=".75" d="${thin}"/>`;
+      g+=`<circle class="halo h2" cx="${f(x)}" cy="${f(y)}" r="${f(rs*2.7)}"/><circle class="halo h1" cx="${f(x)}" cy="${f(y)}" r="${f(rs*1.8)}"/>`;
+      g+=somaShape(c.kind,x,y,rs);
+      if(nu.isNew&&!down)g+=`<circle class="newring" cx="${f(x)}" cy="${f(y)}" r="${f(rs+3.5)}"/>`;
+      if(up)g+=`<circle class="upring" cx="${f(x)}" cy="${f(y)}" r="${f(rs+(nu.isNew?6.5:3.5))}"/>`;
+      if(nu.spike)g+=`<path class="spk" d="${fib}" pathLength="100" stroke-dasharray="14 200" stroke-dashoffset="-46"/>`;
+      g+=`</g>`}
+    if(labelGap&&c.label){const max=Math.floor((c.cw-10)/labelW);let lines=[c.label];
+      if(c.label.length>max){let cut=-1;for(let k=0;k<c.label.length;k++){const ch=c.label[k];if(ch===' '&&k<=max)cut=k;if(ch==='-'&&k+1<=max)cut=k+1}
+        if(cut<0){const sp=c.label.search(/[ -]/);cut=sp<0?-1:c.label[sp]==='-'?sp+1:sp}
+        if(cut>0)lines=[c.label.slice(0,cut).trim(),c.label.slice(cut).trim()]}
+      lines.forEach((ln,k)=>{g+=`<text class="label" style="font-size:${labelPx}px" x="${f(c.cx)}" y="${f(c.hy+labelGap+k*(labelPx+2))}" text-anchor="middle">${ln}</text>`})}
+    s+=g+'</g>'}
+  return`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${s}</svg>`;
+}
+// The variant table (docs/design/brain.md, "Layout numbers").
+const V={
+  radarWide:{W:608,cols:6,scale:1,detail:2,rMax:56,top:34,hubGap:16,rowH:0,arc:40,labelGap:46,labelPx:11,labelW:6.1,tail:70},
+  radarCompact:{W:350,cols:4,scale:.8,detail:1,rMax:31,top:30,hubGap:14,rowH:0,arc:36,labelGap:42,labelPx:10,labelW:5.5,tail:66},
+  heroWide:{W:608,cols:6,scale:.9,detail:2,rMax:40,top:30,hubGap:14,rowH:0,arc:40,labelGap:46,labelPx:11,labelW:6.1,tail:68},
+  heroCompact:{W:350,cols:3,scale:.8,detail:1,rMax:34,top:26,hubGap:12,rowH:142,arc:36,labelGap:24,labelPx:10,labelW:5.5,tail:44},
+  topicWide:{W:240,H:168,cols:1,scale:.86,detail:2,rMax:56,top:30,hubGap:14,rowH:0,arc:0,labelGap:0},
+  topicCompact:{W:350,H:140,cols:1,scale:.8,detail:1,rMax:46,top:26,hubGap:12,rowH:0,arc:0,labelGap:0},
+  motif:{W:200,H:104,cols:1,scale:.9,detail:2,rMax:28,top:30,hubGap:14,rowH:0,arc:0,labelGap:0},
+};
+const radarClusters=[{id:'bci',label:'Brain-computer interfaces'},{id:'ne',label:'Neural engineering'},{id:'dbs',label:'Deep brain stimulation'},{id:'sc',label:'Stem cells'}];
+const T=['bci','bci','ne','dbs','dbs','sc','ne','bci','sc','dbs'];
+const radarNeurons=T.map((t,i)=>({id:String(40000001+i),cluster:t,rank:i+1,isNew:i<3,verdict:i===1?1:i===5?-1:null,spike:i===0}));
+const pub=['Brain-computer interfaces','Deep brain stimulation','Neural engineering','Neuromodulation','Spinocerebellar ataxia','Stem cells'].map((l,i)=>({id:'p'+i,label:l}));
+const heroNeurons=pub.flatMap((c,i)=>[2,5,8].map((rk,k)=>({id:c.label+k,cluster:c.id,rank:rk,isNew:false,verdict:null,spike:i===3&&k===0})));
+const topicN=Array.from({length:8},(_,i)=>({id:'t'+(41000+i*37),cluster:'p3',rank:i+1,isNew:i===2,verdict:null}));
+const motifN=[2,5,7].map((rk,k)=>({id:'motif'+k,cluster:'m',rank:rk,isNew:false,verdict:null,spike:k===1}));
+const $=id=>document.getElementById(id);
+$('radar-wide').innerHTML=build({clusters:radarClusters,neurons:radarNeurons,v:V.radarWide});
+$('hero-wide').innerHTML=build({clusters:pub,neurons:heroNeurons,v:V.heroWide});
+$('topic-wide').innerHTML=build({clusters:[{id:'p3',label:''}],neurons:topicN,v:V.topicWide});
+$('motif').innerHTML=build({clusters:[{id:'m',label:''}],neurons:motifN,v:V.motif});
+$('radar-compact').innerHTML=build({clusters:radarClusters,neurons:radarNeurons,v:V.radarCompact});
+$('hero-compact').innerHTML=build({clusters:pub,neurons:heroNeurons,v:V.heroCompact});
+$('topic-compact').innerHTML=build({clusters:[{id:'p3',label:''}],neurons:topicN,v:V.topicCompact});
+const ghosts=['g0','g1','g2'].map(id=>({id,label:''}));
+const ghostN=ghosts.flatMap((c,i)=>[3,7].map((rk,k)=>({id:'ghost'+i+k,cluster:c.id,rank:rk,isNew:false,verdict:null})));
+$('dormant-wide').innerHTML=build({clusters:ghosts,neurons:ghostN,v:{...V.radarWide,labelGap:0,H:232},dormant:true});
+const P=[['Speech decoding from intracortical arrays in a person with ALS','Chen et al. · Nature · 18 Nov 2026','Brain-computer interfaces',0,['intracortical'],95,1,0],
+['A fully implanted wireless brain-computer interface for home use','Okafor et al. · Nature Biomedical Engineering · 17 Nov 2026','Brain-computer interfaces',0,['brain-computer interface'],88,1,1],
+['Dopaminergic progenitor grafts restore motor function in a primate model','Tanaka et al. · Cell Stem Cell · 10 Nov 2026','Stem cells',3,[],60,0,-1]];
+const rows=P.map((p,i)=>`<div class="row" style="--c:var(--cluster-${p[3]+1})"><div class="rk"><span>${[1,2,6][i]}</span><span class="dot ${p[6]?'new':''} ${p[7]===-1?'down':''}"></span></div><div><h3>${p[0]}</h3><p class="meta">${p[1]} · <b>${p[2]}</b></p><p class="why">${p[6]?'<span class="nw">new</span>':''}${p[4].map(x=>`<span>${x}</span>`).join('')}</p></div><div class="aside"><div class="btns"><button class="btn up ${p[7]===1?'on':''}"><span>👍</span></button><button class="btn dn ${p[7]===-1?'on':''}"><span>👎</span></button></div><span class="score">${p[5]}</span></div></div>`).join('');
+$('rows').innerHTML=rows;$('rows-m').innerHTML=rows;
+</script></body></html>
