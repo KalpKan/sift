@@ -17,6 +17,8 @@ export default function BrainMaps({
   neurons: NetworkInput["neurons"];
 }) {
   const wide = buildNetwork({ variant, layout: "wide", clusters, neurons });
+  // The motif is the same size at every width, so it is drawn once.
+  if (variant === "motif") return <BrainMap network={wide} variant={variant} height={wide.height} />;
   const compact = buildNetwork({ variant, layout: "compact", clusters, neurons });
   return (
     <>

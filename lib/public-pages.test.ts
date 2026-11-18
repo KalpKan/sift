@@ -129,6 +129,23 @@ describe("public pages never render interests or ratings (render)", () => {
     }
   });
 
+  it("/ draws the hero map from the public topic names, and the map is hidden from assistive technology", async () => {
+    const { default: Home } = await import("@/app/page");
+    const out = await html(Home());
+    expect(out).toMatch(/<div[^>]*aria-hidden="true"[^>]*class="brain brain-hero/);
+    expect(out).toContain("Neuromodulation</text>");
+    expect(out).toContain("1 field · illustration, not live data");
+    expect(out).not.toContain("data-pmid");
+    expect(out).not.toContain("data-verdict");
+  });
+
+  it("/t/<slug> draws a topic map whose cells are public papers and carry no verdict", async () => {
+    const { default: TopicPage } = await import("@/app/t/[slug]/page");
+    const out = await html(TopicPage({ params: Promise.resolve({ slug: "neuromodulation" }) } as never));
+    expect(out).toContain('data-pmid="41000001"');
+    expect(out).not.toContain("data-verdict");
+  });
+
   it("/t/<slug> shows the public feed and nothing personal", async () => {
     const { default: TopicPage } = await import("@/app/t/[slug]/page");
     const out = await html(TopicPage({ params: Promise.resolve({ slug: "neuromodulation" }) } as never));

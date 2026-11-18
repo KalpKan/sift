@@ -31,15 +31,15 @@ export default function FollowsForm({ topics }: { topics: Row[] }) {
     <div>
       <ul className="divide-y divide-rule">
         {rows.map((r) => (
-          <li key={r.slug} className="py-4">
-            <label className="flex cursor-pointer items-baseline gap-3 font-serif text-lg">
-              <input type="checkbox" checked={r.followed} onChange={() => toggle(r.slug)} className="translate-y-0.5" />
+          <li key={r.slug} className="py-[14px]">
+            <label className="flex cursor-pointer items-baseline gap-3 font-serif text-[17px] leading-[1.35]">
+              <input type="checkbox" checked={r.followed} onChange={() => toggle(r.slug)} className="translate-y-0.5 accent-ink" />
               {r.name}
             </label>
           </li>
         ))}
       </ul>
-      <p className="mt-2 h-4 text-xs text-ink-faint" aria-live="polite">
+      <p className="mt-2 h-4 text-xs leading-[1.4] text-ink-faint" aria-live="polite">
         {state === "saving" ? "Saving…" : state === "saved" ? "Saved." : state === "error" ? "Not saved. Try again." : ""}
       </p>
     </div>

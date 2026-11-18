@@ -34,11 +34,11 @@ export default function GoogleSignInButton() {
         type="button"
         onClick={signIn}
         disabled={state === "busy"}
-        className="border border-rule-strong px-4 py-2 font-serif text-lg transition-colors hover:bg-rule disabled:opacity-60"
+        className="border border-rule-strong px-4 py-2 font-serif text-[17px] leading-[1.35] transition-colors hover:bg-surface disabled:opacity-60"
       >
         {state === "busy" ? "Opening Google…" : "Sign in with Google"}
       </button>
-      {state === "error" && <p className="mt-3 text-sm text-ink-muted">Could not reach Google. Try again.</p>}
+      {state === "error" && <p className="mt-3 text-[13px] leading-[1.45] text-ink-muted">Could not reach Google. Try again.</p>}
     </div>
   );
 }

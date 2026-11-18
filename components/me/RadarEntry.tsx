@@ -2,6 +2,7 @@
 
 import { useState, type CSSProperties } from "react";
 import { useBrainHover } from "@/components/brain/BrainHover";
+import { dotClass } from "@/components/brain/rowDot";
 import { formatDate } from "@/components/PaperEntry";
 import { events } from "@/lib/events";
 import type { MePaper } from "@/lib/me-api";
@@ -111,13 +112,7 @@ export default function RadarEntry({
     </button>
   );
 
-  // The dot is always a plain circle in the field's hue; new rings it, 👎 hollows it.
-  const dot =
-    verdict === -1
-      ? "bg-transparent shadow-[inset_0_0_0_1px_var(--c)]"
-      : isNew
-        ? "bg-[var(--c)] shadow-[0_0_0_2px_var(--paper),0_0_0_3.25px_var(--spike)]"
-        : "bg-[var(--c)]";
+  const dot = dotClass(verdict, isNew);
 
   const active = () => brain.setActive(paper.pmid, "row");
   const inactive = () => brain.active === paper.pmid && brain.from === "row" && brain.setActive(null);

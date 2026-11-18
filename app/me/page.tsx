@@ -17,7 +17,7 @@ export default async function RadarPage() {
   if (!ctx) {
     return (
       <MeShell title="My radar" current="none" signedIn={false}>
-        <p className="py-10 text-sm text-ink-muted">The database is not configured for this deployment.</p>
+        <p className="py-10 text-[13px] leading-[1.45] text-ink-muted">The database is not configured for this deployment.</p>
       </MeShell>
     );
   }
@@ -27,9 +27,9 @@ export default async function RadarPage() {
   if (viewer.status === 403) {
     return (
       <MeShell title="Private" current="none">
-        <p className="mt-8 font-serif text-lg leading-relaxed text-ink-muted">
+        <p className="mt-8 font-serif text-[18px] leading-[1.55] text-ink-muted sm:text-[19px] sm:leading-[1.6]">
           This radar belongs to one reader, and you are signed in as someone else. The public feeds are on the{" "}
-          <Link href="/" className="underline decoration-rule underline-offset-4 hover:decoration-rule-strong">
+          <Link href="/" className="underline decoration-ink-faint underline-offset-4 hover:decoration-ink">
             front page
           </Link>
           .

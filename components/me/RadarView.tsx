@@ -43,7 +43,7 @@ export default function RadarView({ fields, papers, now }: { fields: RadarField[
           ))}
         </div>
       ) : (
-        <p className="py-10 text-sm text-ink-muted">
+        <p className="py-10 text-[13px] leading-[1.45] text-ink-muted">
           Nothing to show yet. Follow a topic in{" "}
           <Link href="/me/settings" className="underline decoration-ink-faint underline-offset-4 hover:decoration-ink">
             settings

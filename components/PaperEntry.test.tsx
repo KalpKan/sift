@@ -21,8 +21,8 @@ function paper(over: Partial<FeedPaper> = {}): FeedPaper {
   };
 }
 
-const html = (over: Partial<FeedPaper> = {}, rank = 1) =>
-  renderToStaticMarkup(<PaperEntry paper={paper(over)} rank={rank} topic="neuromodulation" />);
+const html = (over: Partial<FeedPaper> = {}, rank = 1, extra: { hue?: number; isNew?: boolean } = {}) =>
+  renderToStaticMarkup(<PaperEntry paper={paper(over)} rank={rank} topic="neuromodulation" {...extra} />);
 
 describe("formatDate", () => {
   it("formats in UTC, independently of the server's locale", () => {
@@ -93,5 +93,27 @@ describe("PaperEntry", () => {
 
   it("escapes a title containing markup", () => {
     expect(html({ title: "Effects of <script>alert(1)</script> on tremor" })).not.toContain("<script>");
+  });
+
+  it("says `new` as the first reason, in words, when the paper is new", () => {
+    const out = html({}, 1, { isNew: true });
+    expect(out).toMatch(/<ul[^>]*><li[^>]*>new<\/li><li[^>]*>4 days old<\/li>/);
+    expect(html()).not.toMatch(/>new</);
+  });
+
+  it("rings the dot for a new paper and colours it by the topic's hue", () => {
+    expect(html({}, 1, { isNew: true, hue: 2 })).toContain("--c:var(--cluster-3)");
+    expect(html({}, 1, { isNew: true })).toContain("var(--spike)");
+    expect(html()).not.toContain("var(--spike)");
+  });
+
+  it("wraps a 220-character title inside its column", () => {
+    expect(html({ title: "x".repeat(220) })).toContain("overflow-wrap:anywhere");
+  });
+
+  it("carries no rating controls", () => {
+    const out = html();
+    expect(out).not.toContain("<button");
+    expect(out).not.toContain("👍");
   });
 });
