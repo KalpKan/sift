@@ -180,6 +180,19 @@ export async function buildMeFeed(
   userId: string,
   limit: number,
 ): Promise<MeFeedResponse> {
+  return (await buildMe(ctx, userId, limit)).feed;
+}
+
+/**
+ * The feed plus the followed fields it was built from (slug and name, in
+ * topic order), which the /me page draws as the map's clusters. The API
+ * response itself is unchanged: `fields` is not part of `MeFeedResponse`.
+ */
+export async function buildMe(
+  ctx: Pick<MeContext, "radar" | "now">,
+  userId: string,
+  limit: number,
+): Promise<{ feed: MeFeedResponse; fields: { slug: string; name: string }[] }> {
   const { radar, now } = ctx;
   const [topics, followIds, interests, ratings] = await Promise.all([
     radar.listTopics(),
@@ -193,7 +206,7 @@ export async function buildMeFeed(
   const kinds = new Map(followed.map((t) => [t.slug, t.kind]));
 
   const newest = candidates.map((c) => c.paper.rankedAt).sort().at(-1);
-  return {
+  const feed: MeFeedResponse = {
     topic: "me",
     id: "me",
     name: ME_FEED_NAME,
@@ -218,6 +231,7 @@ export async function buildMeFeed(
       };
     }),
   };
+  return { feed, fields: followed.map((t) => ({ slug: t.slug, name: t.name })) };
 }
 
 export async function handleFeed(request: Request, ctx: MeContext): Promise<Response> {

@@ -87,3 +87,6 @@ export const DEV_INTERESTS: { term: string; weight: number; source: "obsidian" |
   { term: "microelectrode", weight: 0.35, source: "taps" },
   { term: "organoid", weight: -0.2, source: "manual" },
 ];
+
+/** The followed fields on the radar, in topic order: the map's clusters. */
+export const DEV_FIELDS = DEV_TOPICS.filter((t) => t.followed).map((t) => ({ slug: t.slug, name: t.name }));

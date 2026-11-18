@@ -51,18 +51,26 @@ export function BrainHoverProvider({ children }: { children: ReactNode }) {
   const [burst, setBurst] = useState<BrainHoverValue["burst"]>(null);
   const seq = useRef(0);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  // True while a clicked cell's row is being held lit: a hover must not cut it short.
+  const flashing = useRef(false);
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const setActive = useCallback((id: string | null, from: ActiveFrom = "row") => {
+    // The page scrolls under a still pointer after a click, which fires hovers on other rows: ignore them.
+    if (flashing.current) return;
     clearTimeout(timer.current);
     setState(id === null ? { active: null, from: null } : { active: id, from });
   }, []);
 
   const flash = useCallback((id: string) => {
     clearTimeout(timer.current);
+    flashing.current = true;
     setState({ active: id, from: "cell" });
-    timer.current = setTimeout(() => setState({ active: null, from: null }), FLASH_MS);
+    timer.current = setTimeout(() => {
+      flashing.current = false;
+      setState({ active: null, from: null });
+    }, FLASH_MS);
   }, []);
 
   const setVerdict = useCallback((pmid: string, verdict: Verdict, opts?: { burst?: boolean }) => {

@@ -16,13 +16,13 @@ export default function MeShell({
   signedIn?: boolean;
   children: React.ReactNode;
 }) {
-  const link = "underline decoration-rule underline-offset-4 hover:decoration-rule-strong";
+  const link = "underline decoration-ink-faint underline-offset-4 hover:decoration-ink";
   return (
     // ph-no-capture: PostHog's autocapture and its replay recorder both skip
     // this subtree (lib/posthog-privacy.ts is the other two layers).
     <div className="ph-no-capture flex min-h-full flex-1 flex-col">
-      <main className="mx-auto w-full max-w-2xl flex-1 px-5 py-16 sm:px-8 sm:py-24">
-        <nav className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-xs tracking-wide text-ink-faint">
+      <main className="mx-auto w-full max-w-2xl flex-1 px-5 pb-12 pt-8 sm:px-8 sm:pt-12">
+        <nav className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-xs leading-[1.4] text-ink-faint">
           <Link href="/" className={link}>
             Sift
           </Link>
@@ -39,9 +39,9 @@ export default function MeShell({
           )}
         </nav>
 
-        <header className="mt-6 border-b border-rule-strong pb-4">
-          <h1 className="font-serif text-4xl tracking-tight sm:text-5xl">{title}</h1>
-          {subtitle && <p className="mt-3 text-sm text-ink-muted">{subtitle}</p>}
+        <header className="mt-5 border-b border-rule-strong pb-4">
+          <h1 className="font-serif text-[28px] leading-[1.15] tracking-[-0.01em] sm:text-[34px] sm:leading-[1.1]">{title}</h1>
+          {subtitle && <p className="mt-1.5 text-[13px] leading-[1.45] text-ink-muted">{subtitle}</p>}
         </header>
 
         {children}

@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import MeShell from "@/components/me/MeShell";
-import RadarEntry from "@/components/me/RadarEntry";
-import { buildMeFeed } from "@/lib/me-api";
+import RadarView, { radarSubtitle } from "@/components/me/RadarView";
+import { buildMe } from "@/lib/me-api";
 import { getMeContext, pageViewer } from "@/lib/me-context";
-import { freshness } from "@/lib/page-data";
 
 // Personal and signed-in: never prerendered, never indexed.
 export const dynamic = "force-dynamic";
@@ -39,39 +38,12 @@ export default async function RadarPage() {
     );
   }
 
-  const feed = await buildMeFeed(ctx, viewer.user.id, LIMIT);
+  const { feed, fields } = await buildMe(ctx, viewer.user.id, LIMIT);
   const now = new Date();
 
   return (
-    <MeShell
-      title="My radar"
-      current="radar"
-      subtitle={
-        <>
-          {feed.query || "No topics followed"} · ranked {freshness(feed.updatedAt, now)} · ranker {feed.rankerVersion}
-        </>
-      }
-    >
-      {feed.papers.length > 0 ? (
-        <div className="divide-y divide-rule">
-          {feed.papers.map((paper) => (
-            <RadarEntry key={paper.id} paper={paper} />
-          ))}
-        </div>
-      ) : (
-        <p className="py-10 text-sm text-ink-muted">
-          Nothing to show yet. Follow a topic in{" "}
-          <Link href="/me/settings" className="underline decoration-rule underline-offset-4">
-            settings
-          </Link>
-          , or wait for the morning refresh.
-        </p>
-      )}
-
-      <p className="mt-2 border-t border-rule pt-4 text-xs leading-relaxed text-ink-faint">
-        👍 and 👎 teach the ranking which of your interests matter and grade it against a plain newest-first list,
-        on exactly the papers you rated.
-      </p>
+    <MeShell title="My radar" current="radar" subtitle={radarSubtitle(fields.length, feed.updatedAt, now, feed.rankerVersion)}>
+      <RadarView fields={fields} papers={feed.papers} now={now} />
     </MeShell>
   );
 }
