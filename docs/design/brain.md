@@ -5,9 +5,33 @@ Plan: `docs/superpowers/plans/2026-11-18-brain-redesign.md`. This file settles e
 left to the builder. If it and the plan disagree on a visual matter, this file wins. On behaviour,
 privacy and tests, the plan wins.
 
+## Round 2 changes (lead's call after judging round 1)
+
+The direction holds: a plate of cortex, still by default, titles loudest. Round 1 was too timid
+with it, so round 2 changes numbers, not the idea. Everything below is already folded into the
+sections that follow. Where this file and the round-1 code disagree, this file wins.
+
+1. **The figure gets presence.** Radar wide scale 1 → 1.25 (1.1 with five or six fields), hero wide
+   0.9 → 1.0, radar compact 0.8 → 0.9 in a 184 px box. Clusters become ellipses so a thin radar
+   spreads out (§5).
+2. **Dark mode has to glow, light mode has to hold a line.** `--wire` is lifted in both
+   appearances, fibres and dendrites are more opaque, the dark halo is stronger, and a 👎 cell
+   stays visible (§2, §4).
+3. **A new token, `--control`,** gives the rating buttons a border that passes 3:1, and the
+   unpressed glyph is darkened in light mode (§2, §7).
+4. **Two-row layouts lose the side loops.** They ran through the labels. Rows are joined by short
+   commissures at the column boundaries instead (§5).
+5. **The topic map becomes a real figure:** full width, in the figure frame, with a caption, cells
+   in rank order left to right (§5, §8).
+6. **The sign-in motif is centred on the button** it plugs into (§8).
+7. **Row polish:** a fixed rank column so dots line up, the topic name wraps as one unit, "1 weeks
+   old" is shown as "1 week old", the rating footnote hides when there are no rows (§7, §8).
+8. **Interests on a phone** stack onto two tidy lines. Nothing is added to that section (§8).
+
 Reference sketch (static, nothing moves): `brain-reference.html`, rendered as
 `brain-reference-light.png` and `brain-reference-dark.png` in this folder. The HTML holds a working
-copy of the seeded generator with the numbers below. Port it; do not import it.
+copy of the seeded generator with the round-1 numbers. It is a sketch of the idea only: the numbers
+in this file have moved on from it.
 
 ## 1. Visual thesis
 
@@ -43,7 +67,8 @@ The six existing token names keep their names.
 | `--rule` | `#e1ddd2` | `#26282c` | Hairline between rows, button border |
 | `--rule-strong` | `#1b1916` | `#5d6067` | Rule under a heading, top of the figure |
 | `--cell` | `#2b2824` | `#6a6d73` | Dendrites and fibres in light mode. Dark mode draws them in the cluster hue, so the dark value is only a fallback |
-| `--wire` | `#b8b2a5` | `#3b3e44` | Tracts between clusters, dormant cells |
+| `--wire` | `#a39d8f` | `#565a62` | Tracts between clusters, dormant cells. 2.52:1 and 2.77:1 on paper (round 1 was 1.97 and 1.79, too faint) |
+| `--control` | `#8a857a` | `#62656c` | Border of an unpressed rating button. 3.43:1 and 3.28:1 on paper, 3.17 and 3.02 on surface. Never text |
 | `--cluster-1` | `#2b5b96` | `#82b1ea` | Blue. Pyramidal cells |
 | `--cluster-2` | `#17696f` | `#5ec6c0` | Teal. Stellate cells |
 | `--cluster-3` | `#2e6e3f` | `#84cf8e` | Green. Purkinje cells |
@@ -115,16 +140,16 @@ Keep `font-variant-numeric: oldstyle-nums` on body and `.tabular` for rank and s
 Every cell has the same four parts. "Up" is toward the top of the figure.
 
 - **Soma.** A filled shape in the cluster hue. Radius `rs = (7 − 0.4 × (rank − 1)) × scale`, so rank
-  1 is 7 px and rank 10 is 3.4 px at scale 1. Opacity `1 − 0.035 × (rank − 1)` on the whole cell
+  1 is 7 px and rank 10 is 3.4 px at scale 1 (8.75 px and 4.25 px on the wide radar, scale 1.25). Opacity `1 − 0.035 × (rank − 1)` on the whole cell
   (1.0 down to 0.685). Bigger and stronger means ranked higher.
 - **Dendrites.** Thin curved strokes rising from the soma, round caps. Trunks are 1 px, branches
   0.75 px. Every segment is a quadratic curve bent sideways by up to ±14% of its length. Light:
-  `--cell` at 0.78 opacity. Dark: the cluster hue at 0.62.
+  `--cell` at 0.78 opacity. Dark: the cluster hue at 0.75.
 - **Fibre (the axon).** One 0.75 px stroke from the bottom of the soma down to the cluster's
-  **hub**, a point below the cluster where all its fibres meet. Light: `--cell` at 0.42. Dark: hue
-  at 0.5. This is the path a spike travels. The hub itself is not drawn.
+  **hub**, a point below the cluster where all its fibres meet. Light: `--cell` at 0.5. Dark: hue
+  at 0.68. This is the path a spike travels. The hub itself is not drawn.
 - **Halo (dark mode only).** Two flat discs under the soma in the cluster hue: radius `1.8 × rs` at
-  0.16 opacity and `2.7 × rs` at 0.07. No blur filter, no gradient.
+  0.20 opacity and `2.7 × rs` at 0.10. No blur filter, no gradient.
 
 The four cell types, one per hue slot. Lengths are multiples of `rs`. Angles are degrees from
 straight up. `maxUp = y − rs − 6` keeps every dendrite inside the figure.
@@ -150,7 +175,7 @@ eight elements. Every random choice comes from a PRNG seeded with the neuron id 
 | Resting | default | As above |
 | New | `data-new="true"` | A 1.25 px ring in `--spike` at radius `rs + 3.5`. Always there, moving or not |
 | 👍 | `data-verdict="1"` | The fibre becomes 1.75 px in `--reinforce` at 0.9 opacity. Dendrite widths × 1.6. A 1.25 px `--reinforce` ring at `rs + 3.5` (at `rs + 6.5` if the cell is also new, so both rings show) |
-| 👎 | `data-verdict="-1"` | Whole cell at 0.38 opacity. Soma hollow: `--paper` fill, 1 px hue outline. No halo, no new ring, and it never fires |
+| 👎 | `data-verdict="-1"` | Whole cell at 0.5 opacity. Soma hollow: `--paper` fill, 1.25 px hue outline. No halo, no new ring, and it never fires. It must still read as a cell, so a field whose only papers are 👎 does not look empty |
 | Dormant | no clusters | Everything in `--wire`: soma, dendrites, fibres. No hue, no halo, no label, no motion |
 
 ## 5. Cluster layout
@@ -163,9 +188,12 @@ under the hubs, so a spike always travels toward its field's name.
 
 - column width `cw = W / n`. Cluster centre `x = cw × (i + 0.5)`,
   `y = top + rMax ± 5` (minus for even index, plus for odd, no stagger when `n = 1`).
-- cluster radius `r = min(0.36 × cw, rMax)`. Soma centres are placed inside `r − rs`.
+- a cluster is an ellipse: `rx = min(0.36 × cw, 2.2 × rMax)`, `ry = min(rx, rMax)`. Soma centres
+  are placed inside it, shrunk by `rs` on both axes. With three or more clusters in a row this is
+  the round-1 circle. With one or two it spreads sideways, so a thin radar fills its column
+  instead of piling ten cells into one small disc.
 - hub at `(x, top + 2 × rMax + hubGap)`. All hubs in a row share one y.
-- placement: in rank order, uniform in the disc. Reject a spot closer than
+- placement: in rank order, uniform in the ellipse. Reject a spot closer than
   `2.8 × rs + 4` to an already placed soma. After every 30 failures relax the 2.8 by 15%. Stop at
   300 tries.
 - fibre: from the soma's bottom point, `C (x ± 5, sy + 0.45 × (hubY − sy))`
@@ -178,16 +206,26 @@ if `n ≥ 3` close the ring from the last to the first. So 1 cluster has 0, 2 ha
 - neighbours in a row: a shallow U. Control points at 30% and 70% of the span, 14 px below the hubs.
 - the closing edge of a single row: a long arc under the U's. Control points at 12% and 88% of the
   span, `arc` px below the hubs. It passes between the U's and the labels.
-- between rows (compact, two rows): bows out to the nearer side edge. Control points at `x = 0` or
-  `x = W`, 25% and 55% of the way down. The second row runs right to left so the ring never crosses
-  itself.
+- between rows (compact, two rows): **no side loops and no closing arc.** Round 1 bowed the ring
+  out to `x = 0` and `x = W`, and it ran through the outer labels. Each row keeps its own U's.
+  The rows are joined by **commissures**: at every column boundary that has a U in both rows, one
+  1 px `--wire` curve runs from the lowest point of the upper U straight down to the lowest point
+  of the lower U, with a slight S (control points 8 px either side of the boundary, at 35% and
+  65% of the way down). It passes through the gap between two labels. Six clusters have 4 U's
+  and 2 commissures. Five have 3 U's and 1 commissure. Both rows use the same column grid, left
+  to right.
+
+**Tract clearance (all layouts).** No tract comes within 6 px of any label's box. A unit test on
+`buildNetwork` samples every tract path and checks it against the label boxes for the six public
+topic names and the four fixture names, in every layout.
 
 The plan's `kind: "dendrite"` edges are the fibres: one per neuron, `from` the neuron id, `to` its
 cluster id. There are no neuron-to-neuron edges. The dendrites drawn on a cell are part of the
 glyph, not edges.
 
 **Labels.** SVG `<text>`, centred on the cluster's x, in the cluster hue. If the label is longer
-than `floor((cw − 10) / charW)` characters, break it into two lines at the last space or hyphen
+than `floor((cw − 10) / charW)` characters (`floor((cw − 28) / charW)` in a two-row layout, which
+leaves the commissure its gap), break it into two lines at the last space or hyphen
 that fits (line step = font size + 2). A single long word stays on one line.
 
 **Layout numbers.** Two layouts are built on the server for every map: `wide` (shown at 640 px and
@@ -198,16 +236,18 @@ and the box never changes height.
 
 | Variant | Layout | W × H | Clusters per row | scale | detail | rMax | top | hubGap | arc | Label gap, size, charW |
 |---|---|---|---|---|---|---|---|---|---|---|
-| `radar` | wide | **608 × 232** | up to 6 | 1 | 2 | 56 | 34 | 16 | 40 | 46, 11 px, 6.1 |
-| `radar` | compact, 1–4 clusters | **350 × 172** | up to 4 | 0.8 | 1 | 31 | 30 | 14 | 36 | 42, 10 px, 5.5 |
+| `radar` | wide | **608 × 232** | up to 6 | **1.25** (1.1 with 5–6 clusters) | 2 | 56 | 34 | 16 | 40 | 46, 11 px, 6.1 |
+| `radar` | compact, 1–4 clusters | **350 × 184** | up to 4 | **0.9** | 1 | 34 | 30 | 14 | 36 | 42, 10 px, 5.7 |
 | `radar` | compact, 5–6 clusters | 350 × 292 | 3 | 0.8 | 1 | 34 | 26 | 12 | none | 24, 10 px, 5.5 |
-| `hero` | wide | **608 × 192** | up to 6 | 0.9 | 2 | 40 | 30 | 14 | 40 | 46, 11 px, 6.1 |
+| `hero` | wide | **608 × 192** | up to 6 | **1.0** | 2 | 40 | 30 | 14 | 40 | 46, 11 px, 6.1 |
 | `hero` | compact | **350 × 292** | 3 | 0.8 | 1 | 34 | 26 | 12 | none | 24, 10 px, 5.5 |
-| `topic` | wide | **240 × 168** | 1 | 0.86 | 2 | 56 | 30 | 14 | none | no label |
-| `topic` | compact | **350 × 140** | 1 | 0.8 | 1 | 46 | 26 | 12 | none | no label |
-| `motif` | both | **200 × 104** | 1 | 0.9 | 2 | 28 | 30 | 14 | none | no label |
+| `topic` | wide | **608 × 120** | 1 | 1.1 | 2 | 28 (rx 200) | 34 | 16 | none | no label |
+| `topic` | compact | **350 × 104** | 1 | 0.9 | 1 | 24 (rx 140) | 30 | 14 | none | no label |
+| `motif` | both | **220 × 112** | 1 | 1.1 | 2 | 32 | 30 | 14 | none | no label |
 
-Two-row layouts step 142 px per row. "Label gap" is the distance from the hub line down to the
+Map labels are sans 600 in both layouts (compact was 500 in round 1 and read thin on a phone).
+If a scale change makes a dendrite or a two-line label touch the edge of its box, shrink `rMax`
+by a few px. Do not grow the box past these heights. Two-row layouts step 142 px per row. "Label gap" is the distance from the hub line down to the
 first label baseline. At 1440 px the map is the 608 px column. At 390 px the column is 350 px.
 
 What each variant shows:
@@ -219,10 +259,17 @@ What each variant shows:
   height.
 - **`hero`** (`/`). One cluster per public topic. Three decorative cells each, sized as ranks 2, 5
   and 8, seeded from the slug. No `data-pmid`, no rings, no states. Labels only.
-- **`topic`** (`/t/<slug>`). One unlabelled cluster of that page's top 8 papers, seeded from their
-  PMIDs. A paper published in the last 48 hours gets the new ring and fires. That is public data.
+- **`topic`** (`/t/<slug>`). One unlabelled cluster of that page's top 8 papers, drawn as a wide,
+  shallow fan across the whole column so it reads as a ranking. This variant sets `rx` itself (200
+  wide, 140 compact) and takes `ry` from `rMax`, instead of using the `2.2 × rMax` rule. Cell `k` (rank 1 to 8, left to
+  right) sits at `x = W/2 + rx × ((2k − 1)/8 − 1)` with ±6 px seeded jitter, `y` seeded inside
+  the ellipse, sizes from the usual rank formula. All eight fibres run to one hub at the bottom
+  centre. A paper published in the last 48 hours gets the new ring and fires. That is public data.
+  Round 1 drew this as a 110 px bouquet floating beside the title. It had no frame, no caption
+  and no meaning. It now sits in the figure frame like every other map (§8).
 - **`motif`** (`/sign-in`). One unlabelled cluster of three decorative cells (ranks 2, 5, 7) in
-  slot 1. Its hub sits on the bottom edge of the SVG, directly above the button.
+  slot 1. Its hub sits on the bottom edge of the SVG, at the SVG's horizontal centre, and that point
+  touches the top centre of the button (§8).
 
 ## 6. Motion
 
@@ -267,7 +314,10 @@ the plan's "pulses on arrival": an action potential starts at the cell body.
   12 px left and right (`box-shadow: -12px 0 0 var(--surface), 12px 0 0 var(--surface)`), so text
   does not move.
 - Cell clicked or tapped: scroll `#paper-<pmid>` to the centre of the viewport and keep the row
-  highlight for 1.6 s. The hit area is an invisible circle of radius `max(rs + 6, 12)`.
+  highlight for 1.6 s. The hit area is an invisible circle. Wide: radius `max(rs + 6, 14)`. Compact:
+  `clamp(14, d / 2, 22)`, where `d` is the distance to the nearest other real soma (22 if the cell
+  is alone), so targets grow to a thumb where there is room and never overlap. Draw the hit circles
+  after all cells, lowest rank last, so rank 1 wins any tie.
 
 **👍 burst.** On press, optimistically: three dashes in `--reinforce`, 90 ms apart, at 220 px/s. The
 soma scales 1 → 1.45 → 1 over 320 ms. The gold ring scales in from 0.6 over 240 ms. The fibre and
@@ -315,6 +365,8 @@ under 640 px: grid 28px | minmax(0,1fr), column gap 10, padding 18 0
 ```
 
 - **Rank and dot.** Rank in mono 12, ink-faint, 5 px down so it sits on the title's first baseline.
+  The rank sits in a fixed box `2ch` wide, right-aligned, tabular, so the dots of rows 1 to 20 form
+  one straight vertical line (round 1 let a two-digit rank push its dot 6 px right).
   The dot is an 8 px circle in the cluster hue: beside the rank on wide (gap 10), under it on
   compact (gap 7). New: a 1.25 px `--spike` ring 2 px out from the dot. 👎: hollow, 1 px hue
   outline. The dot is always a plain circle, whatever the cell type.
@@ -322,18 +374,27 @@ under 640 px: grid 28px | minmax(0,1fr), column gap 10, padding 18 0
   offset 4 px. `overflow-wrap: anywhere` on title and meta so a 220-character title wraps inside
   350 px (Review Focus 2). The title is never dimmed, not even for 👎.
 - **Meta.** 6 px under the title. Authors · journal · date. On the radar only, then
-  ` · <topic name>` in the cluster hue at weight 500. Public rows leave the topic out, because the
+  ` · <topic name>` in the cluster hue at weight 500, `white-space: nowrap` so the name moves to the
+  next line whole and never splits as "Brain-computer / interfaces". Public rows leave the topic out, because the
   whole page is one topic.
 - **Reasons.** 6 px under the meta, 12 px gaps. If the paper is new, the first item is the word
-  `new` in `--spike`, weight 500. It is real text, so the list says what the map says.
+  `new` in `--spike`, weight 500. It is real text, so the list says what the map says. Reasons are shown as stored, with one
+  display-only repair: `1 weeks old`, `1 days old` and `1 months old` are shown in the singular.
+  Do this in the row component. Do not touch `lib/ranking.ts`, the API or stored reasons. Do not
+  drop or merge reasons: an interest term that happens to equal the field name is still the reason
+  the paper ranked.
 - **Aside, wide.** Radar: the two buttons on top, the score under them, right-aligned, 8 px apart.
   Public rows: the score only.
 - **Actions, compact.** Their own line, 10 px under the reasons: buttons on the left, score on the
   right. A long title can never push them off screen.
-- **Rating buttons.** 36 × 32 px wide, 44 × 40 px compact, 6 px apart. 1 px `--rule` border, 4 px
-  radius, transparent. The emoji is 15 px.
-  - Not pressed: emoji `filter: grayscale(1)` at 0.65 opacity. Hover: border `--ink-faint`,
-    background `--surface`, emoji in colour.
+- **Rating buttons.** 36 × 32 px wide, 44 × 40 px compact, 6 px apart. 1 px `--control` border,
+  4 px radius, transparent. The emoji is 15 px. This is the one control Kalp uses every day, so it
+  has to look like a button at rest: border and glyph both reach 3:1 on `--paper`.
+  - Not pressed, light: emoji `filter: grayscale(1) brightness(0.55)` at full opacity. A grey
+    emoji on paper is about 1.4:1 without the darkening, which is why round 1 looked disabled.
+  - Not pressed, dark: emoji `filter: grayscale(1)` at 0.65 opacity, as in round 1. It must stay
+    quieter than the title beside it.
+  - Hover: border `--ink-faint`, background `--surface`, emoji in colour with no filter.
   - 👍 pressed: `--reinforce-wash` fill, `--reinforce` border, emoji in full colour.
   - 👎 pressed: `--surface-strong` fill, `--ink-muted` border, emoji in full colour.
   - Pending: `cursor: wait`, 0.6 opacity. "Not saved. Try again." in small ink-muted beside the
@@ -380,16 +441,21 @@ footer
 
 ```
 Sift                                     small link
-Neuromodulation              [ topic ]   h1 left, map 240×168 right, bottoms aligned
-20 papers, ranked just now   [  map  ]
-──────────────────────────────────────  strong rule
+Neuromodulation                          h1
+20 papers, ranked just now               meta
+──────────────────────────────────────  strong rule (the figure's top)
+[ topic map: top 8, rank 1 at the left ] 608×120 / 350×104
+──────────────────────────────────────
+top 8 of 20 papers  ○ 2 new in 48 h      caption, mono 11; the ○ part only when there are new ones
+──────────────────────────────────────
  1 ●  title …                       122  rows
  …
 The query                                small label, then mono 12 / 1.6, ink-muted
 footer
 ```
 
-Under 640 px the map moves below the count line as a 350 × 140 block, then the strong rule.
+The same frame at every width. The caption says "top 8 of 20 papers", or "all 5 papers" when the
+page has eight or fewer.
 
 **`/sign-in` (public, `ph-no-capture` stays)**
 
@@ -399,9 +465,11 @@ Sign in                                  h1
 ──────────────────────────────────────
 The radar is a private feed for one …    lead, ink-muted
 
-[ motif 200×104 ]                        left-aligned, 0 px above the button
-[ Sign in with Google ]                  serif 17, 1 px --rule-strong border, padding 8 16,
-                                         hover background --surface
+[   motif 220×112   ]                    motif and button share one left-aligned block
+[ Sign in with Google ]                  (inline-flex column, min-width 220, items centred), so
+                                         the hub lands on the button's top centre, 0 px gap.
+                                         Button: serif 17, 1 px --rule-strong border, padding
+                                         8 16, hover background --surface
 That sign-in did not complete. …         error, meta
 footer
 ```
@@ -425,7 +493,7 @@ footer
 
 Caption counts drop out when zero ("10 papers" alone). No papers: the clusters keep their labels
 and dormant-style cells, the caption reads "No papers today", and the existing empty-state
-sentence follows. No followed topics: the dormant map, caption "No fields followed", then the
+sentence follows. The 👍/👎 footnote is shown only when there is at least one row to rate. No followed topics: the dormant map, caption "No fields followed", then the
 existing empty state.
 
 **`/me/settings` and `/dev/settings` (private, `ph-no-capture` stays)**
@@ -450,7 +518,13 @@ footer
 ```
 
 No map here. **Interests get a restyle and nothing else**: the same rows, the same fields, the
-same two actions. Nothing is added to that section (Kalp's instruction).
+same two actions. Nothing is added to that section (Kalp's instruction, repeated for round 2).
+
+Under 640 px an interest row is two lines, so nothing wraps mid-phrase: the term on line one with
+its action ("Delete" or "re-rate to change", `white-space: nowrap`) right-aligned on the same
+line, then the provenance and weight ("from Obsidian · +0.80") on line two as one nowrap run. All
+rows end up the same height. This is layout only. No dots, icons, counts or copy are added to
+Interests or to the topic checkboxes.
 
 **Footer (all pages).** Replace the zinc classes with tokens: `border-top: 1px --rule`, mono 11,
 `--ink-faint`, same three items and wording.
@@ -481,3 +555,6 @@ same two actions. Nothing is added to that section (Kalp's instruction).
 - Do not use `Math.random()` or the clock in anything that affects markup.
 - Do not change `aria-pressed`, button labels, analytics events, open tracking or request bodies.
 - Do not add fields, controls or copy to the Interests section.
+- Do not hide state to make a cluster look fuller. A 👎 cell is drawn as a 👎 cell.
+- Do not change `lib/ranking.ts`, the API, or stored reasons to fix a label. Repair display text in
+  the row.
