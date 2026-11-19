@@ -5,6 +5,34 @@ Plan: `docs/superpowers/plans/2026-11-18-brain-redesign.md`. This file settles e
 left to the builder. If it and the plan disagree on a visual matter, this file wins. On behaviour,
 privacy and tests, the plan wins.
 
+## Round 3 changes (lead's call after judging round 2)
+
+Round 2 landed the direction. Titles are loudest, both appearances are designed, and the states
+read. Round 3 is the last build round, so it removes what looks wrong and adds nothing. Everything
+below is folded into the sections that follow. Where this file and the round-2 code disagree, this
+file wins.
+
+1. **Two-row maps lose the commissures.** On a phone they were two long, parallel, nearly straight
+   lines and the hero read as a table with column rules. Each row is now its own slab with its own
+   U's, and nothing joins the rows. The two-row box grows from 292 to 300 px so the bottom label
+   has room (§5).
+2. **Cells keep clear of each other.** Rings never overlap, and no soma sits on another cell's
+   fibre. Round 2 stacked ranks 1 and 2 on the phone radar into one smudge and put the 👎 cell on
+   the fibre bundle (§5).
+3. **A single field uses the width.** One cluster spreads to about 380 px of the 608 px figure
+   (about 230 of 350 on a phone) instead of a knot in the middle (§5).
+4. **A date never breaks across two lines** (§7).
+5. **The sign-in button sits on the column's left edge** and is as wide as the motif above it. The
+   motif is drawn a little larger (§5, §8).
+6. **The follow checkboxes are drawn by us,** so the unchecked one is no longer a bright white
+   square in dark mode. `color-scheme` is declared (§2, §8).
+7. **The unpressed rating glyph is lighter in light mode** (3.0 to 3.6:1, was 4.3:1), so ten pairs
+   of buttons stop competing with the titles (§7).
+8. **Small tidying:** the footer rule stops at the column, and a public row on a phone puts its
+   score on the reasons line (§7, §8).
+9. **Interests stay exactly as they are.** Kalp repeated it for round 3: nothing more goes into
+   that section.
+
 ## Round 2 changes (lead's call after judging round 1)
 
 The direction holds: a plate of cortex, still by default, titles loudest. Round 1 was too timid
@@ -19,11 +47,12 @@ sections that follow. Where this file and the round-1 code disagree, this file w
    stays visible (§2, §4).
 3. **A new token, `--control`,** gives the rating buttons a border that passes 3:1, and the
    unpressed glyph is darkened in light mode (§2, §7).
-4. **Two-row layouts lose the side loops.** They ran through the labels. Rows are joined by short
-   commissures at the column boundaries instead (§5).
+4. **Two-row layouts lose the side loops.** They ran through the labels. Round 2 joined the rows
+   with commissures instead. Round 3 removed those too (§5).
 5. **The topic map becomes a real figure:** full width, in the figure frame, with a caption, cells
    in rank order left to right (§5, §8).
-6. **The sign-in motif is centred on the button** it plugs into (§8).
+6. **The sign-in motif is centred on the button** it plugs into (§8). Round 3 keeps that and moves
+   the button to the column edge.
 7. **Row polish:** a fixed rank column so dots line up, the topic name wraps as one unit, "1 weeks
    old" is shown as "1 week old", the rating footnote hides when there are no rows (§7, §8).
 8. **Interests on a phone** stack onto two tidy lines. Nothing is added to that section (§8).
@@ -54,7 +83,8 @@ Three rules follow from that:
 
 Defined once per appearance in `app/globals.css` (`:root` and
 `@media (prefers-color-scheme: dark)`), then exposed through `@theme inline` as `--color-*`.
-The six existing token names keep their names.
+The six existing token names keep their names. `:root` also declares `color-scheme: light dark`, so
+native controls and scrollbars follow the appearance.
 
 | Token | Light | Dark | Used for |
 |---|---|---|---|
@@ -189,13 +219,32 @@ under the hubs, so a spike always travels toward its field's name.
 - column width `cw = W / n`. Cluster centre `x = cw × (i + 0.5)`,
   `y = top + rMax ± 5` (minus for even index, plus for odd, no stagger when `n = 1`).
 - a cluster is an ellipse: `rx = min(0.36 × cw, 2.2 × rMax)`, `ry = min(rx, rMax)`. Soma centres
-  are placed inside it, shrunk by `rs` on both axes. With three or more clusters in a row this is
-  the round-1 circle. With one or two it spreads sideways, so a thin radar fills its column
-  instead of piling ten cells into one small disc.
+  are placed inside it, shrunk by `rs` on both axes. Two exceptions, both on the radar:
+  - **one cluster alone** (`n = 1`): `rx = min(0.42 × cw, 3.4 × rMax)`. That is 190 on the wide
+    radar (a 380 px spread in the 608 px figure) and 115.6 on the compact one (231 of 350). Round 2
+    left ten cells in a 246 px knot with crossing dendrites.
+  - **compact radar, two to four clusters:** `rx = 0.42 × cw` (36.75 with four), so a busy column
+    has room to keep its rings apart.
+
+  `ry` is unchanged, so no box grows.
 - hub at `(x, top + 2 × rMax + hubGap)`. All hubs in a row share one y.
-- placement: in rank order, uniform in the ellipse. Reject a spot closer than
-  `2.8 × rs + 4` to an already placed soma. After every 30 failures relax the 2.8 by 15%. Stop at
-  300 tries.
+- placement: in rank order, uniform in the ellipse. A spot is rejected if it breaks either rule:
+  - **rings stay apart.** Every cell has an extent `ext = rs + 4.5`, or `rs + 7.5` if it is new
+    (room for the gold ring at `rs + 6.5`, since any cell can be 👍'd later). Two centres are at
+    least `ext_a + ext_b + 2` apart. This replaces the round-2 `2.8 × rs + 4`.
+  - **no soma on a fibre.** The new soma's centre is at least `rs + 4` from every placed cell's
+    fibre, and the new cell's own fibre passes at least `rs_other + 4` from every placed soma
+    centre. Sample each fibre at 16 points or more. This is what keeps one cell from standing
+    directly under another, and keeps a hollow 👎 cell from reading as a knot on the bundle.
+
+  After every 30 failures shrink both clearances by 15%. Stop at 300 tries and keep the candidate
+  that had the largest worst clearance, not the last one drawn. The phone rule (real cells 28 px
+  apart where there is room) stays. In the topic fan the x slot is fixed, so only the seeded `y`
+  is redrawn (up to 20 tries) against the same two rules.
+- a unit test on `buildNetwork` pins this for the fixtures (the default four fields, `fields=6`,
+  `fields=1`, the hero and the topic fan, wide and compact): no two extents overlap, and no soma
+  centre is within `rs + 2` of another cell's fibre. `fields=1` puts ten cells on one hub, so it
+  alone may have up to two soma-on-fibre hits. Extents still may not overlap there.
 - fibre: from the soma's bottom point, `C (x ± 5, sy + 0.45 × (hubY − sy))`
   `(hubX + 0.18 × (x − hubX), hubY − 22 × scale)` `(hubX, hubY)`.
 
@@ -206,14 +255,13 @@ if `n ≥ 3` close the ring from the last to the first. So 1 cluster has 0, 2 ha
 - neighbours in a row: a shallow U. Control points at 30% and 70% of the span, 14 px below the hubs.
 - the closing edge of a single row: a long arc under the U's. Control points at 12% and 88% of the
   span, `arc` px below the hubs. It passes between the U's and the labels.
-- between rows (compact, two rows): **no side loops and no closing arc.** Round 1 bowed the ring
-  out to `x = 0` and `x = W`, and it ran through the outer labels. Each row keeps its own U's.
-  The rows are joined by **commissures**: at every column boundary that has a U in both rows, one
-  1 px `--wire` curve runs from the lowest point of the upper U straight down to the lowest point
-  of the lower U, with a slight S (control points 8 px either side of the boundary, at 35% and
-  65% of the way down). It passes through the gap between two labels. Six clusters have 4 U's
-  and 2 commissures. Five have 3 U's and 1 commissure. Both rows use the same column grid, left
-  to right.
+- between rows (compact, two rows): **nothing.** No side loops, no closing arc and no
+  commissures. Round 1 bowed the ring out to `x = 0` and `x = W` and it ran through the outer
+  labels. Round 2 dropped a commissure through each label gap, and the gap is too narrow for a
+  real bend, so the hero got two parallel 130 px lines that read as table column rules. Each row
+  is now one slab with its own U's: six clusters have 4 U's, five have 3, four have 2 (3 + 1).
+  Both rows use the same column grid, left to right. Delete the commissure code and its tests,
+  do not hide it.
 
 **Tract clearance (all layouts).** No tract comes within 6 px of any label's box. A unit test on
 `buildNetwork` samples every tract path and checks it against the label boxes for the six public
@@ -225,7 +273,7 @@ glyph, not edges.
 
 **Labels.** SVG `<text>`, centred on the cluster's x, in the cluster hue. If the label is longer
 than `floor((cw − 10) / charW)` characters (`floor((cw − 28) / charW)` in a two-row layout, which
-leaves the commissure its gap), break it into two lines at the last space or hyphen
+keeps neighbouring labels well apart), break it into two lines at the last space or hyphen
 that fits (line step = font size + 2). A single long word stays on one line.
 
 **Layout numbers.** Two layouts are built on the server for every map: `wide` (shown at 640 px and
@@ -238,16 +286,18 @@ and the box never changes height.
 |---|---|---|---|---|---|---|---|---|---|---|
 | `radar` | wide | **608 × 232** | up to 6 | **1.25** (1.1 with 5–6 clusters) | 2 | 56 | 34 | 16 | 40 | 46, 11 px, 6.1 |
 | `radar` | compact, 1–4 clusters | **350 × 184** | up to 4 | **0.9** | 1 | 34 | 30 | 14 | 36 | 42, 10 px, 5.7 |
-| `radar` | compact, 5–6 clusters | 350 × 292 | 3 | 0.8 | 1 | 34 | 26 | 12 | none | 24, 10 px, 5.5 |
+| `radar` | compact, 5–6 clusters | **350 × 300** | 3 | 0.8 | 1 | 34 | 26 | 12 | none | 24, 10 px, 5.5 |
 | `hero` | wide | **608 × 192** | up to 6 | **1.0** | 2 | 40 | 30 | 14 | 40 | 46, 11 px, 6.1 |
-| `hero` | compact | **350 × 292** | 3 | 0.8 | 1 | 34 | 26 | 12 | none | 24, 10 px, 5.5 |
+| `hero` | compact | **350 × 300** | 3 | 0.8 | 1 | 34 | 26 | 12 | none | 24, 10 px, 5.5 |
 | `topic` | wide | **608 × 120** | 1 | 1.1 | 2 | 28 (rx 200) | 34 | 16 | none | no label |
 | `topic` | compact | **350 × 104** | 1 | 0.9 | 1 | 24 (rx 140) | 30 | 14 | none | no label |
-| `motif` | both | **220 × 112** | 1 | 1.1 | 2 | 32 | 30 | 14 | none | no label |
+| `motif` | both | **220 × 112** | 1 | **1.3** | 2 | 32 (rx 70) | 30 | 14 | none | no label |
 
 Map labels are sans 600 in both layouts (compact was 500 in round 1 and read thin on a phone).
 If a scale change makes a dendrite or a two-line label touch the edge of its box, shrink `rMax`
-by a few px. Do not grow the box past these heights. Two-row layouts step 142 px per row. "Label gap" is the distance from the hub line down to the
+by a few px. Do not grow the box past these heights. Two-row layouts step 142 px per row, and
+their box is 300 px (round 2 was 292): the extra 8 px goes under the bottom row's labels, so a
+two-line label ends at least 12 px above the figure's bottom hairline. "Label gap" is the distance from the hub line down to the
 first label baseline. At 1440 px the map is the 608 px column. At 390 px the column is 350 px.
 
 What each variant shows:
@@ -268,7 +318,8 @@ What each variant shows:
   Round 1 drew this as a 110 px bouquet floating beside the title. It had no frame, no caption
   and no meaning. It now sits in the figure frame like every other map (§8).
 - **`motif`** (`/sign-in`). One unlabelled cluster of three decorative cells (ranks 2, 5, 7) in
-  slot 1. Its hub sits on the bottom edge of the SVG, at the SVG's horizontal centre, and that point
+  slot 1, at scale 1.3 with its own `rx` of 70, so the three cells span about 130 px of the 220 px
+  box and read as a figure, not a doodle on the button. Its hub sits on the bottom edge of the SVG, at the SVG's horizontal centre, and that point
   touches the top centre of the button (§8).
 
 ## 6. Motion
@@ -373,7 +424,10 @@ under 640 px: grid 28px | minmax(0,1fr), column gap 10, padding 18 0
 - **Title.** Serif, `--ink`, no underline at rest. Hover or focus: 1 px underline in `--ink`,
   offset 4 px. `overflow-wrap: anywhere` on title and meta so a 220-character title wraps inside
   350 px (Review Focus 2). The title is never dimmed, not even for 👎.
-- **Meta.** 6 px under the title. Authors · journal · date. On the radar only, then
+- **Meta.** 6 px under the title. Authors · journal · date. The date is one `white-space: nowrap`
+  run, so it never splits as "17 / Nov 2026". Every " · " belongs to the item before it, joined
+  by a non-breaking space, so a line can end with a dot but never starts with one. Authors and
+  journal still wrap freely. This lives in the shared row, for `RadarEntry` and `PaperEntry`. On the radar only, then
   ` · <topic name>` in the cluster hue at weight 500, `white-space: nowrap` so the name moves to the
   next line whole and never splits as "Brain-computer / interfaces". Public rows leave the topic out, because the
   whole page is one topic.
@@ -385,13 +439,17 @@ under 640 px: grid 28px | minmax(0,1fr), column gap 10, padding 18 0
   the paper ranked.
 - **Aside, wide.** Radar: the two buttons on top, the score under them, right-aligned, 8 px apart.
   Public rows: the score only.
-- **Actions, compact.** Their own line, 10 px under the reasons: buttons on the left, score on the
-  right. A long title can never push them off screen.
+- **Actions, compact.** Radar: their own line, 10 px under the reasons, buttons on the left, score
+  on the right. A long title can never push them off screen. Public rows have no buttons, so the
+  score does not get a line to itself: it sits at the right end of the first reasons line
+  (`margin-left: auto`, same baseline). Only a row with no reasons keeps a score line.
 - **Rating buttons.** 36 × 32 px wide, 44 × 40 px compact, 6 px apart. 1 px `--control` border,
   4 px radius, transparent. The emoji is 15 px. This is the one control Kalp uses every day, so it
   has to look like a button at rest: border and glyph both reach 3:1 on `--paper`.
-  - Not pressed, light: emoji `filter: grayscale(1) brightness(0.55)` at full opacity. A grey
-    emoji on paper is about 1.4:1 without the darkening, which is why round 1 looked disabled.
+  - Not pressed, light: emoji `filter: grayscale(1) brightness(0.65)` at full opacity, which
+    measures between 3.0 and 3.6:1 on paper. A grey emoji on paper is about 1.4:1 without the
+    darkening, which is why round 1 looked disabled. Round 2 used 0.55 (4.3:1), and ten dark pairs
+    down the right edge competed with the titles. An icon needs 3:1, not 4.5:1.
   - Not pressed, dark: emoji `filter: grayscale(1)` at 0.65 opacity, as in round 1. It must stay
     quieter than the title beside it.
   - Hover: border `--ink-faint`, background `--surface`, emoji in colour with no filter.
@@ -418,7 +476,7 @@ hairline, the caption (padding 6 0 8), a hairline.
 ```
 Sift                                   wordmark
 ──────────────────────────────────────  strong rule (the figure's top)
-[ hero map: 6 clusters, labels ]        608×192 / 350×292
+[ hero map: 6 clusters, labels ]        608×192 / 350×300
 ──────────────────────────────────────
 6 fields · illustration, not live data  caption, mono 11
 
@@ -465,9 +523,11 @@ Sign in                                  h1
 ──────────────────────────────────────
 The radar is a private feed for one …    lead, ink-muted
 
-[   motif 220×112   ]                    motif and button share one left-aligned block
-[ Sign in with Google ]                  (inline-flex column, min-width 220, items centred), so
-                                         the hub lands on the button's top centre, 0 px gap.
+[   motif 220×112   ]                    motif and button share one block, 220 px wide, whose
+[ Sign in with Google ]                  left edge is the column's left edge. The button fills
+                                         the block (width 220, label centred), so its left edge
+                                         lines up with the h1, the rule and the prose, and the
+                                         hub still lands on its top centre, 0 px gap.
                                          Button: serif 17, 1 px --rule-strong border, padding
                                          8 16, hover background --surface
 That sign-in did not complete. …         error, meta
@@ -481,7 +541,7 @@ Sift  My radar  Settings        Sign out  nav, small
 My radar                                  h1
 4 fields · ranked 3 hours ago · ranker p1 meta (the field names moved into the map)
 ──────────────────────────────────────
-[ radar map ]                             608×232 / 350×172
+[ radar map ]                             608×232 / 350×184 (350×300 with 5–6 fields)
 ──────────────────────────────────────
 10 papers  ○ 3 new in 48 h  ○ 1 marked useful   caption; the two ○ are 7 px rings in
 ──────────────────────────────────────          --spike and --reinforce
@@ -506,7 +566,7 @@ reader@example.com                        meta
 
 Topics on your radar                      h2, strong rule
  ☑ Brain-computer interfaces              serif 17, row padding 14 0, hairlines,
- ☑ Neural engineering                     checkbox accent-color: var(--ink)
+ ☑ Neural engineering                     checkbox drawn by us (below)
  …
 Saved.                                    small
 
@@ -517,8 +577,16 @@ Terms that lift a paper on your radar …   meta
 footer
 ```
 
+**The follow checkbox** is `appearance: none`, 16 × 16 px, 3 px radius, in both appearances.
+Unchecked: 1 px `--control` border, transparent fill. Checked: `--ink` fill and border, with a
+`--paper` tick (a `::before` with a `clip-path`, so it takes the tokens). Round 2 used the native
+control with `accent-color`, and in dark mode the unchecked box was a solid white square, the
+brightest thing on the page, which looked more "on" than the checked ones. The input stays a real
+`<input type="checkbox">` with the same label, handler and focus ring.
+
 No map here. **Interests get a restyle and nothing else**: the same rows, the same fields, the
-same two actions. Nothing is added to that section (Kalp's instruction, repeated for round 2).
+same two actions. Nothing is added to that section (Kalp's instruction, repeated for round 2 and
+again for round 3). Round 3 does not touch the Interests markup at all.
 
 Under 640 px an interest row is two lines, so nothing wraps mid-phrase: the term on line one with
 its action ("Delete" or "re-rate to change", `white-space: nowrap`) right-aligned on the same
@@ -527,7 +595,8 @@ rows end up the same height. This is layout only. No dots, icons, counts or copy
 Interests or to the topic checkboxes.
 
 **Footer (all pages).** Replace the zinc classes with tokens: `border-top: 1px --rule`, mono 11,
-`--ink-faint`, same three items and wording.
+`--ink-faint`, same three items and wording. The rule is on the inner column (`max-w-2xl` less
+the side padding), not on the full-width `<footer>`, so it ends where every other rule ends.
 
 ## 9. Don'ts
 
@@ -549,6 +618,8 @@ Interests or to the topic checkboxes.
 - Do not let colour carry meaning alone. New has a ring and the word "new". 👍 has a ring, a thick
   fibre and `aria-pressed`. 👎 is hollow. Clusters have text labels.
 - Do not draw straight edges, arrowheads, node-and-line graphs, a brain outline, or anything 3D.
+  A long, nearly straight tract counts as a straight edge. Do not bring the commissures back.
+- Do not let two cells' rings touch, or stand a soma on another cell's fibre.
 - Do not render interests, ratings, follows or verdict state on `/`, `/t/<slug>` or `/sign-in`.
   The hero and topic maps read topic names, PMIDs and publication dates only.
 - Do not add a web font, a CDN request, or an animation or graph library.
