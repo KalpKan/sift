@@ -33,7 +33,7 @@ export default function FollowsForm({ topics }: { topics: Row[] }) {
         {rows.map((r) => (
           <li key={r.slug} className="py-[14px]">
             <label className="flex cursor-pointer items-baseline gap-3 font-serif text-[17px] leading-[1.35]">
-              <input type="checkbox" checked={r.followed} onChange={() => toggle(r.slug)} className="translate-y-0.5 accent-ink" />
+              <input type="checkbox" checked={r.followed} onChange={() => toggle(r.slug)} className="follow-check translate-y-0.5" />
               {r.name}
             </label>
           </li>

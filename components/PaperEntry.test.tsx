@@ -51,7 +51,24 @@ describe("PaperEntry", () => {
   });
 
   it("puts the byline, the journal and the date on one line", () => {
-    expect(html()).toContain("Zhang et al. · Brain stimulation · 14 Sep 2026");
+    expect(html()).toContain("Zhang et al.\u00A0· Brain stimulation\u00A0· <span class=\"whitespace-nowrap\">14 Sep 2026</span>");
+  });
+
+  it("keeps the date in one nowrap run and every separator with the item before it, never starting a line", () => {
+    const out = html();
+    expect(out).toContain('<span class="whitespace-nowrap">14 Sep 2026</span>');
+    // Every " · " is a non-breaking space then the dot; a plain space follows it, so a line may end with a dot.
+    expect(out).not.toMatch(/[^\u00A0] ·/);
+    expect(out.match(/\u00A0·/g)).toHaveLength(2);
+  });
+
+  it("puts the score at the right end of the first reasons line on a phone, and keeps a line for a row with no reasons", () => {
+    const withReasons = html();
+    expect(withReasons.indexOf(">88<")).toBeLessThan(withReasons.indexOf("4 days old"));
+    expect(withReasons).toMatch(/class="[^"]*float-right[^"]*">88</);
+    const bare = html({ reasons: [] });
+    expect(bare).not.toContain("float-right");
+    expect(bare).toMatch(/class="[^"]*mt-2\.5[^"]*">88</);
   });
 
   it("omits an empty journal or byline instead of printing a stray separator", () => {

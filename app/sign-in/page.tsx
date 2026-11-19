@@ -32,14 +32,13 @@ export default async function SignInPage({ searchParams }: PageProps<"/sign-in">
           .
         </p>
         {/*
-          The motif and the button share one left-aligned column, both centred in it, so the motif's
-          hub (the bottom centre of its SVG) lands on the button's top centre with no gap, and the
-          cell's fibre runs straight into the button.
+          The motif and the button share one 220 px block whose left edge is the column's left edge, so the
+          button lines up with the heading and the rules. The button fills the block and the motif's hub (the
+          bottom centre of its SVG) lands on the button's top centre with no gap: the cell's fibre runs
+          straight into the button.
         */}
-        <div className="mt-8 inline-flex min-w-[220px] flex-col items-center">
-          <div className="w-[220px]">
-            <BrainMaps variant="motif" clusters={motif.clusters} neurons={motif.neurons} />
-          </div>
+        <div className="mt-8 w-[220px]">
+          <BrainMaps variant="motif" clusters={motif.clusters} neurons={motif.neurons} />
           <GoogleSignInButton />
         </div>
         {error && <p className="mt-4 text-[13px] leading-[1.45] text-ink-muted">That sign-in did not complete. Try again.</p>}

@@ -3,7 +3,7 @@
 import { useState, type CSSProperties } from "react";
 import { useBrainHover } from "@/components/brain/BrainHover";
 import { dotClass } from "@/components/brain/rowDot";
-import { formatDate, reasonText } from "@/components/PaperEntry";
+import { MetaLine, reasonText } from "@/components/PaperEntry";
 import { events } from "@/lib/events";
 import type { MePaper } from "@/lib/me-api";
 
@@ -45,7 +45,6 @@ export default function RadarEntry({
   const [pending, setPending] = useState(false);
   const brain = useBrainHover();
   const href = paper.url ?? `https://pubmed.ncbi.nlm.nih.gov/${paper.pmid}/`;
-  const meta = [paper.authorsShort, paper.journal, formatDate(paper.published)].filter(Boolean).join(" · ");
   const litFromCell = brain.active === paper.pmid && brain.from === "cell";
 
   function opened() {
@@ -149,17 +148,7 @@ export default function RadarEntry({
           </a>
         </h3>
 
-        {(meta || topicName) && (
-          <p className="mt-1.5 text-[13px] leading-[1.45] text-ink-muted [overflow-wrap:anywhere]">
-            {meta}
-            {topicName && (
-              <>
-                {meta && " · "}
-                <span className="whitespace-nowrap font-medium text-[var(--c)]">{topicName}</span>
-              </>
-            )}
-          </p>
-        )}
+        <MetaLine authors={paper.authorsShort} journal={paper.journal} published={paper.published} topicName={topicName} />
 
         {(isNew || paper.reasons.length > 0) && (
           <ul className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">

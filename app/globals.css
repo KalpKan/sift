@@ -16,6 +16,7 @@
  */
 
 :root {
+  color-scheme: light dark;
   --paper: #f9f7f2;
   --surface: #f1eee6;
   --surface-strong: #e7e3d8;
@@ -283,10 +284,10 @@ a {
 }
 
 /* The rating buttons' glyph at rest (docs/design/brain.md section 7). Light: a grey emoji on paper is
-   about 1.4:1, so it is darkened until it reaches 3:1. Dark: round-1 grey at 0.65, quieter than the title. */
+   about 1.4:1, so it is darkened until it reaches 3 to 3.6:1. Dark: round-1 grey at 0.65, quieter than the title. */
 .rate-glyph {
   display: inline-block;
-  filter: grayscale(1) brightness(0.55);
+  filter: grayscale(1) brightness(0.65);
 }
 @media (prefers-color-scheme: dark) {
   .rate-glyph {
@@ -296,6 +297,37 @@ a {
 }
 .group:hover .rate-glyph {
   filter: none;
+  opacity: 1;
+}
+
+/* The follow checkbox, drawn by us (docs/design/brain.md section 8). The native one was a solid white square in
+   dark mode, the brightest thing on the page. It stays a real input type=checkbox, so the label, the handler, the
+   keyboard and the focus ring (the global :focus-visible outline) are the browser's. */
+.follow-check {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid var(--control);
+  border-radius: 3px;
+  background: transparent;
+}
+.follow-check:checked {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+.follow-check::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  clip-path: polygon(20% 52%, 30% 42%, 44% 58%, 72% 26%, 82% 36%, 44% 78%);
+  opacity: 0;
+}
+.follow-check:checked::before {
   opacity: 1;
 }
 

@@ -163,13 +163,24 @@ type Spec = {
   labelPx: number;
   charW: number;
   hubAtBottom?: boolean;
-  /** Fixed horizontal radius of the cluster ellipse (the topic fan); otherwise min(0.36 * column, 2.2 * rMax). */
+  /** Fixed horizontal radius of the cluster ellipse (the topic fan, the motif); otherwise see `clusterRx`. */
   rxFixed?: number;
   /** The topic fan: cell k of 8 stands at the k-th eighth of the ellipse, left to right. */
   fan?: boolean;
 };
 
 const ROW_STEP = 142;
+
+/**
+ * Horizontal radius of a cluster ellipse (docs/design/brain.md section 5). A single followed field on the
+ * radar spreads over the figure's width; the compact radar with two to four fields uses 0.42 of its column,
+ * so a busy column has room to keep its rings apart. Everything else is min(0.36 * column, 2.2 * rMax).
+ */
+function clusterRx(variant: Variant, layout: LayoutName, n: number, cw: number, rMax: number): number {
+  if (variant === "radar" && n === 1) return Math.min(0.42 * cw, 3.4 * rMax);
+  if (variant === "radar" && layout === "compact" && n >= 2 && n <= 4) return 0.42 * cw;
+  return Math.min(0.36 * cw, 2.2 * rMax);
+}
 
 function specFor(variant: Variant, layout: LayoutName, clusterCount: number): Spec {
   const n = clusterCount;
@@ -179,7 +190,7 @@ function specFor(variant: Variant, layout: LayoutName, clusterCount: number): Sp
     }
     return n <= 4
       ? { W: 350, H: 184, tail: 0, cols: 4, scale: 0.9, detail: 1, rMax: 34, top: 30, hubGap: 14, rowH: ROW_STEP, arc: 30, labelGap: 44, labelPx: 10, charW: 5.7 }
-      : { W: 350, tail: 44, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 26, hubGap: 12, rowH: ROW_STEP, arc: 0, labelGap: 27, labelPx: 10, charW: 5.7 };
+      : { W: 350, tail: 52, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 26, hubGap: 12, rowH: ROW_STEP, arc: 0, labelGap: 27, labelPx: 10, charW: 5.7 };
   }
   if (variant === "hero") {
     if (layout === "wide") {
@@ -189,14 +200,14 @@ function specFor(variant: Variant, layout: LayoutName, clusterCount: number): Sp
     // room under the hubs for the closing arc; four or more run in two rows of three.
     if (n === 1) return { W: 350, tail: 44, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 26, hubGap: 12, rowH: ROW_STEP, arc: 0, labelGap: 27, labelPx: 10, charW: 5.7 };
     if (n <= 3) return { W: 350, tail: 66, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 30, hubGap: 14, rowH: ROW_STEP, arc: 30, labelGap: 44, labelPx: 10, charW: 5.7 };
-    return { W: 350, tail: 44, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 26, hubGap: 12, rowH: ROW_STEP, arc: 0, labelGap: 27, labelPx: 10, charW: 5.7 };
+    return { W: 350, tail: 52, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 26, hubGap: 12, rowH: ROW_STEP, arc: 0, labelGap: 27, labelPx: 10, charW: 5.7 };
   }
   if (variant === "topic") {
     return layout === "wide"
       ? { W: 608, H: 120, tail: 0, cols: 1, scale: 1.1, detail: 2, rMax: 28, top: 34, hubGap: 16, rowH: 0, arc: 0, labelGap: 0, labelPx: 0, charW: 0, hubAtBottom: true, rxFixed: 200, fan: true }
       : { W: 350, H: 104, tail: 0, cols: 1, scale: 0.9, detail: 1, rMax: 24, top: 30, hubGap: 14, rowH: 0, arc: 0, labelGap: 0, labelPx: 0, charW: 0, hubAtBottom: true, rxFixed: 140, fan: true };
   }
-  return { W: 220, H: 112, tail: 0, cols: 1, scale: 1.1, detail: 2, rMax: 32, top: 30, hubGap: 14, rowH: 0, arc: 0, labelGap: 0, labelPx: 0, charW: 0, hubAtBottom: true };
+  return { W: 220, H: 112, tail: 0, cols: 1, scale: 1.3, detail: 2, rMax: 32, top: 30, hubGap: 14, rowH: 0, arc: 0, labelGap: 0, labelPx: 0, charW: 0, hubAtBottom: true, rxFixed: 70 };
 }
 
 // ---------------------------------------------------------------------------
@@ -334,6 +345,65 @@ function wrapLabel(label: string, maxChars: number): string[] {
 }
 
 // ---------------------------------------------------------------------------
+// Placement clearances (docs/design/brain.md section 5)
+// ---------------------------------------------------------------------------
+
+/** A cell's extent is its soma plus this (room for the 👍 ring when it is not new). */
+const EXT_REST = 4.5;
+/** ...plus this when the cell is new, so the gold ring at rs + 6.5 clears the vermilion one. */
+const EXT_NEW = 7.5;
+const FIBRE_POINTS = 24;
+
+type Placed = { x: number; y: number; rs: number; ext: number; real: boolean; fp: [number, number][] };
+
+/** The cubic a cell's fibre follows, from its soma's bottom to the hub; `j` in [0, 1) is the seeded sideways jitter. */
+function fibreGeometry(c: { kind: CellKind; hubX: number; hubY: number }, x: number, y: number, rs: number, scale: number, j: number) {
+  const sy = y + rs * (c.kind === "bipolar" ? 1.2 : c.kind === "pyramidal" ? 0.8 : 1);
+  const c1: [number, number] = [x + (j - 0.5) * 10, sy + (c.hubY - sy) * 0.45];
+  const c2: [number, number] = [c.hubX + (x - c.hubX) * 0.18, c.hubY - 22 * scale];
+  return { sy, c1, c2, x, hubX: c.hubX, hubY: c.hubY };
+}
+
+function sampleFibre(g: ReturnType<typeof fibreGeometry>): [number, number][] {
+  const out: [number, number][] = [];
+  for (let i = 0; i <= FIBRE_POINTS; i++) {
+    const t = i / FIBRE_POINTS;
+    const u = 1 - t;
+    out.push([
+      u * u * u * g.x + 3 * u * u * t * g.c1[0] + 3 * u * t * t * g.c2[0] + t * t * t * g.hubX,
+      u * u * u * g.sy + 3 * u * u * t * g.c1[1] + 3 * u * t * t * g.c2[1] + t * t * t * g.hubY,
+    ]);
+  }
+  return out;
+}
+
+const nearest = (px: number, py: number, pts: [number, number][]) => {
+  let d = Infinity;
+  for (const [x, y] of pts) d = Math.min(d, Math.hypot(x - px, y - py));
+  return d;
+};
+
+/**
+ * How well a candidate soma at (x, y) keeps clear of the cells already placed, as the smallest
+ * ratio of actual to required distance over three rules: extents stay apart (centres at least
+ * ext_a + ext_b + 2), the new soma is at least rs + 4 from every placed fibre, and its own fibre is
+ * at least rs_other + 4 from every placed soma. A ratio of 1 or more means every rule holds; the
+ * caller relaxes the bar by 15% every 30 failures. `hitOk` is the phone rule: real somas 28 px apart.
+ */
+function worstClearance(placed: Placed[], x: number, y: number, rs: number, ext: number, fp: [number, number][], hitRule: boolean) {
+  let ratio = Infinity;
+  let hitOk = true;
+  for (const p of placed) {
+    const d = Math.hypot(p.x - x, p.y - y);
+    ratio = Math.min(ratio, d / (ext + p.ext + 2));
+    ratio = Math.min(ratio, nearest(x, y, p.fp) / (rs + 4));
+    ratio = Math.min(ratio, nearest(p.x, p.y, fp) / (p.rs + 4));
+    if (hitRule && p.real && d < HIT_APART) hitOk = false;
+  }
+  return { ratio, hitOk };
+}
+
+// ---------------------------------------------------------------------------
 // buildNetwork
 // ---------------------------------------------------------------------------
 
@@ -341,8 +411,6 @@ type Cluster = NetCluster & { cw: number; row: number; col: number };
 
 /** Every U tract dips this far below its hubs at its control points. */
 const U_DIP = 14;
-/** The lowest point of a U is at 3/4 of its control-point dip (a cubic with both controls at the same depth). */
-const U_LOW = 0.75 * U_DIP;
 const HIT_MIN = 14;
 const HIT_MAX = 22;
 /** Compact radar: real somas are kept at least this far apart so every tap target can be 14 px without overlap. */
@@ -392,7 +460,7 @@ export function buildNetwork(input: NetworkInput): Network {
     const cy = f(top + rMax + row * rowH + (n > 1 ? (i % 2 ? 5 : -5) : 0));
     const hue = ((c.index % 4) + 4) % 4;
     const hubY = spec.hubAtBottom ? spec.H! : top + 2 * rMax + hubGap + row * rowH;
-    const rx = spec.rxFixed ?? Math.min(0.36 * cw, 2.2 * rMax);
+    const rx = spec.rxFixed ?? clusterRx(variant, layout, n, cw, rMax);
     return {
       id: c.id,
       label: c.label,
@@ -415,8 +483,8 @@ export function buildNetwork(input: NetworkInput): Network {
   const lowestHub = n ? Math.max(...cl.map((c) => c.hubY)) : 0;
   const height = input.height ?? spec.H ?? f(lowestHub + spec.tail);
 
-  // Labels: only where the variant draws them, never on a dormant map. A two-row layout leaves
-  // the commissure its gap between neighbouring labels.
+  // Labels: only where the variant draws them, never on a dormant map. A two-row layout keeps
+  // neighbouring labels well apart.
   if (labelGap > 0 && !dormant) {
     for (const c of cl) {
       const max = Math.floor((c.cw - (twoRow ? 28 : 10)) / charW);
@@ -425,9 +493,8 @@ export function buildNetwork(input: NetworkInput): Network {
   }
 
   // Tracts (axon edges). A single row: a shallow U between neighbours, closed into a ring from
-  // three clusters up by one long arc under the U's. Two rows: each row keeps its own U's (no
-  // closing arc, so nothing runs out past the outer labels) and the rows are joined by
-  // commissures at the column boundaries that have a U in both rows.
+  // three clusters up by one long arc under the U's. Two rows: each row keeps its own U's and
+  // nothing joins the rows (no closing arc, no commissures).
   const edges: NetEdge[] = [];
   const hub = (c: Cluster) => `${c.hubX},${c.hubY}`;
   const uTract = (a: Cluster, b: Cluster) => {
@@ -435,7 +502,6 @@ export function buildNetwork(input: NetworkInput): Network {
     return `M${hub(a)}C${f(a.hubX + dx * 0.3)},${f(a.hubY + U_DIP)} ${f(b.hubX - dx * 0.3)},${f(b.hubY + U_DIP)} ${hub(b)}`;
   };
   if (n > 1) {
-    const rowOf = (r: number) => cl.filter((c) => c.row === r);
     for (let i = 0; i < n - 1; i++) {
       if (cl[i].row !== cl[i + 1].row) continue;
       edges.push({ from: cl[i].id, to: cl[i + 1].id, kind: "axon", d: uTract(cl[i], cl[i + 1]) });
@@ -451,25 +517,6 @@ export function buildNetwork(input: NetworkInput): Network {
         d: `M${hub(a)}C${f(a.hubX + dx * 0.12)},${f(a.hubY + arc)} ${f(b.hubX - dx * 0.12)},${f(b.hubY + arc)} ${hub(b)}`,
       });
     }
-    for (let r = 0; r + 1 < rowCount; r++) {
-      const upper = rowOf(r);
-      const lower = rowOf(r + 1);
-      for (let k = 0; k + 1 < cols; k++) {
-        const [a, b] = [upper.find((c) => c.col === k), upper.find((c) => c.col === k + 1)];
-        const [p, q] = [lower.find((c) => c.col === k), lower.find((c) => c.col === k + 1)];
-        if (!a || !b || !p || !q) continue;
-        const bx = f((a.hubX + b.hubX) / 2);
-        const y0 = f(a.hubY + U_LOW);
-        const y1 = f(p.hubY + U_LOW);
-        const dy = y1 - y0;
-        edges.push({
-          from: a.id,
-          to: p.id,
-          kind: "axon",
-          d: `M${bx},${y0}C${f(bx - 8)},${f(y0 + dy * 0.35)} ${f(bx + 8)},${f(y0 + dy * 0.65)} ${bx},${y1}`,
-        });
-      }
-    }
   }
 
   // Neurons, placed cluster by cluster in rank order.
@@ -477,45 +524,68 @@ export function buildNetwork(input: NetworkInput): Network {
   const out: NetNeuron[] = [];
   for (const c of cl) {
     const mine = neurons.filter((x) => x.cluster === c.id).sort((a, b) => a.rank - b.rank);
-    const placed: { x: number; y: number; rs: number; real: boolean }[] = [];
+    const placed: Placed[] = [];
     // Dendrites of a second row stop below the first row's labels.
     const ceil = c.row === 0 || labelGap === 0 ? 6 : cl.find((q) => q.row === c.row - 1)!.hubY + labelGap + labelPx + 2 + 6;
     for (const nu of mine) {
       const R = rng(nu.id);
       const rs = (7 - 0.4 * (nu.rank - 1)) * scale;
       const real = !nu.ghost && !nu.decorative;
-      let x = c.x;
-      let y = c.y;
+      const ext = rs + (nu.isNew ? EXT_NEW : EXT_REST);
+      const geo = (x: number, y: number, j: number) => fibreGeometry(c, x, y, rs, scale, j);
+      // A candidate spot with the fibre it would carry, and its worst clearance (see `worstClearance`).
+      const candidate = (x: number, y: number, j: number, tries: number) => {
+        const g = geo(x, y, j);
+        const fp = sampleFibre(g);
+        const hitRule = compactRadar && real && tries < 200;
+        return { x, y, j, fp, ...worstClearance(placed, x, y, rs, ext, fp, hitRule) };
+      };
+      let best: ReturnType<typeof candidate>;
       if (spec.fan) {
         // The topic fan: cell k (rank 1 to 8, left to right) stands at the k-th eighth of the ellipse.
+        // Its x is fixed, so only the seeded y is redrawn, up to 20 times.
         const k = Math.min(8, Math.max(1, nu.rank));
         const ratio = (2 * k - 1) / 8 - 1;
-        x = c.x + c.rx * ratio + (R() * 2 - 1) * 6;
+        const x = c.x + c.rx * ratio + (R() * 2 - 1) * 6;
         const across = Math.min(0.97, Math.abs(x - c.x) / c.rx);
         const half = c.ry * Math.sqrt(1 - across * across);
-        y = c.y + (R() * 2 - 1) * Math.max(0, half - rs);
-        placed.push({ x, y, rs, real });
+        best = candidate(x, c.y + (R() * 2 - 1) * Math.max(0, half - rs), R(), 0);
+        for (let t = 1; t < 20 && best.ratio < 1; t++) {
+          const cand = candidate(x, c.y + (R() * 2 - 1) * Math.max(0, half - rs), R(), 0);
+          if (cand.ratio > best.ratio) best = cand;
+        }
       } else {
+        // Uniform in the ellipse (shrunk by the soma radius), in rank order. A spot is kept if every
+        // clearance holds; every 30 failures all clearances relax by 15%. After 300 tries the best
+        // candidate seen wins, not the last one drawn. On a phone, real cells also keep 28 px apart
+        // where there is room (the first 200 tries), so each can have a 14 px tap target.
         let tries = 0;
-        let sep = 2.8;
-        let ok = false;
-        do {
+        let relax = 1;
+        best = undefined as unknown as ReturnType<typeof candidate>;
+        for (;;) {
           const a = R() * Math.PI * 2;
           const d = Math.sqrt(R());
-          x = c.x + Math.cos(a) * d * Math.max(0, c.rx - rs);
-          y = c.y + Math.sin(a) * d * Math.max(0, c.ry - rs);
-          ok = placed.every((p) => Math.hypot(p.x - x, p.y - y) > sep * Math.max(p.rs, rs) + 4);
-          // On a phone, real cells keep 28 px apart where there is room, so each can have a 14 px tap target.
-          if (ok && compactRadar && real && tries < 200) ok = placed.every((p) => !p.real || Math.hypot(p.x - x, p.y - y) >= HIT_APART);
-          if (++tries % 30 === 0) sep *= 0.85;
-        } while (!ok && tries < 300);
-        placed.push({ x, y, rs, real });
+          const cand = candidate(
+            c.x + Math.cos(a) * d * Math.max(0, c.rx - rs),
+            c.y + Math.sin(a) * d * Math.max(0, c.ry - rs),
+            R(),
+            tries,
+          );
+          if (!best || cand.ratio > best.ratio) best = cand;
+          if (cand.ratio >= relax && cand.hitOk) {
+            best = cand;
+            break;
+          }
+          if (++tries >= 300) break;
+          if (tries % 30 === 0) relax *= 0.85;
+        }
       }
+      const { x, y } = best;
+      placed.push({ x, y, rs, ext, real, fp: best.fp });
 
       const dn = dendrites(c.kind, x, y, rs, R, detail, y - rs - ceil);
-      const sy = y + rs * (c.kind === "bipolar" ? 1.2 : c.kind === "pyramidal" ? 0.8 : 1);
-      const c1: [number, number] = [x + (R() - 0.5) * 10, sy + (c.hubY - sy) * 0.45];
-      const c2: [number, number] = [c.hubX + (x - c.hubX) * 0.18, c.hubY - 22 * scale];
+      const g = geo(x, y, best.j);
+      const { sy, c1, c2 } = g;
       const fibre = `M${f(x)},${f(sy)}C${f(c1[0])},${f(c1[1])} ${f(c2[0])},${f(c2[1])} ${c.hubX},${c.hubY}`;
       const fibreLen = f(cubicLength([[x, sy], c1, c2, [c.hubX, c.hubY]]));
       edges.push({ from: nu.id, to: c.id, kind: "dendrite", d: fibre });

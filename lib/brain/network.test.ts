@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildNetwork, heroNeurons, isNew, type NetworkInput } from "./network";
+import { buildNetwork, heroNeurons, isNew, motifNeurons, type NetworkInput } from "./network";
 
 const clusters = [
   { id: "bci", label: "Brain-computer interfaces" },
@@ -59,12 +59,28 @@ describe("buildNetwork", () => {
   });
 
   it("makes a cluster an ellipse: rx = min(0.36 * column, 2.2 * rMax), ry = min(rx, rMax)", () => {
-    const one = buildNetwork(radar({ clusters: clusters.slice(0, 1), neurons: [] }));
-    expect(one.clusters[0].rx).toBeCloseTo(123.2, 1); // 2.2 * 56, the column is 608 wide
-    expect(one.clusters[0].ry).toBe(56);
     const four = buildNetwork(radar());
     expect(four.clusters[0].rx).toBeCloseTo(54.7, 1); // 0.36 * 152
     expect(four.clusters[0].ry).toBeCloseTo(54.7, 1);
+    const hero = buildNetwork({ variant: "hero", layout: "wide", clusters: clusters.slice(0, 1), neurons: [] });
+    expect(hero.clusters[0].rx).toBeCloseTo(88, 1); // 2.2 * 40
+  });
+
+  it("lets a single followed field on the radar use the width: rx = min(0.42 * column, 3.4 * rMax)", () => {
+    const wide = buildNetwork(radar({ clusters: clusters.slice(0, 1), neurons: [] }));
+    expect(wide.clusters[0].rx).toBeCloseTo(190.4, 1); // 3.4 * 56, the column is 608 wide
+    expect(wide.clusters[0].ry).toBe(56);
+    const compact = buildNetwork(radar({ layout: "compact", clusters: clusters.slice(0, 1), neurons: [] }));
+    expect(compact.clusters[0].rx).toBeCloseTo(115.6, 1); // 3.4 * 34, 0.42 * 350 is 147
+    expect(compact.clusters[0].ry).toBe(34);
+  });
+
+  it("widens the compact radar ellipse for two to four fields: rx = 0.42 * column", () => {
+    for (const n of [2, 3, 4]) {
+      const net = buildNetwork(radar({ layout: "compact", clusters: clusters.slice(0, n), neurons: [] }));
+      expect(net.clusters[0].rx).toBeCloseTo(0.42 * (350 / n), 1);
+    }
+    expect(buildNetwork(radar({ layout: "compact", clusters: clusters.slice(0, 4), neurons: [] })).clusters[0].rx).toBeCloseTo(36.75, 1);
   });
 
   it("has one neuron per input neuron", () => {
@@ -143,9 +159,9 @@ describe("buildNetwork", () => {
     };
     expect(size("radar", "wide", 4)).toBe("608x232");
     expect(size("radar", "compact", 4)).toBe("350x184");
-    expect(size("radar", "compact", 6)).toBe("350x292");
+    expect(size("radar", "compact", 6)).toBe("350x300");
     expect(size("hero", "wide", 6)).toBe("608x192");
-    expect(size("hero", "compact", 6)).toBe("350x292");
+    expect(size("hero", "compact", 6)).toBe("350x300");
     expect(size("topic", "wide", 1)).toBe("608x120");
     expect(size("topic", "compact", 1)).toBe("350x104");
     expect(size("motif", "wide", 1)).toBe("220x112");
@@ -292,16 +308,16 @@ describe("two-row layouts", () => {
   };
   const rows = (net: ReturnType<typeof buildNetwork>) => net.clusters.map((c) => Math.round(c.hubY));
 
-  it("six clusters make 4 U tracts and 2 commissures, five make 3 and 1, and no tract leaves the box sideways", () => {
-    for (const [count, u, commissures] of [[6, 4, 2], [5, 3, 1]] as const) {
-      for (const variant of ["radar", "hero"] as const) {
+  it("six clusters make 4 U tracts, five make 3, four make 2, and nothing joins the rows", () => {
+    for (const [count, u] of [[6, 4], [5, 3], [4, 2]] as const) {
+      // The compact radar keeps up to four fields in one row (a ring of four); only the hero goes to two rows at four.
+      for (const variant of count === 4 ? (["hero"] as const) : (["radar", "hero"] as const)) {
         const net = build(count, variant);
         const axons = net.edges.filter((e) => e.kind === "axon");
         const byId = new Map(net.clusters.map((c) => [c.id, c]));
-        const sameRow = axons.filter((e) => byId.get(e.from)!.hubY === byId.get(e.to)!.hubY);
-        expect(sameRow).toHaveLength(u);
-        expect(axons).toHaveLength(u + commissures);
+        expect(axons).toHaveLength(u);
         for (const e of axons) {
+          expect(byId.get(e.from)!.hubY, `${e.from} to ${e.to}`).toBe(byId.get(e.to)!.hubY);
           for (const [x] of sampleCubic(e.d)) {
             expect(x).toBeGreaterThan(0);
             expect(x).toBeLessThan(net.width);
@@ -325,21 +341,6 @@ describe("two-row layouts", () => {
     const net = build(6);
     const ne = net.clusters.find((c) => c.label === "Neural engineering")!;
     expect(ne.lines).toEqual(["Neural", "engineering"]);
-  });
-
-  it("joins the two rows with an S that passes through the column boundary, low point to low point", () => {
-    const net = build(6);
-    const comm = net.edges.filter((e) => e.kind === "axon" && e.from !== e.to).filter((e) => {
-      const a = net.clusters.find((c) => c.id === e.from)!;
-      const b = net.clusters.find((c) => c.id === e.to)!;
-      return a.hubY !== b.hubY;
-    });
-    expect(comm).toHaveLength(2);
-    const [first] = sampleCubic(comm[0].d);
-    const last = sampleCubic(comm[0].d).at(-1)!;
-    expect(first[1]).toBeCloseTo(net.clusters[0].hubY + 10.5, 1);
-    expect(last[1]).toBeCloseTo(net.clusters[3].hubY + 10.5, 1);
-    expect(first[0]).toBeCloseTo((net.clusters[0].hubX + net.clusters[1].hubX) / 2, 1);
   });
 });
 
@@ -433,5 +434,89 @@ describe("the topic fan", () => {
     const net = topic("wide", 3);
     expect(net.neurons.map((n) => n.rank)).toEqual([1, 2, 3]);
     expect(net.neurons[2].x).toBeGreaterThan(net.neurons[0].x);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Cells keep clear of each other (docs/design/brain.md section 5)
+// ---------------------------------------------------------------------------
+
+describe("cell clearance", () => {
+  type Net = ReturnType<typeof buildNetwork>;
+  /** Pairs whose extents (soma + 4.5, or + 7.5 when new) overlap, and somas within rs + 2 of another cell's fibre. */
+  function collisions(net: Net) {
+    const ext = (n: Net["neurons"][number]) => n.size + (n.isNew ? 7.5 : 4.5);
+    const overlaps: string[] = [];
+    const onFibre: string[] = [];
+    for (let i = 0; i < net.neurons.length; i++) {
+      for (let j = i + 1; j < net.neurons.length; j++) {
+        const a = net.neurons[i];
+        const b = net.neurons[j];
+        if (Math.hypot(a.x - b.x, a.y - b.y) < ext(a) + ext(b)) overlaps.push(`${a.id}/${b.id}`);
+      }
+    }
+    for (const a of net.neurons) {
+      for (const b of net.neurons) {
+        if (a === b) continue;
+        const d = Math.min(...sampleCubic(b.fibre, 80).map(([x, y]) => Math.hypot(x - a.x, y - a.y)));
+        if (d < a.size + 2) onFibre.push(`${a.id} on ${b.id}`);
+      }
+    }
+    return { overlaps, onFibre };
+  }
+
+  const six = ["bci", "neural-engineering", "dbs", "stem-cells", "neuromodulation", "sca"].map((id, i) => ({ id, label: PUBLIC_NAMES[i] }));
+  const spread = ["bci", "neural-engineering", "dbs", "stem-cells", "neuromodulation", "bci", "neural-engineering", "dbs", "neuromodulation", "stem-cells"];
+  const sixNeurons = neurons.map((n, i) => ({ ...n, cluster: spread[i] }));
+  const publicSix = PUBLIC_NAMES.map((label, i) => ({ id: `p${i}`, label }));
+  const fan = (ids: string[], layout: "wide" | "compact"): NetworkInput => ({
+    variant: "topic",
+    layout,
+    clusters: [{ id: "t", label: "", index: 1 }],
+    neurons: ids.map((id, i) => ({ id, cluster: "t", rank: i + 1, isNew: i === 0 || i === 3, verdict: null })),
+  });
+  const FAN_IDS = ["42000001", "42000002", "42000003", "42000004", "42000005", "42000006", "42000007", "42000008"];
+
+  const fixtures: [string, (layout: "wide" | "compact") => NetworkInput][] = [
+    ["the default four fields", (layout) => radar({ layout })],
+    ["six fields", (layout) => radar({ layout, clusters: six, neurons: sixNeurons })],
+    ["the hero", (layout) => ({ variant: "hero", layout, clusters: publicSix, neurons: heroNeurons(publicSix) })],
+    ["the topic fan", (layout) => fan(FAN_IDS, layout)],
+    ["the sign-in motif", (layout) => ({ variant: "motif", layout, clusters: [{ id: "motif", label: "", index: 0 }], neurons: motifNeurons("motif") })],
+  ];
+  for (const [name, input] of fixtures) {
+    it.each(["wide", "compact"] as const)(`${name}, %s: no extents overlap and no soma stands on a fibre`, (layout) => {
+      const { overlaps, onFibre } = collisions(buildNetwork(input(layout)));
+      expect(overlaps).toEqual([]);
+      expect(onFibre).toEqual([]);
+    });
+  }
+
+  it.each(["wide", "compact"] as const)("one field with ten papers, %s: no extents overlap and at most two somas on a fibre", (layout) => {
+    const cs = clusters.slice(0, 1);
+    const net = buildNetwork(radar({ layout, clusters: cs, neurons: neurons.map((n) => ({ ...n, cluster: "bci" })) }));
+    const { overlaps, onFibre } = collisions(net);
+    expect(overlaps).toEqual([]);
+    expect(onFibre.length).toBeLessThanOrEqual(2);
+  });
+
+  it.each(["wide", "compact"] as const)("one field spreads its somas over the figure's width (%s)", (layout) => {
+    const net = buildNetwork(radar({ layout, clusters: clusters.slice(0, 1), neurons: neurons.map((n) => ({ ...n, cluster: "bci" })) }));
+    const xs = net.neurons.map((n) => n.x);
+    expect(Math.max(...xs) - Math.min(...xs)).toBeGreaterThanOrEqual(layout === "wide" ? 300 : 180);
+  });
+
+  it("keeps the 28 px tap spacing on the compact radar where there is room", () => {
+    const net = buildNetwork(radar({ layout: "compact" }));
+    const real = net.neurons.filter((n) => !n.ghost && !n.decorative);
+    for (let i = 0; i < real.length; i++) {
+      for (let j = i + 1; j < real.length; j++) expect(Math.hypot(real[i].x - real[j].x, real[i].y - real[j].y)).toBeGreaterThanOrEqual(28);
+    }
+  });
+
+  it("draws the placement from the ids only: the same cells land in the same spots", () => {
+    const a = buildNetwork(radar({ layout: "compact" }));
+    const b = buildNetwork(radar({ layout: "compact" }));
+    expect(a.neurons.map((n) => [n.x, n.y, n.fibre])).toEqual(b.neurons.map((n) => [n.x, n.y, n.fibre]));
   });
 });

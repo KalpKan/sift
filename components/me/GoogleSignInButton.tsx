@@ -34,7 +34,7 @@ export default function GoogleSignInButton() {
         type="button"
         onClick={signIn}
         disabled={state === "busy"}
-        className="border border-rule-strong px-4 py-2 font-serif text-[17px] leading-[1.35] transition-colors hover:bg-surface disabled:opacity-60"
+        className="block w-full border border-rule-strong px-4 py-2 text-center font-serif text-[17px] leading-[1.35] transition-colors hover:bg-surface disabled:opacity-60"
       >
         {state === "busy" ? "Opening Google…" : "Sign in with Google"}
       </button>

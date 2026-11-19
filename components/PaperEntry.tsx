@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
 import { dotClass } from "@/components/brain/rowDot";
 import PaperLink from "./PaperLink";
 import type { FeedPaper } from "@/lib/feed";
@@ -30,6 +30,44 @@ export function reasonText(reason: string): string {
 }
 
 /**
+ * The meta line of a row (docs/design/brain.md section 7), shared by the public and the private row: authors,
+ * journal, date and, on the radar, the field. The date is one `white-space: nowrap` run, so it never splits as
+ * "17 / Nov 2026". Every " · " belongs to the item before it, joined by a non-breaking space, so a line can
+ * end with a dot but never starts with one. Authors and journal still wrap freely.
+ */
+export function MetaLine({
+  authors,
+  journal,
+  published,
+  topicName,
+}: {
+  authors?: string | null;
+  journal?: string | null;
+  published: string;
+  topicName?: string;
+}) {
+  const date = formatDate(published);
+  const items: ReactNode[] = [
+    authors,
+    journal,
+    date && <span className="whitespace-nowrap">{date}</span>,
+    topicName && <span className="whitespace-nowrap font-medium text-[var(--c)]">{topicName}</span>,
+  ].filter(Boolean);
+  if (items.length === 0) return null;
+  return (
+    <p className="mt-1.5 text-[13px] leading-[1.45] text-ink-muted [overflow-wrap:anywhere]">
+      {items.map((item, i) => (
+        <Fragment key={i}>
+          {i > 0 && " "}
+          {item}
+          {i < items.length - 1 && "\u00A0·"}
+        </Fragment>
+      ))}
+    </p>
+  );
+}
+
+/**
  * One entry in a public list (docs/design/brain.md section 7), the same
  * anatomy as the private radar row: rank and a dot in the field's hue, the
  * title as the largest and darkest thing, meta, reasons led by the word `new`
@@ -56,12 +94,12 @@ export default function PaperEntry({
   isNew?: boolean;
 }) {
   const href = paper.url ?? `https://pubmed.ncbi.nlm.nih.gov/${paper.pmid}/`;
-  const meta = [paper.authorsShort, paper.journal, formatDate(paper.published)].filter(Boolean).join(" · ");
+  const hasReasons = isNew || paper.reasons.length > 0;
 
   return (
     <article
       style={{ "--c": `var(--cluster-${(hue % 4) + 1})` } as CSSProperties}
-      className="grid grid-cols-[28px_minmax(0,1fr)] gap-x-[10px] py-[18px] sm:grid-cols-[44px_minmax(0,1fr)_88px] sm:gap-x-3 sm:py-5"
+      className="relative grid grid-cols-[28px_minmax(0,1fr)] gap-x-[10px] py-[18px] sm:grid-cols-[44px_minmax(0,1fr)_88px] sm:gap-x-3 sm:py-5"
     >
       <div className="flex w-[2ch] flex-col items-end gap-[7px] pt-[5px] font-mono text-xs sm:w-auto sm:flex-row sm:items-baseline sm:gap-[10px]">
         <span aria-hidden className="tabular inline-block w-[2ch] text-right leading-[1.3] text-ink-faint">
@@ -85,12 +123,25 @@ export default function PaperEntry({
           </PaperLink>
         </h3>
 
-        {meta && <p className="mt-1.5 text-[13px] leading-[1.45] text-ink-muted [overflow-wrap:anywhere]">{meta}</p>}
+        <MetaLine authors={paper.authorsShort} journal={paper.journal} published={paper.published} />
 
-        {(isNew || paper.reasons.length > 0) && (
-          <ul className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">
+        {/*
+          The score. Under 640 px it floats to the right end of the first reasons line, so it does not take a
+          line of its own (a row with no reasons keeps one). From 640 px it sits at the top of the third column.
+          It comes before the reasons so the float is there when the first line is laid out.
+        */}
+        <p
+          className={`tabular font-mono text-xs leading-[1.4] text-ink-faint sm:absolute sm:right-0 sm:top-[25px] sm:float-none sm:m-0 sm:w-[88px] sm:text-right sm:leading-[1.3] ${
+            hasReasons ? "float-right mt-1.5 pl-3" : "mt-2.5 text-right"
+          }`}
+        >
+          {paper.orderScore}
+        </p>
+
+        {hasReasons && (
+          <ul className="-mb-1 mt-1.5">
             {/* "new" is real text, so the list says what the map says. */}
-            {isNew && <li className="text-xs font-medium leading-[1.4] text-spike">new</li>}
+            {isNew && <li className="mb-1 mr-3 inline-block text-xs font-medium leading-[1.4] text-spike">new</li>}
             {/*
               WHY the paper ranked, in the ranker's own words. This is the
               feature that makes a mediocre heuristic usable: a reader who can
@@ -98,7 +149,7 @@ export default function PaperEntry({
               instantly, and can tell when the ranker is being stupid.
             */}
             {paper.reasons.map((reason) => (
-              <li key={reason} className="text-xs leading-[1.4] text-ink-faint">
+              <li key={reason} className="mb-1 mr-3 inline-block align-baseline text-xs leading-[1.4] text-ink-faint">
                 {reasonText(reason)}
               </li>
             ))}
@@ -106,10 +157,6 @@ export default function PaperEntry({
         )}
       </div>
 
-      {/* On a phone the score gets its own line, right-aligned like the radar's, rather than a third column that would squeeze the titles. */}
-      <p className="tabular col-start-2 mt-2.5 text-right font-mono text-xs leading-[1.3] text-ink-faint sm:col-start-3 sm:row-start-1 sm:mt-[5px]">
-        {paper.orderScore}
-      </p>
     </article>
   );
 }

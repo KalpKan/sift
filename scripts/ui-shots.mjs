@@ -1,7 +1,7 @@
 // Screenshot harness for the brain redesign (docs/superpowers/plans/2026-11-18-brain-redesign.md).
 //
 //   SIFT_DEV_PREVIEW=1 env -u NODE_OPTIONS npx next start -p 3107
-//   env -u NODE_OPTIONS node scripts/ui-shots.mjs --base http://localhost:3107 --out docs/images/redesign/round-2
+//   env -u NODE_OPTIONS node scripts/ui-shots.mjs --base http://localhost:3107 --out docs/images/redesign/round-3
 //   (optional) --off-base http://localhost:3108   a server started WITHOUT SIFT_DEV_PREVIEW, to check the dev routes 404
 //
 // For each page: 1440x900 and 390x844, light and dark (colorScheme emulation).
@@ -162,6 +162,76 @@ const MEASURE = () => {
     })(),
   };
 
+  // Round 3: dates, footer rule, public-row score, checkboxes, sign-in block.
+  const metaLines = articles.map((a) => a.querySelector("h3 + p")).filter(Boolean);
+  const dates = articles.map((a) => a.querySelector("h3 + p span.whitespace-nowrap:not(.font-medium)")).filter(Boolean);
+  const footerRule = (() => {
+    const p = document.querySelector("footer p");
+    if (!p) return null;
+    const r = p.getBoundingClientRect();
+    return { left: r2(r.left), right: r2(r.right), borderTop: getComputedStyle(p).borderTopWidth, footerBorderTop: getComputedStyle(p.closest("footer")).borderTopWidth };
+  })();
+  const headerRule = (() => {
+    const el = document.querySelector("figure") ?? document.querySelector("header");
+    const r = el?.getBoundingClientRect();
+    return r ? { left: r2(r.left), right: r2(r.right) } : null;
+  })();
+  const scoreOverlap = articles.map((a) => {
+    const score = [...a.querySelectorAll("p")].find((q) => /^\d+$/.test(q.textContent.trim()) && q.classList.contains("tabular"));
+    const first = a.querySelector("ul li");
+    if (!score || !first) return null;
+    const s = score.getBoundingClientRect();
+    const f = first.getBoundingClientRect();
+    return { overlaps: s.top < f.bottom && s.bottom > f.top, rowHeight: r2(a.getBoundingClientRect().height) };
+  }).filter(Boolean);
+  const checks = [...document.querySelectorAll("input.follow-check")].map((c) => {
+    const cs = getComputedStyle(c);
+    const r = c.getBoundingClientRect();
+    return { checked: c.checked, w: r2(r.width), h: r2(r.height), bg: cs.backgroundColor, border: cs.borderTopWidth + " " + cs.borderTopColor, radius: cs.borderTopLeftRadius, tick: getComputedStyle(c, "::before").backgroundColor, x: r2(r.left), y: r2(r.top) };
+  });
+  page.r3 = {
+    dateRects: dates.length ? { count: dates.length, max: Math.max(...dates.map((d) => d.getClientRects().length)) } : null,
+    metaStartsWithDot: metaLines.filter((m) => /^\s*·/.test(m.textContent)).length,
+    metaLineStarts: metaLines.map((m) => {
+      // the first character of every rendered line must not be a dot
+      const w = document.createTreeWalker(m, NodeFilter.SHOW_TEXT);
+      let bad = 0;
+      let prevTop = null;
+      for (let n = w.nextNode(); n; n = w.nextNode()) {
+        for (let i = 0; i < n.length; i++) {
+          if (!n.data[i].trim()) continue;
+          const rg = document.createRange();
+          rg.setStart(n, i);
+          rg.setEnd(n, i + 1);
+          const rc = rg.getClientRects()[0];
+          if (!rc) continue;
+          if (prevTop === null || rc.top > prevTop + 4) {
+            if (n.data[i] === "·") bad++;
+            prevTop = rc.top;
+          }
+        }
+      }
+      return bad;
+    }).reduce((a, b) => a + b, 0),
+    longTitleScrollWidth: (() => { const a = articles.find((x) => x.textContent.includes("longitudinal multicentre")); return a ? Math.max(a.scrollWidth, document.documentElement.scrollWidth) : null; })(),
+    footerRule,
+    headerRule,
+    scoreOnReasonsLine: scoreOverlap.length ? { rows: scoreOverlap.length, overlapping: scoreOverlap.filter((o) => o.overlaps).length, heights: scoreOverlap.map((o) => o.rowHeight) } : null,
+    checks: checks.length ? checks : null,
+    phNoCapture: !!document.querySelector(".ph-no-capture"),
+    figureBottom: (() => {
+      const f = document.querySelector("figure");
+      const t = [...document.querySelectorAll("svg.brain-svg")].find((s) => s.getBoundingClientRect().width > 0);
+      if (!f || !t) return null;
+      const lines = [...t.querySelectorAll(".brain-label")];
+      if (!lines.length) return null;
+      const lowest = Math.max(...lines.map((l) => l.getBoundingClientRect().bottom));
+      const svgBox = t.getBoundingClientRect();
+      const cap = f.querySelector("figcaption").getBoundingClientRect();
+      return { svgHeight: r2(svgBox.height), labelBottomToSvgBottom: r2(svgBox.bottom - lowest), labelBottomToHairline: r2(cap.top - lowest) };
+    })(),
+  };
+
   const btn = document.querySelector("main button");
   const svg = document.querySelector("main .brain-motif svg");
   if (btn && svg) {
@@ -170,6 +240,11 @@ const MEASURE = () => {
     const h1 = rect(document.querySelector("h1"));
     const block = rect(btn.parentElement);
     page.signIn = {
+      buttonLeft: r2(b.left),
+      buttonWidth: r2(b.width),
+      motifBottomCentre: { x: r2(s.left + s.width / 2), y: r2(s.bottom) },
+      buttonTopCentre: { x: r2(b.left + b.width / 2), y: r2(b.top) },
+      h1Left: r2(h1.left),
       hubX: r2(s.left + s.width / 2),
       buttonCentreX: r2(b.left + b.width / 2),
       hubY: r2(s.bottom),
