@@ -25,6 +25,10 @@ function Soma({ n }: { n: NetNeuron }) {
   return <circle {...common} cx={n.x} cy={n.y} r={soma.rx} />;
 }
 
+// Cells are drawn best rank last, so the strongest cell is on top, and its tap target wins any overlap
+// (the glyph parts take no pointer events, only the hit circle does: see `.brain-neuron` in globals.css).
+const bestLast = (a: NetNeuron, b: NetNeuron) => b.rank - a.rank || (a.id < b.id ? -1 : 1);
+
 function Neuron({ n, interactive }: { n: NetNeuron; interactive: boolean }) {
   const real = !n.ghost && !n.decorative;
   // Ratings only exist on the private radar, so only it carries the 👍 rings.
@@ -35,12 +39,13 @@ function Neuron({ n, interactive }: { n: NetNeuron; interactive: boolean }) {
       className="brain-neuron"
       data-cell={n.id}
       data-pmid={real ? n.id : undefined}
+      data-cluster={n.cluster}
       data-kind={n.kind}
       data-new={n.isNew ? "true" : "false"}
       data-verdict={n.verdict === null ? undefined : String(n.verdict)}
       data-ghost={n.ghost ? "true" : undefined}
       data-len={n.fibreLen}
-      style={{ "--o": n.opacity } as CSSProperties}
+      style={{ "--o": n.opacity, "--c": hueVar(n.hue) } as CSSProperties}
     >
       <path className="brain-fibre" d={n.fibre} />
       <path className="brain-den" style={{ "--w": 1 } as CSSProperties} strokeWidth={1} d={n.dendrites.thick} />
@@ -62,7 +67,7 @@ function Neuron({ n, interactive }: { n: NetNeuron; interactive: boolean }) {
           <circle className="brain-ring-up brain-ring-up-far" cx={n.x} cy={n.y} r={Math.round((rs + 6.5) * 10) / 10} />
         </>
       )}
-      {interactive && real && <circle className="brain-hit" cx={n.x} cy={n.y} r={Math.max(rs + 6, 12)} />}
+      {interactive && real && <circle className="brain-hit" cx={n.x} cy={n.y} r={n.hit} />}
     </g>
   );
 }
@@ -93,28 +98,26 @@ export default function BrainMap({
               <path key={`${e.from}-${e.to}`} className="brain-tract" d={e.d} />
             ))}
         </g>
-        {network.clusters.map((c) => (
-          <g key={c.id} className="brain-cluster" data-cluster={c.id} style={{ "--c": hueVar(c.hue) } as CSSProperties}>
-            {network.neurons
-              .filter((n) => n.cluster === c.id)
-              .map((n) => (
-                <Neuron key={n.id} n={n} interactive={interactive} />
-              ))}
-            {c.lines.map((line, k) => (
-              <text
-                key={k}
-                className="brain-label"
-                data-cluster={c.id}
-                x={c.x}
-                y={c.labelY + k * (network.labelPx + 2)}
-                textAnchor="middle"
-                style={{ fontSize: network.labelPx }}
-              >
-                {line}
-              </text>
-            ))}
-          </g>
-        ))}
+        <g>
+          {[...network.neurons].sort(bestLast).map((n) => (
+            <Neuron key={n.id} n={n} interactive={interactive} />
+          ))}
+        </g>
+        {network.clusters.map((c) =>
+          c.lines.map((line, k) => (
+            <text
+              key={`${c.id}-${k}`}
+              className="brain-label"
+              data-cluster={c.id}
+              x={c.x}
+              y={c.labelY + k * (network.labelPx + 2)}
+              textAnchor="middle"
+              style={{ fontSize: network.labelPx, "--c": hueVar(c.hue) } as CSSProperties}
+            >
+              {line}
+            </text>
+          )),
+        )}
         <g className="brain-spikes" />
       </svg>
     </BrainFrame>

@@ -1,17 +1,9 @@
 "use client";
 
 import { useBrainHover } from "@/components/brain/BrainHover";
+import Ring from "@/components/brain/Ring";
 
 type Verdict = 1 | -1 | null;
-
-const Ring = ({ tone }: { tone: "spike" | "reinforce" }) => (
-  <span
-    aria-hidden
-    className={`mr-1.5 inline-block size-[7px] rounded-full border-[1.25px] align-[-0.5px] ${
-      tone === "spike" ? "border-spike" : "border-reinforce"
-    }`}
-  />
-);
 
 /**
  * The radar figure's caption: "10 papers  o 3 new in 48 h  o 1 marked useful".

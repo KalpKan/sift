@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import BrainFigure from "@/components/brain/BrainFigure";
 import BrainMaps from "@/components/brain/BrainMaps";
+import Ring from "@/components/brain/Ring";
 import Footer from "@/components/Footer";
 import PaperEntry from "@/components/PaperEntry";
 import { appName } from "@/lib/env";
 import { isNew } from "@/lib/brain/network";
-import { topicModel } from "@/lib/brain/public-model";
+import { topicCaption, topicModel } from "@/lib/brain/public-model";
 import { freshness, loadFeed, loadTopics } from "@/lib/page-data";
 
 // Reads the database and, when the cache is older than six hours, PubMed.
@@ -40,24 +42,35 @@ export default async function TopicPage({ params }: PageProps<"/t/[slug]">) {
           </Link>
         </p>
 
-        {/* The map sits right of the title on a wide screen, bottoms aligned, and below the count on a phone. */}
-        <header className="mt-5 border-b border-rule-strong pb-2 sm:flex sm:items-end sm:justify-between sm:gap-6">
-          <div className="min-w-0 pb-2">
-            <h1 className="font-serif text-[28px] leading-[1.15] tracking-[-0.01em] sm:text-[34px] sm:leading-[1.1]">
-              {feed?.name ?? slug}
-            </h1>
-            {feed && (
-              <p className="mt-1.5 text-[13px] leading-[1.45] text-ink-muted">
-                {feed.papers.length} papers, ranked {freshness(feed.updatedAt, now)}
-              </p>
-            )}
-          </div>
-          {map && (
-            <div className="mt-3 sm:mt-0 sm:w-[240px] sm:flex-none">
-              <BrainMaps variant="topic" clusters={map.clusters} neurons={map.neurons} />
-            </div>
+        {/* With papers, the figure's strong rule closes the header; without, the header carries it. */}
+        <header className={`mt-5 pb-3 ${map && map.total > 0 ? "" : "border-b border-rule-strong"}`}>
+          <h1 className="font-serif text-[28px] leading-[1.15] tracking-[-0.01em] sm:text-[34px] sm:leading-[1.1]">
+            {feed?.name ?? slug}
+          </h1>
+          {feed && (
+            <p className="mt-1.5 text-[13px] leading-[1.45] text-ink-muted">
+              {feed.papers.length} papers, ranked {freshness(feed.updatedAt, now)}
+            </p>
           )}
         </header>
+
+        {map && map.total > 0 && (
+          <BrainFigure
+            caption={
+              <>
+                <span>{topicCaption(map.total)}</span>
+                {map.newCount > 0 && (
+                  <span>
+                    <Ring tone="spike" />
+                    {map.newCount} new in 48 h
+                  </span>
+                )}
+              </>
+            }
+          >
+            <BrainMaps variant="topic" clusters={map.clusters} neurons={map.neurons} />
+          </BrainFigure>
+        )}
 
         {feed ? (
           <>

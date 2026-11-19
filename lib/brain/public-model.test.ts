@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { heroModel, motifModel, topicIndex, topicModel, TOPIC_MAP_PAPERS } from "./public-model";
+import { heroModel, motifModel, topicCaption, topicIndex, topicModel, TOPIC_MAP_PAPERS } from "./public-model";
 
 const topics = [
   { slug: "bci", name: "Brain-computer interfaces" },
@@ -60,5 +60,22 @@ describe("motifModel", () => {
     const m = motifModel();
     expect(m.clusters).toEqual([{ id: "motif", label: "", index: 0 }]);
     expect(m.neurons).toHaveLength(3);
+  });
+});
+
+describe("topicCaption and topicModel counts", () => {
+  it("says top 8 of N, or all N when the page has eight or fewer", () => {
+    expect(topicCaption(20)).toBe("top 8 of 20 papers");
+    expect(topicCaption(9)).toBe("top 8 of 9 papers");
+    expect(topicCaption(8)).toBe("all 8 papers");
+    expect(topicCaption(5)).toBe("all 5 papers");
+    expect(topicCaption(1)).toBe("all 1 paper");
+  });
+  it("counts the new papers among the drawn cells, and the whole page as the total", () => {
+    const papers = Array.from({ length: 12 }, (_, i) => ({ pmid: `5000000${i}`.slice(0, 8), published: i === 1 || i === 10 ? hoursAgo(5) : hoursAgo(24 * 20) }));
+    const m = topicModel({ slug: "bci", papers, topics, now: NOW });
+    expect(m.total).toBe(12);
+    expect(m.neurons).toHaveLength(TOPIC_MAP_PAPERS);
+    expect(m.newCount).toBe(1); // the second paper is drawn, the eleventh is not
   });
 });

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
-import PaperEntry, { formatDate } from "./PaperEntry";
+import PaperEntry, { formatDate, reasonText } from "./PaperEntry";
 import type { FeedPaper } from "@/lib/feed";
 
 function paper(over: Partial<FeedPaper> = {}): FeedPaper {
@@ -115,5 +115,24 @@ describe("PaperEntry", () => {
     const out = html();
     expect(out).not.toContain("<button");
     expect(out).not.toContain("👍");
+  });
+});
+
+describe("reasonText (display-only singular repair)", () => {
+  it("shows 1 weeks / days / months old in the singular", () => {
+    expect(reasonText("1 weeks old")).toBe("1 week old");
+    expect(reasonText("1 days old")).toBe("1 day old");
+    expect(reasonText("1 months old")).toBe("1 month old");
+  });
+  it("leaves every other reason alone, including 11 weeks, 21 days and 2 months", () => {
+    for (const r of ["11 weeks old", "21 days old", "2 months old", "4 days old", "1 years old", "meta-analysis", "published today", "brain-computer interface"]) {
+      expect(reasonText(r)).toBe(r);
+    }
+  });
+  it("is applied in the row, and drops nothing", () => {
+    const html = renderToStaticMarkup(<PaperEntry paper={paper({ reasons: ["1 weeks old", "meta-analysis"] })} rank={1} topic="neuromodulation" />);
+    expect(html).toContain("1 week old");
+    expect(html).not.toContain("1 weeks old");
+    expect(html).toContain("meta-analysis");
   });
 });

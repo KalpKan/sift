@@ -47,19 +47,20 @@ export default function InterestList({ interests }: { interests: Row[] }) {
       <ul className="divide-y divide-rule">
         {rows.map((r) => (
           <li key={`${r.term}:${r.source}`} className="flex items-baseline justify-between gap-4 py-3">
-            <span>
+            {/* Under 640 px: the term and its action share line one, and the provenance is line two. */}
+            <span className="min-w-0">
               <span className="font-serif text-[17px] leading-[1.35]">{r.term}</span>{" "}
-              <span className="text-xs leading-[1.4] text-ink-faint">
+              <span className="text-xs leading-[1.4] text-ink-faint max-sm:block max-sm:whitespace-nowrap">
                 {SOURCE[r.source]} · <span className="tabular">{r.weight > 0 ? "+" : ""}{r.weight.toFixed(2)}</span>
               </span>
             </span>
             {r.source === "taps" ? (
-              <span className="text-xs leading-[1.4] text-ink-faint">re-rate to change</span>
+              <span className="whitespace-nowrap text-xs leading-[1.4] text-ink-faint">re-rate to change</span>
             ) : (
             <button
               type="button"
               onClick={() => remove(r)}
-              className="text-xs leading-[1.4] text-ink-muted underline decoration-ink-faint underline-offset-4 hover:decoration-ink"
+              className="whitespace-nowrap text-xs leading-[1.4] text-ink-muted underline decoration-ink-faint underline-offset-4 hover:decoration-ink"
               aria-label={`Delete ${r.term} (${SOURCE[r.source]})`}
             >
               Delete

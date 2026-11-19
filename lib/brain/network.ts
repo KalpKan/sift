@@ -89,7 +89,9 @@ export type NetCluster = {
   lines: string[];
   x: number;
   y: number;
-  r: number;
+  /** The cluster is an ellipse: soma centres are placed inside it. */
+  rx: number;
+  ry: number;
   hue: number;
   kind: CellKind;
   hubX: number;
@@ -119,6 +121,8 @@ export type NetNeuron = {
   dendrites: { thick: string; thin: string };
   fibre: string;
   fibreLen: number;
+  /** Radius of the invisible tap target (radar only, real cells only); 0 for every other cell. */
+  hit: number;
 };
 
 export type NetEdge = { from: string; to: string; kind: "dendrite" | "axon"; d: string };
@@ -159,30 +163,40 @@ type Spec = {
   labelPx: number;
   charW: number;
   hubAtBottom?: boolean;
+  /** Fixed horizontal radius of the cluster ellipse (the topic fan); otherwise min(0.36 * column, 2.2 * rMax). */
+  rxFixed?: number;
+  /** The topic fan: cell k of 8 stands at the k-th eighth of the ellipse, left to right. */
+  fan?: boolean;
 };
 
 const ROW_STEP = 142;
 
 function specFor(variant: Variant, layout: LayoutName, clusterCount: number): Spec {
+  const n = clusterCount;
   if (variant === "radar") {
     if (layout === "wide") {
-      return { W: 608, tail: 70, cols: 6, scale: 1, detail: 2, rMax: 56, top: 34, hubGap: 16, rowH: ROW_STEP, arc: 40, labelGap: 46, labelPx: 11, charW: 6.1 };
+      return { W: 608, tail: 70, cols: 6, scale: n >= 5 ? 1.1 : 1.25, detail: 2, rMax: 56, top: 34, hubGap: 16, rowH: ROW_STEP, arc: 34, labelGap: 46, labelPx: 11, charW: 6.1 };
     }
-    return clusterCount <= 4
-      ? { W: 350, tail: 66, cols: 4, scale: 0.8, detail: 1, rMax: 31, top: 30, hubGap: 14, rowH: ROW_STEP, arc: 36, labelGap: 42, labelPx: 10, charW: 5.5 }
-      : { W: 350, tail: 44, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 26, hubGap: 12, rowH: ROW_STEP, arc: 0, labelGap: 24, labelPx: 10, charW: 5.5 };
+    return n <= 4
+      ? { W: 350, H: 184, tail: 0, cols: 4, scale: 0.9, detail: 1, rMax: 34, top: 30, hubGap: 14, rowH: ROW_STEP, arc: 30, labelGap: 44, labelPx: 10, charW: 5.7 }
+      : { W: 350, tail: 44, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 26, hubGap: 12, rowH: ROW_STEP, arc: 0, labelGap: 27, labelPx: 10, charW: 5.7 };
   }
   if (variant === "hero") {
-    return layout === "wide"
-      ? { W: 608, tail: 68, cols: 6, scale: 0.9, detail: 2, rMax: 40, top: 30, hubGap: 14, rowH: ROW_STEP, arc: 40, labelGap: 46, labelPx: 11, charW: 6.1 }
-      : { W: 350, tail: 44, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 26, hubGap: 12, rowH: ROW_STEP, arc: 0, labelGap: 24, labelPx: 10, charW: 5.5 };
+    if (layout === "wide") {
+      return { W: 608, tail: 68, cols: 6, scale: 1.0, detail: 2, rMax: 40, top: 30, hubGap: 14, rowH: ROW_STEP, arc: 34, labelGap: 46, labelPx: 11, charW: 6.1 };
+    }
+    // One cluster has no tract, so it keeps the short box. Two or three stand in one row and need the
+    // room under the hubs for the closing arc; four or more run in two rows of three.
+    if (n === 1) return { W: 350, tail: 44, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 26, hubGap: 12, rowH: ROW_STEP, arc: 0, labelGap: 27, labelPx: 10, charW: 5.7 };
+    if (n <= 3) return { W: 350, tail: 66, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 30, hubGap: 14, rowH: ROW_STEP, arc: 30, labelGap: 44, labelPx: 10, charW: 5.7 };
+    return { W: 350, tail: 44, cols: 3, scale: 0.8, detail: 1, rMax: 34, top: 26, hubGap: 12, rowH: ROW_STEP, arc: 0, labelGap: 27, labelPx: 10, charW: 5.7 };
   }
   if (variant === "topic") {
     return layout === "wide"
-      ? { W: 240, H: 168, tail: 0, cols: 1, scale: 0.86, detail: 2, rMax: 56, top: 30, hubGap: 14, rowH: 0, arc: 0, labelGap: 0, labelPx: 0, charW: 0 }
-      : { W: 350, H: 140, tail: 0, cols: 1, scale: 0.8, detail: 1, rMax: 46, top: 26, hubGap: 12, rowH: 0, arc: 0, labelGap: 0, labelPx: 0, charW: 0 };
+      ? { W: 608, H: 120, tail: 0, cols: 1, scale: 1.1, detail: 2, rMax: 28, top: 34, hubGap: 16, rowH: 0, arc: 0, labelGap: 0, labelPx: 0, charW: 0, hubAtBottom: true, rxFixed: 200, fan: true }
+      : { W: 350, H: 104, tail: 0, cols: 1, scale: 0.9, detail: 1, rMax: 24, top: 30, hubGap: 14, rowH: 0, arc: 0, labelGap: 0, labelPx: 0, charW: 0, hubAtBottom: true, rxFixed: 140, fan: true };
   }
-  return { W: 200, H: 104, tail: 0, cols: 1, scale: 0.9, detail: 2, rMax: 28, top: 30, hubGap: 14, rowH: 0, arc: 0, labelGap: 0, labelPx: 0, charW: 0, hubAtBottom: true };
+  return { W: 220, H: 112, tail: 0, cols: 1, scale: 1.1, detail: 2, rMax: 32, top: 30, hubGap: 14, rowH: 0, arc: 0, labelGap: 0, labelPx: 0, charW: 0, hubAtBottom: true };
 }
 
 // ---------------------------------------------------------------------------
@@ -215,7 +229,8 @@ function dendrites(kind: CellKind, x: number, y: number, rs: number, R: () => nu
   };
 
   if (kind === "pyramidal") {
-    const L = Math.min(5 * rs, maxUp);
+    // The tuft continues 1.6 rs past the trunk's tip, so the trunk leaves that much room above it.
+    const L = Math.max(rs, Math.min(5 * rs, maxUp - 1.7 * rs));
     const lean = j(-7, 7);
     const t = add(x, y - rs, lean, L, 1);
     add(t.ex, t.ey, lean - j(24, 40), 1.6 * rs, 0.75);
@@ -237,7 +252,7 @@ function dendrites(kind: CellKind, x: number, y: number, rs: number, R: () => nu
       let a = (off + i * (360 / n) + j(-14, 14)) % 360;
       if (a > 155 && a < 205) a = a < 180 ? 150 : 210;
       const [bx, by] = pol(x, y, a, rs);
-      const L = Math.min(j(2.2, 3.0) * rs, a < 70 || a > 290 ? maxUp : 99);
+      const L = Math.min(j(2.2, 3.0) * rs, a < 70 || a > 290 ? Math.max(rs, maxUp - 0.6 * rs) : 99);
       add(bx, by, a, L, 1);
       if (detail > 1 || i % 2 === 0) {
         const [fx, fy] = pol(bx, by, a, L * 0.6);
@@ -258,7 +273,7 @@ function dendrites(kind: CellKind, x: number, y: number, rs: number, R: () => nu
     }
   } else {
     const lean = j(-6, 6);
-    const t = add(x, y - rs * 1.2, lean, Math.min(3.4 * rs, maxUp), 1);
+    const t = add(x, y - rs * 1.2, lean, Math.max(rs, Math.min(3.4 * rs, maxUp - 1.3 * rs)), 1);
     add(t.ex, t.ey, lean - j(24, 36), 1.2 * rs, 0.75);
     add(t.ex, t.ey, lean + j(24, 36), 1.2 * rs, 0.75);
   }
@@ -270,8 +285,8 @@ function somaShape(kind: CellKind, x: number, y: number, rs: number): NetNeuron[
     const d = `M${f(x)},${f(y - rs * 0.95)}L${f(x + rs * 0.8)},${f(y + rs * 0.55)}L${f(x - rs * 0.8)},${f(y + rs * 0.55)}Z`;
     return { shape: "triangle", d, rx: rs, ry: rs, strokeWidth: f(rs * 0.55) };
   }
-  if (kind === "bipolar") return { shape: "ellipse", rx: f(rs * 0.8), ry: f(rs * 1.2), strokeWidth: 0 };
-  return { shape: "circle", rx: f(rs), ry: f(rs), strokeWidth: 0 };
+  if (kind === "bipolar") return { shape: "ellipse", rx: Math.round(rs * 80) / 100, ry: Math.round(rs * 120) / 100, strokeWidth: 0 };
+  return { shape: "circle", rx: Math.round(rs * 100) / 100, ry: Math.round(rs * 100) / 100, strokeWidth: 0 };
 }
 
 /** Arc length of a cubic Bezier, by 24 straight pieces. */
@@ -293,21 +308,29 @@ function cubicLength(p: [number, number][]): number {
 // Labels
 // ---------------------------------------------------------------------------
 
+/**
+ * Break a label that is too long for its column into two lines, at a space or
+ * after a hyphen. Of the places it can break, take the one that leaves the
+ * shorter longest line, so "Brain-computer interfaces" splits after
+ * "Brain-computer" rather than after "Brain-" (which would leave a line wider
+ * than the column). A single long word stays on one line.
+ */
 function wrapLabel(label: string, maxChars: number): string[] {
   if (label.length <= maxChars) return [label];
-  let cut = -1;
+  let best = -1;
+  let bestLen = Infinity;
   for (let k = 0; k < label.length; k++) {
     const ch = label[k];
-    if (ch === " " && k <= maxChars) cut = k;
-    if (ch === "-" && k + 1 <= maxChars) cut = k + 1;
+    const cut = ch === " " ? k : ch === "-" && k + 1 < label.length ? k + 1 : -1;
+    if (cut <= 0) continue;
+    const longest = Math.max(label.slice(0, cut).trim().length, label.slice(cut).trim().length);
+    if (longest <= bestLen) {
+      best = cut;
+      bestLen = longest;
+    }
   }
-  if (cut < 0) {
-    // Nothing fits: break at the first space or hyphen, or keep a single long word whole.
-    const sp = label.search(/[ -]/);
-    cut = sp < 0 ? -1 : label[sp] === "-" ? sp + 1 : sp;
-  }
-  if (cut <= 0) return [label];
-  return [label.slice(0, cut).trim(), label.slice(cut).trim()];
+  if (best < 0) return [label];
+  return [label.slice(0, best).trim(), label.slice(best).trim()];
 }
 
 // ---------------------------------------------------------------------------
@@ -315,6 +338,15 @@ function wrapLabel(label: string, maxChars: number): string[] {
 // ---------------------------------------------------------------------------
 
 type Cluster = NetCluster & { cw: number; row: number; col: number };
+
+/** Every U tract dips this far below its hubs at its control points. */
+const U_DIP = 14;
+/** The lowest point of a U is at 3/4 of its control-point dip (a cubic with both controls at the same depth). */
+const U_LOW = 0.75 * U_DIP;
+const HIT_MIN = 14;
+const HIT_MAX = 22;
+/** Compact radar: real somas are kept at least this far apart so every tap target can be 14 px without overlap. */
+const HIT_APART = 2 * HIT_MIN;
 
 export function buildNetwork(input: NetworkInput): Network {
   const { variant, layout } = input;
@@ -347,24 +379,28 @@ export function buildNetwork(input: NetworkInput): Network {
   const spec = specFor(variant, layout, n);
   const { W, cols, scale, detail, rMax, top, hubGap, rowH, arc, labelGap, labelPx, charW } = spec;
   const width = input.width ?? W;
+  const rowCount = Math.ceil(n / cols);
+  const twoRow = rowCount > 1;
 
   const cl: Cluster[] = clusters.map((c, i) => {
     const row = Math.floor(i / cols);
     const inRow = Math.min(cols, n - row * cols);
-    let col = i % cols;
-    if (row % 2 === 1) col = inRow - 1 - col; // the second row runs right to left
-    const cw = width / inRow;
+    // Both rows of a two-row layout run left to right on the same column grid.
+    const col = i % cols;
+    const cw = width / (twoRow ? cols : inRow);
     const cx = f(cw * (col + 0.5));
     const cy = f(top + rMax + row * rowH + (n > 1 ? (i % 2 ? 5 : -5) : 0));
     const hue = ((c.index % 4) + 4) % 4;
     const hubY = spec.hubAtBottom ? spec.H! : top + 2 * rMax + hubGap + row * rowH;
+    const rx = spec.rxFixed ?? Math.min(0.36 * cw, 2.2 * rMax);
     return {
       id: c.id,
       label: c.label,
       lines: [],
       x: cx,
       y: cy,
-      r: f(Math.min(cw * 0.36, rMax)),
+      rx: f(rx),
+      ry: f(Math.min(rx, rMax)),
       hue,
       kind: KINDS[hue],
       hubX: cx,
@@ -379,60 +415,104 @@ export function buildNetwork(input: NetworkInput): Network {
   const lowestHub = n ? Math.max(...cl.map((c) => c.hubY)) : 0;
   const height = input.height ?? spec.H ?? f(lowestHub + spec.tail);
 
-  // Labels: only where the variant draws them, never on a dormant map.
+  // Labels: only where the variant draws them, never on a dormant map. A two-row layout leaves
+  // the commissure its gap between neighbouring labels.
   if (labelGap > 0 && !dormant) {
     for (const c of cl) {
-      const max = Math.floor((c.cw - 10) / charW);
+      const max = Math.floor((c.cw - (twoRow ? 28 : 10)) / charW);
       c.lines = c.label ? wrapLabel(c.label, max) : [];
     }
   }
 
-  // Tracts (axon edges): consecutive hubs, closed into a ring from three clusters up.
+  // Tracts (axon edges). A single row: a shallow U between neighbours, closed into a ring from
+  // three clusters up by one long arc under the U's. Two rows: each row keeps its own U's (no
+  // closing arc, so nothing runs out past the outer labels) and the rows are joined by
+  // commissures at the column boundaries that have a U in both rows.
   const edges: NetEdge[] = [];
+  const hub = (c: Cluster) => `${c.hubX},${c.hubY}`;
+  const uTract = (a: Cluster, b: Cluster) => {
+    const dx = b.hubX - a.hubX;
+    return `M${hub(a)}C${f(a.hubX + dx * 0.3)},${f(a.hubY + U_DIP)} ${f(b.hubX - dx * 0.3)},${f(b.hubY + U_DIP)} ${hub(b)}`;
+  };
   if (n > 1) {
-    const pairs: [Cluster, Cluster][] = [];
-    for (let i = 0; i < n - 1; i++) pairs.push([cl[i], cl[i + 1]]);
-    if (n > 2) pairs.push([cl[n - 1], cl[0]]);
-    for (const [a, b] of pairs) {
+    const rowOf = (r: number) => cl.filter((c) => c.row === r);
+    for (let i = 0; i < n - 1; i++) {
+      if (cl[i].row !== cl[i + 1].row) continue;
+      edges.push({ from: cl[i].id, to: cl[i + 1].id, kind: "axon", d: uTract(cl[i], cl[i + 1]) });
+    }
+    if (!twoRow && n > 2) {
+      const a = cl[n - 1];
+      const b = cl[0];
       const dx = b.hubX - a.hubX;
-      const dy = b.hubY - a.hubY;
-      let d: string;
-      if (a.row === b.row && Math.abs(a.col - b.col) === 1) {
-        d = `C${f(a.hubX + dx * 0.3)},${f(a.hubY + 14)} ${f(b.hubX - dx * 0.3)},${f(b.hubY + 14)}`;
-      } else if (a.row === b.row) {
-        d = `C${f(a.hubX + dx * 0.12)},${f(a.hubY + arc)} ${f(b.hubX - dx * 0.12)},${f(b.hubY + arc)}`;
-      } else {
-        const ex = (a.hubX + b.hubX) / 2 > width / 2 ? width : 0;
-        d = `C${ex},${f(a.hubY + dy * 0.25)} ${ex},${f(b.hubY - dy * 0.45)}`;
+      edges.push({
+        from: a.id,
+        to: b.id,
+        kind: "axon",
+        d: `M${hub(a)}C${f(a.hubX + dx * 0.12)},${f(a.hubY + arc)} ${f(b.hubX - dx * 0.12)},${f(b.hubY + arc)} ${hub(b)}`,
+      });
+    }
+    for (let r = 0; r + 1 < rowCount; r++) {
+      const upper = rowOf(r);
+      const lower = rowOf(r + 1);
+      for (let k = 0; k + 1 < cols; k++) {
+        const [a, b] = [upper.find((c) => c.col === k), upper.find((c) => c.col === k + 1)];
+        const [p, q] = [lower.find((c) => c.col === k), lower.find((c) => c.col === k + 1)];
+        if (!a || !b || !p || !q) continue;
+        const bx = f((a.hubX + b.hubX) / 2);
+        const y0 = f(a.hubY + U_LOW);
+        const y1 = f(p.hubY + U_LOW);
+        const dy = y1 - y0;
+        edges.push({
+          from: a.id,
+          to: p.id,
+          kind: "axon",
+          d: `M${bx},${y0}C${f(bx - 8)},${f(y0 + dy * 0.35)} ${f(bx + 8)},${f(y0 + dy * 0.65)} ${bx},${y1}`,
+        });
       }
-      edges.push({ from: a.id, to: b.id, kind: "axon", d: `M${a.hubX},${a.hubY}${d} ${b.hubX},${b.hubY}` });
     }
   }
 
   // Neurons, placed cluster by cluster in rank order.
+  const compactRadar = variant === "radar" && layout === "compact";
   const out: NetNeuron[] = [];
   for (const c of cl) {
     const mine = neurons.filter((x) => x.cluster === c.id).sort((a, b) => a.rank - b.rank);
-    const placed: { x: number; y: number; rs: number }[] = [];
+    const placed: { x: number; y: number; rs: number; real: boolean }[] = [];
+    // Dendrites of a second row stop below the first row's labels.
+    const ceil = c.row === 0 || labelGap === 0 ? 6 : cl.find((q) => q.row === c.row - 1)!.hubY + labelGap + labelPx + 2 + 6;
     for (const nu of mine) {
       const R = rng(nu.id);
       const rs = (7 - 0.4 * (nu.rank - 1)) * scale;
+      const real = !nu.ghost && !nu.decorative;
       let x = c.x;
       let y = c.y;
-      let tries = 0;
-      let sep = 2.8;
-      let ok = false;
-      do {
-        const a = R() * Math.PI * 2;
-        const d = Math.sqrt(R()) * Math.max(0, c.r - rs);
-        x = c.x + Math.cos(a) * d;
-        y = c.y + Math.sin(a) * d;
-        ok = placed.every((p) => Math.hypot(p.x - x, p.y - y) > sep * Math.max(p.rs, rs) + 4);
-        if (++tries % 30 === 0) sep *= 0.85;
-      } while (!ok && tries < 300);
-      placed.push({ x, y, rs });
+      if (spec.fan) {
+        // The topic fan: cell k (rank 1 to 8, left to right) stands at the k-th eighth of the ellipse.
+        const k = Math.min(8, Math.max(1, nu.rank));
+        const ratio = (2 * k - 1) / 8 - 1;
+        x = c.x + c.rx * ratio + (R() * 2 - 1) * 6;
+        const across = Math.min(0.97, Math.abs(x - c.x) / c.rx);
+        const half = c.ry * Math.sqrt(1 - across * across);
+        y = c.y + (R() * 2 - 1) * Math.max(0, half - rs);
+        placed.push({ x, y, rs, real });
+      } else {
+        let tries = 0;
+        let sep = 2.8;
+        let ok = false;
+        do {
+          const a = R() * Math.PI * 2;
+          const d = Math.sqrt(R());
+          x = c.x + Math.cos(a) * d * Math.max(0, c.rx - rs);
+          y = c.y + Math.sin(a) * d * Math.max(0, c.ry - rs);
+          ok = placed.every((p) => Math.hypot(p.x - x, p.y - y) > sep * Math.max(p.rs, rs) + 4);
+          // On a phone, real cells keep 28 px apart where there is room, so each can have a 14 px tap target.
+          if (ok && compactRadar && real && tries < 200) ok = placed.every((p) => !p.real || Math.hypot(p.x - x, p.y - y) >= HIT_APART);
+          if (++tries % 30 === 0) sep *= 0.85;
+        } while (!ok && tries < 300);
+        placed.push({ x, y, rs, real });
+      }
 
-      const dn = dendrites(c.kind, x, y, rs, R, detail, y - rs - 6);
+      const dn = dendrites(c.kind, x, y, rs, R, detail, y - rs - ceil);
       const sy = y + rs * (c.kind === "bipolar" ? 1.2 : c.kind === "pyramidal" ? 0.8 : 1);
       const c1: [number, number] = [x + (R() - 0.5) * 10, sy + (c.hubY - sy) * 0.45];
       const c2: [number, number] = [c.hubX + (x - c.hubX) * 0.18, c.hubY - 22 * scale];
@@ -461,7 +541,24 @@ export function buildNetwork(input: NetworkInput): Network {
         },
         fibre,
         fibreLen,
+        hit: 0,
       });
+    }
+  }
+
+  // Tap targets (radar only). Wide: just past the soma. Compact: up to a thumb where there is
+  // room (half the distance to the nearest other real soma, 14 to 22 px) and never overlapping.
+  if (variant === "radar") {
+    const real = out.filter((q) => !q.ghost && !q.decorative);
+    for (const q of real) {
+      if (layout === "wide") {
+        q.hit = Math.max(q.size + 6, HIT_MIN);
+        continue;
+      }
+      const others = real.filter((o) => o !== q);
+      const d = others.length ? Math.min(...others.map((o) => Math.hypot(o.x - q.x, o.y - q.y))) : 2 * HIT_MAX;
+      // Rounded down, so two neighbours' targets can touch but never overlap.
+      q.hit = Math.floor(Math.min(HIT_MAX, Math.max(HIT_MIN, d / 2)) * 10) / 10;
     }
   }
 
@@ -479,7 +576,8 @@ export function buildNetwork(input: NetworkInput): Network {
       lines: c.lines,
       x: c.x,
       y: c.y,
-      r: c.r,
+      rx: c.rx,
+      ry: c.ry,
       hue: c.hue,
       kind: c.kind,
       hubX: c.hubX,

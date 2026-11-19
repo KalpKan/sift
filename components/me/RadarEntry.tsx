@@ -3,7 +3,7 @@
 import { useState, type CSSProperties } from "react";
 import { useBrainHover } from "@/components/brain/BrainHover";
 import { dotClass } from "@/components/brain/rowDot";
-import { formatDate } from "@/components/PaperEntry";
+import { formatDate, reasonText } from "@/components/PaperEntry";
 import { events } from "@/lib/events";
 import type { MePaper } from "@/lib/me-api";
 
@@ -105,10 +105,10 @@ export default function RadarEntry({
       aria-label={label}
       title={label}
       className={`group h-10 w-11 rounded-[4px] border text-[15px] leading-none disabled:cursor-wait disabled:opacity-60 sm:h-8 sm:w-9 ${
-        verdict === v ? pressed[v] : "border-rule bg-transparent hover:border-ink-faint hover:bg-surface"
+        verdict === v ? pressed[v] : "border-control bg-transparent hover:border-ink-faint hover:bg-surface"
       }`}
     >
-      <span className={verdict === v ? "" : "opacity-65 grayscale group-hover:opacity-100 group-hover:grayscale-0"}>{glyph}</span>
+      <span className={verdict === v ? "" : "rate-glyph"}>{glyph}</span>
     </button>
   );
 
@@ -131,8 +131,8 @@ export default function RadarEntry({
         litFromCell ? "bg-surface shadow-[-12px_0_0_var(--surface),12px_0_0_var(--surface)]" : ""
       }`}
     >
-      <div aria-hidden className="flex flex-col items-start gap-[7px] pt-[5px] sm:flex-row sm:items-baseline sm:gap-[10px]">
-        <span className="tabular font-mono text-xs leading-[1.3] text-ink-faint">{paper.shownRank}</span>
+      <div aria-hidden className="flex w-[2ch] flex-col items-end gap-[7px] pt-[5px] font-mono text-xs sm:w-auto sm:flex-row sm:items-baseline sm:gap-[10px]">
+        <span className="tabular inline-block w-[2ch] text-right leading-[1.3] text-ink-faint">{paper.shownRank}</span>
         <span className={`inline-block size-2 flex-none rounded-full sm:-translate-y-px ${dot}`} />
       </div>
 
@@ -155,7 +155,7 @@ export default function RadarEntry({
             {topicName && (
               <>
                 {meta && " · "}
-                <span className="font-medium text-[var(--c)]">{topicName}</span>
+                <span className="whitespace-nowrap font-medium text-[var(--c)]">{topicName}</span>
               </>
             )}
           </p>
@@ -166,7 +166,7 @@ export default function RadarEntry({
             {isNew && <li className="text-xs font-medium leading-[1.4] text-spike">new</li>}
             {paper.reasons.map((reason) => (
               <li key={reason} className="text-xs leading-[1.4] text-ink-faint">
-                {reason}
+                {reasonText(reason)}
               </li>
             ))}
           </ul>

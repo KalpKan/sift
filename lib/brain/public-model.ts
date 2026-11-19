@@ -27,7 +27,10 @@ export function heroModel(topics: TopicRef[]) {
 
 export const TOPIC_MAP_PAPERS = 8;
 
-/** `/t/<slug>`: one unlabelled cluster of the page's top papers; a paper from the last 48 hours is new. */
+/**
+ * `/t/<slug>`: one unlabelled cluster of the page's top papers; a paper from the last 48 hours is new.
+ * `newCount` counts the cells the map draws (the top eight), so the caption agrees with the rings.
+ */
 export function topicModel({
   slug,
   papers,
@@ -48,7 +51,18 @@ export function topicModel({
     isNew: isNew(p.published, now),
     verdict: null,
   }));
-  return { hue: index % 4, clusters, neurons };
+  return {
+    hue: index % 4,
+    clusters,
+    neurons,
+    total: papers.length,
+    newCount: neurons.filter((n) => n.isNew).length,
+  };
+}
+
+/** The topic figure's caption text: "top 8 of 20 papers", or "all 5 papers" when the page has eight or fewer. */
+export function topicCaption(total: number): string {
+  return total <= TOPIC_MAP_PAPERS ? `all ${total} paper${total === 1 ? "" : "s"}` : `top ${TOPIC_MAP_PAPERS} of ${total} papers`;
 }
 
 /** `/sign-in`: one unlabelled cluster of three decorative cells, in slot 1. */

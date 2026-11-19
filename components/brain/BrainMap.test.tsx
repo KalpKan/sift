@@ -96,9 +96,9 @@ describe("BrainMaps", () => {
     expect(html).toContain("hidden sm:block");
     expect(html).toContain("sm:hidden");
     expect(html).toContain("height:232px");
-    expect(html).toContain("height:172px");
+    expect(html).toContain("height:184px");
     expect(html).toContain('viewBox="0 0 608 232"');
-    expect(html).toContain('viewBox="0 0 350 172"');
+    expect(html).toContain('viewBox="0 0 350 184"');
   });
 
   it("renders with no clusters and no neurons (zero followed fields)", () => {

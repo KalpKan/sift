@@ -52,10 +52,12 @@ export default function RadarView({ fields, papers, now }: { fields: RadarField[
         </p>
       )}
 
-      <p className="mt-2 border-t border-rule pt-4 text-xs leading-[1.4] text-ink-faint">
-        👍 and 👎 teach the ranking which of your interests matter and grade it against a plain newest-first list,
-        on exactly the papers you rated.
-      </p>
+      {model.rows.length > 0 && (
+        <p className="mt-2 border-t border-rule pt-4 text-xs leading-[1.4] text-ink-faint">
+          👍 and 👎 teach the ranking which of your interests matter and grade it against a plain newest-first list,
+          on exactly the papers you rated.
+        </p>
+      )}
     </BrainHoverProvider>
   );
 }

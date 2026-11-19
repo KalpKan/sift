@@ -54,7 +54,7 @@ export default function BrainFrame({
     const cell = Array.from(root.querySelectorAll<SVGGElement>("[data-pmid]")).find((el) => el.dataset.pmid === active);
     if (!cell) return;
     cell.setAttribute("data-hl", "true");
-    const cluster = cell.closest<SVGGElement>(".brain-cluster")?.dataset.cluster;
+    const cluster = cell.dataset.cluster;
     root.querySelectorAll<SVGTextElement>(".brain-label").forEach((el) => {
       if (el.dataset.cluster === cluster) el.setAttribute("data-hl", "true");
     });

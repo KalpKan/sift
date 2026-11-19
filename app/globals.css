@@ -25,7 +25,8 @@
   --rule: #e1ddd2;
   --rule-strong: #1b1916;
   --cell: #2b2824;
-  --wire: #b8b2a5;
+  --wire: #a39d8f;
+  --control: #8a857a;
   --cluster-1: #2b5b96;
   --cluster-2: #17696f;
   --cluster-3: #2e6e3f;
@@ -46,7 +47,8 @@
     --rule: #26282c;
     --rule-strong: #5d6067;
     --cell: #6a6d73;
-    --wire: #3b3e44;
+    --wire: #565a62;
+    --control: #62656c;
     --cluster-1: #82b1ea;
     --cluster-2: #5ec6c0;
     --cluster-3: #84cf8e;
@@ -68,6 +70,7 @@
   --color-surface-strong: var(--surface-strong);
   --color-cell: var(--cell);
   --color-wire: var(--wire);
+  --color-control: var(--control);
   --color-cluster-1: var(--cluster-1);
   --color-cluster-2: var(--cluster-2);
   --color-cluster-3: var(--cluster-3);
@@ -127,11 +130,8 @@ a {
 .brain-label {
   fill: var(--c);
   font-family: var(--font-sans);
-  font-weight: 500;
-  transition: fill 150ms;
-}
-.brain[data-layout="wide"] .brain-label {
   font-weight: 600;
+  transition: fill 150ms;
 }
 .brain-label[data-hl] {
   fill: var(--ink);
@@ -153,7 +153,7 @@ a {
   stroke: var(--cell);
   stroke-width: 0.75;
   stroke-linecap: round;
-  opacity: 0.42;
+  opacity: 0.5;
   transition: stroke-width 400ms, stroke 400ms, opacity 150ms;
 }
 .brain-halo {
@@ -190,20 +190,25 @@ a {
   pointer-events: all;
   cursor: pointer;
 }
+/* Only the hit circle takes the pointer: cells are drawn best rank last, so the best cell's circle
+   is on top and wins any overlap, and a dendrite crossing a neighbour never steals its tap. */
+.brain-neuron > :not(.brain-hit) {
+  pointer-events: none;
+}
 @media (prefers-color-scheme: dark) {
   .brain-den {
     stroke: var(--c);
-    opacity: 0.62;
+    opacity: 0.75;
   }
   .brain-fibre {
     stroke: var(--c);
-    opacity: 0.5;
+    opacity: 0.68;
   }
   .brain-halo-1 {
-    opacity: 0.16;
+    opacity: 0.2;
   }
   .brain-halo-2 {
-    opacity: 0.07;
+    opacity: 0.1;
   }
   .brain-glow {
     opacity: 0.22;
@@ -245,14 +250,15 @@ a {
   stroke-width: calc(var(--w) * 1.6);
 }
 
-/* 👎: the whole cell at 38%, hollow, no halo, no new ring, never fires. */
+/* 👎: the whole cell at 50%, hollow with a 1.25 px outline, no halo, no new ring, never fires.
+   It still has to read as a cell, so a field whose only papers are 👎 does not look empty. */
 .brain-neuron[data-verdict="-1"] {
-  --o: 0.38 !important;
+  --o: 0.5 !important;
   transition-duration: 300ms;
 }
 .brain-neuron[data-verdict="-1"] .brain-soma {
   fill: var(--paper);
-  stroke-width: 1;
+  stroke-width: 1.25;
 }
 .brain-neuron[data-verdict="-1"] .brain-halo,
 .brain-neuron[data-verdict="-1"] .brain-glow,
@@ -274,6 +280,23 @@ a {
 .brain-neuron[data-hl] .brain-fibre {
   opacity: 1;
   stroke-width: 1.25;
+}
+
+/* The rating buttons' glyph at rest (docs/design/brain.md section 7). Light: a grey emoji on paper is
+   about 1.4:1, so it is darkened until it reaches 3:1. Dark: round-1 grey at 0.65, quieter than the title. */
+.rate-glyph {
+  display: inline-block;
+  filter: grayscale(1) brightness(0.55);
+}
+@media (prefers-color-scheme: dark) {
+  .rate-glyph {
+    filter: grayscale(1);
+    opacity: 0.65;
+  }
+}
+.group:hover .rate-glyph {
+  filter: none;
+  opacity: 1;
 }
 
 /* Spikes, drawn by useFiring into .brain-spikes. */

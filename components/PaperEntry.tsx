@@ -20,6 +20,16 @@ export function formatDate(iso: string): string {
 }
 
 /**
+ * A stored reason as it is shown. The ranker words an age as "1 weeks old",
+ * "1 days old" or "1 months old"; the row shows those in the singular. This is
+ * display only: the stored reason, the API and lib/ranking.ts are untouched,
+ * and no reason is dropped or merged. "11 weeks old" and "21 days old" stay.
+ */
+export function reasonText(reason: string): string {
+  return reason.replace(/(?<![\d.])1 (weeks|days|months) old\b/g, (_m, unit: string) => `1 ${unit.slice(0, -1)} old`);
+}
+
+/**
  * One entry in a public list (docs/design/brain.md section 7), the same
  * anatomy as the private radar row: rank and a dot in the field's hue, the
  * title as the largest and darkest thing, meta, reasons led by the word `new`
@@ -53,8 +63,8 @@ export default function PaperEntry({
       style={{ "--c": `var(--cluster-${(hue % 4) + 1})` } as CSSProperties}
       className="grid grid-cols-[28px_minmax(0,1fr)] gap-x-[10px] py-[18px] sm:grid-cols-[44px_minmax(0,1fr)_88px] sm:gap-x-3 sm:py-5"
     >
-      <div className="flex flex-col items-start gap-[7px] pt-[5px] sm:flex-row sm:items-baseline sm:gap-[10px]">
-        <span aria-hidden className="tabular font-mono text-xs leading-[1.3] text-ink-faint">
+      <div className="flex w-[2ch] flex-col items-end gap-[7px] pt-[5px] font-mono text-xs sm:w-auto sm:flex-row sm:items-baseline sm:gap-[10px]">
+        <span aria-hidden className="tabular inline-block w-[2ch] text-right leading-[1.3] text-ink-faint">
           {rank}
         </span>
         <span
@@ -89,7 +99,7 @@ export default function PaperEntry({
             */}
             {paper.reasons.map((reason) => (
               <li key={reason} className="text-xs leading-[1.4] text-ink-faint">
-                {reason}
+                {reasonText(reason)}
               </li>
             ))}
           </ul>

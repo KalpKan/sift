@@ -90,3 +90,34 @@ export const DEV_INTERESTS: { term: string; weight: number; source: "obsidian" |
 
 /** The followed fields on the radar, in topic order: the map's clusters. */
 export const DEV_FIELDS = DEV_TOPICS.filter((t) => t.followed).map((t) => ({ slug: t.slug, name: t.name }));
+
+/**
+ * Fixture variants for QA of the radar's thin and wide cases (testers cannot see the real /me, so
+ * the follow count there is unknown). `fields=1`: all ten papers in one field. `fields=6`: six
+ * followed fields with the ten papers spread across five of them, so the sixth has none and
+ * shows its label and two dormant cells.
+ */
+const SIX_TOPICS = [
+  { slug: "bci", name: "Brain-computer interfaces" },
+  { slug: "neural-engineering", name: "Neural engineering" },
+  { slug: "dbs", name: "Deep brain stimulation" },
+  { slug: "stem-cells", name: "Stem cells" },
+  { slug: "neuromodulation", name: "Neuromodulation" },
+  { slug: "sca", name: "Spinocerebellar ataxia" },
+];
+const SIX_SPREAD = ["bci", "neural-engineering", "dbs", "stem-cells", "neuromodulation", "bci", "neural-engineering", "dbs", "neuromodulation", "stem-cells"];
+
+export function devRadarVariant(fields: string | string[] | undefined): {
+  fields: { slug: string; name: string }[];
+  papers: MePaper[];
+} {
+  const n = Array.isArray(fields) ? fields[0] : fields;
+  if (n === "1") {
+    const only = SIX_TOPICS[0];
+    return { fields: [only], papers: papers.map((p) => ({ ...p, topic: only.slug })) };
+  }
+  if (n === "6") {
+    return { fields: SIX_TOPICS, papers: papers.map((p, i) => ({ ...p, topic: SIX_SPREAD[i] })) };
+  }
+  return { fields: DEV_FIELDS, papers: DEV_RADAR_FEED.papers };
+}

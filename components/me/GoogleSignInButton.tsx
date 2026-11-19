@@ -29,7 +29,7 @@ export default function GoogleSignInButton() {
   }
 
   return (
-    <div>
+    <>
       <button
         type="button"
         onClick={signIn}
@@ -39,6 +39,6 @@ export default function GoogleSignInButton() {
         {state === "busy" ? "Opening Google…" : "Sign in with Google"}
       </button>
       {state === "error" && <p className="mt-3 text-[13px] leading-[1.45] text-ink-muted">Could not reach Google. Try again.</p>}
-    </div>
+    </>
   );
 }
