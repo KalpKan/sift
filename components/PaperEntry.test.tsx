@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
-import PaperEntry, { formatDate } from "./PaperEntry";
+import PaperEntry, { formatDate, reasonText } from "./PaperEntry";
 import type { FeedPaper } from "@/lib/feed";
 
 function paper(over: Partial<FeedPaper> = {}): FeedPaper {
@@ -21,8 +21,8 @@ function paper(over: Partial<FeedPaper> = {}): FeedPaper {
   };
 }
 
-const html = (over: Partial<FeedPaper> = {}, rank = 1) =>
-  renderToStaticMarkup(<PaperEntry paper={paper(over)} rank={rank} topic="neuromodulation" />);
+const html = (over: Partial<FeedPaper> = {}, rank = 1, extra: { hue?: number; isNew?: boolean } = {}) =>
+  renderToStaticMarkup(<PaperEntry paper={paper(over)} rank={rank} topic="neuromodulation" {...extra} />);
 
 describe("formatDate", () => {
   it("formats in UTC, independently of the server's locale", () => {
@@ -51,7 +51,24 @@ describe("PaperEntry", () => {
   });
 
   it("puts the byline, the journal and the date on one line", () => {
-    expect(html()).toContain("Zhang et al. · Brain stimulation · 14 Sep 2026");
+    expect(html()).toContain("Zhang et al.\u00A0· Brain stimulation\u00A0· <span class=\"whitespace-nowrap\">14 Sep 2026</span>");
+  });
+
+  it("keeps the date in one nowrap run and every separator with the item before it, never starting a line", () => {
+    const out = html();
+    expect(out).toContain('<span class="whitespace-nowrap">14 Sep 2026</span>');
+    // Every " · " is a non-breaking space then the dot; a plain space follows it, so a line may end with a dot.
+    expect(out).not.toMatch(/[^\u00A0] ·/);
+    expect(out.match(/\u00A0·/g)).toHaveLength(2);
+  });
+
+  it("puts the score at the right end of the first reasons line on a phone, and keeps a line for a row with no reasons", () => {
+    const withReasons = html();
+    expect(withReasons.indexOf(">88<")).toBeLessThan(withReasons.indexOf("4 days old"));
+    expect(withReasons).toMatch(/class="[^"]*float-right[^"]*">88</);
+    const bare = html({ reasons: [] });
+    expect(bare).not.toContain("float-right");
+    expect(bare).toMatch(/class="[^"]*mt-2\.5[^"]*">88</);
   });
 
   it("omits an empty journal or byline instead of printing a stray separator", () => {
@@ -93,5 +110,46 @@ describe("PaperEntry", () => {
 
   it("escapes a title containing markup", () => {
     expect(html({ title: "Effects of <script>alert(1)</script> on tremor" })).not.toContain("<script>");
+  });
+
+  it("says `new` as the first reason, in words, when the paper is new", () => {
+    const out = html({}, 1, { isNew: true });
+    expect(out).toMatch(/<ul[^>]*><li[^>]*>new<\/li><li[^>]*>4 days old<\/li>/);
+    expect(html()).not.toMatch(/>new</);
+  });
+
+  it("rings the dot for a new paper and colours it by the topic's hue", () => {
+    expect(html({}, 1, { isNew: true, hue: 2 })).toContain("--c:var(--cluster-3)");
+    expect(html({}, 1, { isNew: true })).toContain("var(--spike)");
+    expect(html()).not.toContain("var(--spike)");
+  });
+
+  it("wraps a 220-character title inside its column", () => {
+    expect(html({ title: "x".repeat(220) })).toContain("overflow-wrap:anywhere");
+  });
+
+  it("carries no rating controls", () => {
+    const out = html();
+    expect(out).not.toContain("<button");
+    expect(out).not.toContain("👍");
+  });
+});
+
+describe("reasonText (display-only singular repair)", () => {
+  it("shows 1 weeks / days / months old in the singular", () => {
+    expect(reasonText("1 weeks old")).toBe("1 week old");
+    expect(reasonText("1 days old")).toBe("1 day old");
+    expect(reasonText("1 months old")).toBe("1 month old");
+  });
+  it("leaves every other reason alone, including 11 weeks, 21 days and 2 months", () => {
+    for (const r of ["11 weeks old", "21 days old", "2 months old", "4 days old", "1 years old", "meta-analysis", "published today", "brain-computer interface"]) {
+      expect(reasonText(r)).toBe(r);
+    }
+  });
+  it("is applied in the row, and drops nothing", () => {
+    const html = renderToStaticMarkup(<PaperEntry paper={paper({ reasons: ["1 weeks old", "meta-analysis"] })} rank={1} topic="neuromodulation" />);
+    expect(html).toContain("1 week old");
+    expect(html).not.toContain("1 weeks old");
+    expect(html).toContain("meta-analysis");
   });
 });

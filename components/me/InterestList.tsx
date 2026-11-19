@@ -36,7 +36,7 @@ export default function InterestList({ interests }: { interests: Row[] }) {
 
   if (rows.length === 0) {
     return (
-      <p className="py-6 text-sm text-ink-muted">
+      <p className="py-6 text-[13px] leading-[1.45] text-ink-muted">
         No interests yet. Run the Obsidian bridge on your Mac (docs/obsidian-bridge.md), or rate papers on the radar.
       </p>
     );
@@ -47,19 +47,20 @@ export default function InterestList({ interests }: { interests: Row[] }) {
       <ul className="divide-y divide-rule">
         {rows.map((r) => (
           <li key={`${r.term}:${r.source}`} className="flex items-baseline justify-between gap-4 py-3">
-            <span>
-              <span className="font-serif text-lg">{r.term}</span>{" "}
-              <span className="text-xs text-ink-faint">
+            {/* Under 640 px: the term and its action share line one, and the provenance is line two. */}
+            <span className="min-w-0">
+              <span className="font-serif text-[17px] leading-[1.35]">{r.term}</span>{" "}
+              <span className="text-xs leading-[1.4] text-ink-faint max-sm:block max-sm:whitespace-nowrap">
                 {SOURCE[r.source]} · <span className="tabular">{r.weight > 0 ? "+" : ""}{r.weight.toFixed(2)}</span>
               </span>
             </span>
             {r.source === "taps" ? (
-              <span className="text-xs text-ink-faint">re-rate to change</span>
+              <span className="whitespace-nowrap text-xs leading-[1.4] text-ink-faint">re-rate to change</span>
             ) : (
             <button
               type="button"
               onClick={() => remove(r)}
-              className="text-xs text-ink-muted underline decoration-rule underline-offset-4 hover:decoration-rule-strong"
+              className="whitespace-nowrap text-xs leading-[1.4] text-ink-muted underline decoration-ink-faint underline-offset-4 hover:decoration-ink"
               aria-label={`Delete ${r.term} (${SOURCE[r.source]})`}
             >
               Delete
@@ -68,7 +69,7 @@ export default function InterestList({ interests }: { interests: Row[] }) {
           </li>
         ))}
       </ul>
-      {error && <p className="mt-2 text-xs text-ink-muted">Could not delete. Try again.</p>}
+      {error && <p className="mt-2 text-xs leading-[1.4] text-ink-muted">Could not delete. Try again.</p>}
     </div>
   );
 }

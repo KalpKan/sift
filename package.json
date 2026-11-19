@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run --pool=forks --maxWorkers=1",
-    "eval": "tsx --env-file=.env.local scripts/eval.ts"
+    "eval": "tsx --env-file=.env.local scripts/eval.ts",
+    "shots": "node scripts/ui-shots.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -28,6 +29,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
     "jsdom": "^29.1.1",
+    "playwright": "^1.65.1",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5",

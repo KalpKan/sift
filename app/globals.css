@@ -1,43 +1,62 @@
 @import "tailwindcss";
 
 /*
- * Sift reads like a journal's table of contents, not a dashboard.
+ * Sift is a page from a neuroanatomy atlas (docs/design/brain.md).
  *
- * The visual thesis is one line long: INK ON PAPER, AND THE PAPER TITLES ARE
- * THE ONLY THING THAT SHOUTS. Everything else — journal, byline, age, score,
- * reasons — is set small, in sans, at low contrast, and sits underneath. A
- * researcher scanning this is doing exactly one thing: reading titles and
- * deciding. Anything that competes with a title is in the way.
+ * One small figure of cells at the top, drawn in ink like a Cajal plate in
+ * light mode and seen under fluorescence in dark mode; under it a ruled list
+ * where paper titles are the largest and darkest thing. Each field is a group
+ * of one cell type, each paper is one cell, and the only thing that moves is a
+ * short spike down the axon of a paper that is new.
  *
- * Consequences that are enforced by absence, not by CSS: no cards, no shadows,
- * no gradients, no rounded panels, no accent colour, no icons, no emoji. The
- * only structural device is a hairline rule between entries, which is what a
- * printed contents page uses and it is enough.
- *
- * Colour never carries meaning here, which also happens to be what the Lock
- * Screen widget requires (docs/widget-constraints.md #4) — so the web and the
- * widget end up honest in the same way.
+ * Anatomy is cool, events are warm: the four cluster hues are cool or neutral,
+ * vermilion (--spike) means new and gold (--reinforce) means 👍. No cards, no
+ * shadows, no gradients, no blur. Colour never carries meaning alone: new has
+ * a ring and the word "new", 👍 has a ring, a thick fibre and aria-pressed.
  */
 
 :root {
-  /* Warm off-white rather than #fff: it is a page, and pure white glares. */
-  --paper: #fcfbf9;
-  --ink: #171614;
-  --ink-muted: #5d5a54;
-  --ink-faint: #8a867e;
-  --rule: #e0ddd6;
-  --rule-strong: #171614;
+  color-scheme: light dark;
+  --paper: #f9f7f2;
+  --surface: #f1eee6;
+  --surface-strong: #e7e3d8;
+  --ink: #1b1916;
+  --ink-muted: #524e47;
+  --ink-faint: #6b675f;
+  --rule: #e1ddd2;
+  --rule-strong: #1b1916;
+  --cell: #2b2824;
+  --wire: #a39d8f;
+  --control: #8a857a;
+  --cluster-1: #2b5b96;
+  --cluster-2: #17696f;
+  --cluster-3: #2e6e3f;
+  --cluster-4: #8a3c76;
+  --spike: #c2361a;
+  --reinforce: #8a5d00;
+  --reinforce-wash: #e7decb;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Not pure black: a near-black page keeps serif text from blooming. */
-    --paper: #100f0e;
-    --ink: #eae7e0;
-    --ink-muted: #9b968d;
-    --ink-faint: #6f6b64;
-    --rule: #2b2925;
-    --rule-strong: #eae7e0;
+    --paper: #0e0f11;
+    --surface: #17191c;
+    --surface-strong: #212429;
+    --ink: #ece9e2;
+    --ink-muted: #aaa69d;
+    --ink-faint: #8d8980;
+    --rule: #26282c;
+    --rule-strong: #5d6067;
+    --cell: #6a6d73;
+    --wire: #565a62;
+    --control: #62656c;
+    --cluster-1: #82b1ea;
+    --cluster-2: #5ec6c0;
+    --cluster-3: #84cf8e;
+    --cluster-4: #e08fc6;
+    --spike: #ff7a55;
+    --reinforce: #f0c14b;
+    --reinforce-wash: #322b1a;
   }
 }
 
@@ -48,6 +67,18 @@
   --color-ink-faint: var(--ink-faint);
   --color-rule: var(--rule);
   --color-rule-strong: var(--rule-strong);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-cell: var(--cell);
+  --color-wire: var(--wire);
+  --color-control: var(--control);
+  --color-cluster-1: var(--cluster-1);
+  --color-cluster-2: var(--cluster-2);
+  --color-cluster-3: var(--cluster-3);
+  --color-cluster-4: var(--cluster-4);
+  --color-spike: var(--spike);
+  --color-reinforce: var(--reinforce);
+  --color-reinforce-wash: var(--reinforce-wash);
 
   /* System stacks only: no web font means no network fetch and no layout
      shift, and the OS serif is a better book face than anything loaded from
@@ -72,8 +103,272 @@ body {
   font-variant-numeric: tabular-nums lining-nums;
 }
 
-/* One link treatment everywhere: the rule under a title thickens on hover.
-   No colour change, because colour is not a signal in this design. */
 a {
   color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/*
+ * The brain map (components/brain). The server draws every state from data
+ * attributes, so a still page is already correct; the client only flips an
+ * attribute. Colours come from the tokens above, per appearance.
+ */
+.brain-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.brain-tract {
+  fill: none;
+  stroke: var(--wire);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+.brain-label {
+  fill: var(--c);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  transition: fill 150ms;
+}
+.brain-label[data-hl] {
+  fill: var(--ink);
+}
+
+.brain-neuron {
+  opacity: var(--o);
+  transition: opacity 200ms;
+}
+.brain-den {
+  fill: none;
+  stroke: var(--cell);
+  stroke-linecap: round;
+  opacity: 0.78;
+  transition: stroke-width 400ms;
+}
+.brain-fibre {
+  fill: none;
+  stroke: var(--cell);
+  stroke-width: 0.75;
+  stroke-linecap: round;
+  opacity: 0.5;
+  transition: stroke-width 400ms, stroke 400ms, opacity 150ms;
+}
+.brain-halo {
+  fill: var(--c);
+  opacity: 0;
+}
+.brain-soma {
+  fill: var(--c);
+  stroke: var(--c);
+  stroke-linejoin: round;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 120ms ease-out, fill 300ms;
+}
+.brain-glow {
+  fill: var(--spike);
+  opacity: 0.14;
+}
+.brain-ring-new {
+  fill: none;
+  stroke: var(--spike);
+  stroke-width: 1.25;
+}
+.brain-ring-up {
+  fill: none;
+  stroke: var(--reinforce);
+  stroke-width: 1.25;
+  display: none;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.brain-hit {
+  fill: transparent;
+  pointer-events: all;
+  cursor: pointer;
+}
+/* Only the hit circle takes the pointer: cells are drawn best rank last, so the best cell's circle
+   is on top and wins any overlap, and a dendrite crossing a neighbour never steals its tap. */
+.brain-neuron > :not(.brain-hit) {
+  pointer-events: none;
+}
+@media (prefers-color-scheme: dark) {
+  .brain-den {
+    stroke: var(--c);
+    opacity: 0.75;
+  }
+  .brain-fibre {
+    stroke: var(--c);
+    opacity: 0.68;
+  }
+  .brain-halo-1 {
+    opacity: 0.2;
+  }
+  .brain-halo-2 {
+    opacity: 0.1;
+  }
+  .brain-glow {
+    opacity: 0.22;
+  }
+}
+
+/* Dormant and ghost cells: everything in the wire colour. */
+.brain-neuron[data-ghost="true"] .brain-den,
+.brain-neuron[data-ghost="true"] .brain-fibre {
+  stroke: var(--wire);
+  opacity: 1;
+}
+.brain-neuron[data-ghost="true"] .brain-soma {
+  fill: var(--wire);
+  stroke: var(--wire);
+}
+
+/* New: the glow disc is the pre-hydration and reduced-motion signal; the live scheduler replaces it. */
+.brain.is-live .brain-glow {
+  display: none;
+}
+
+/* 👍: gold ring (outside the new ring if both), thick gold fibre, thicker dendrites. */
+.brain-neuron[data-verdict="1"] .brain-ring-up-near {
+  display: inline;
+}
+.brain-neuron[data-verdict="1"][data-new="true"] .brain-ring-up-near {
+  display: none;
+}
+.brain-neuron[data-verdict="1"][data-new="true"] .brain-ring-up-far {
+  display: inline;
+}
+.brain-neuron[data-verdict="1"] .brain-fibre {
+  stroke: var(--reinforce);
+  stroke-width: 1.75;
+  opacity: 0.9;
+}
+.brain-neuron[data-verdict="1"] .brain-den {
+  stroke-width: calc(var(--w) * 1.6);
+}
+
+/* 👎: the whole cell at 50%, hollow with a 1.25 px outline, no halo, no new ring, never fires.
+   It still has to read as a cell, so a field whose only papers are 👎 does not look empty. */
+.brain-neuron[data-verdict="-1"] {
+  --o: 0.5 !important;
+  transition-duration: 300ms;
+}
+.brain-neuron[data-verdict="-1"] .brain-soma {
+  fill: var(--paper);
+  stroke-width: 1.25;
+}
+.brain-neuron[data-verdict="-1"] .brain-halo,
+.brain-neuron[data-verdict="-1"] .brain-glow,
+.brain-neuron[data-verdict="-1"] .brain-ring-new {
+  display: none;
+}
+
+/* Hover link: the paper's cell lights up and every other cell dims. */
+.brain.is-hover .brain-neuron {
+  opacity: calc(var(--o) * 0.45);
+  transition-duration: 150ms;
+}
+.brain.is-hover .brain-neuron[data-hl] {
+  opacity: var(--o);
+}
+.brain-neuron[data-hl] .brain-soma {
+  transform: scale(1.2);
+}
+.brain-neuron[data-hl] .brain-fibre {
+  opacity: 1;
+  stroke-width: 1.25;
+}
+
+/* The rating buttons' glyph at rest (docs/design/brain.md section 7). Light: a grey emoji on paper is
+   about 1.4:1, so it is darkened until it reaches 3 to 3.6:1. Dark: round-1 grey at 0.65, quieter than the title. */
+.rate-glyph {
+  display: inline-block;
+  filter: grayscale(1) brightness(0.65);
+}
+@media (prefers-color-scheme: dark) {
+  .rate-glyph {
+    filter: grayscale(1);
+    opacity: 0.65;
+  }
+}
+.group:hover .rate-glyph {
+  filter: none;
+  opacity: 1;
+}
+
+/* The follow checkbox, drawn by us (docs/design/brain.md section 8). The native one was a solid white square in
+   dark mode, the brightest thing on the page. It stays a real input type=checkbox, so the label, the handler, the
+   keyboard and the focus ring (the global :focus-visible outline) are the browser's. */
+.follow-check {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid var(--control);
+  border-radius: 3px;
+  background: transparent;
+}
+.follow-check:checked {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+.follow-check::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  clip-path: polygon(20% 52%, 30% 42%, 44% 58%, 72% 26%, 82% 36%, 44% 78%);
+  opacity: 0;
+}
+.follow-check:checked::before {
+  opacity: 1;
+}
+
+/* Spikes, drawn by useFiring into .brain-spikes. */
+.brain-spikes {
+  pointer-events: none;
+}
+.brain-dash,
+.brain-dash-glow {
+  fill: none;
+  stroke-linecap: round;
+}
+.brain-dash {
+  stroke-width: 2.25;
+}
+.brain[data-layout="compact"] .brain-dash {
+  stroke-width: 2;
+}
+.brain-dash-glow {
+  stroke-width: 6;
+  stroke-opacity: 0.22;
+}
+.brain-dash-spike {
+  stroke: var(--spike);
+}
+.brain-dash-up {
+  stroke: var(--reinforce);
+}
+.brain-ring-pulse {
+  fill: none;
+  stroke: var(--spike);
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brain *,
+  .brain-fibre,
+  .brain-den {
+    transition: none !important;
+  }
 }

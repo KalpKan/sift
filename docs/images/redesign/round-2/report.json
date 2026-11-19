@@ -1,0 +1,2829 @@
+{
+  "shots": [
+    {
+      "name": "home-desktop-light",
+      "url": "/",
+      "viewport": "desktop",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "hero",
+            "layout": "wide",
+            "viewBox": "608x192",
+            "boxHeight": 192,
+            "tractLabelClearance": 10.51,
+            "tracts": 6,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 5,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 771.39,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "6 fields · illustration, not live data"
+          }
+        }
+      }
+    },
+    {
+      "name": "home-desktop-dark",
+      "url": "/",
+      "viewport": "desktop",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "hero",
+            "layout": "wide",
+            "viewBox": "608x192",
+            "boxHeight": 192,
+            "tractLabelClearance": 10.51,
+            "tracts": 6,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 5,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 771.39,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "6 fields · illustration, not live data"
+          }
+        }
+      }
+    },
+    {
+      "name": "home-mobile-light",
+      "url": "/",
+      "viewport": "mobile",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "hero",
+            "layout": "compact",
+            "viewBox": "350x292",
+            "boxHeight": 292,
+            "tractLabelClearance": 7.4,
+            "tracts": 6,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 5,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 978.34,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "6 fields · illustration, not live data"
+          }
+        }
+      }
+    },
+    {
+      "name": "home-mobile-dark",
+      "url": "/",
+      "viewport": "mobile",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "hero",
+            "layout": "compact",
+            "viewBox": "350x292",
+            "boxHeight": 292,
+            "tractLabelClearance": 7.4,
+            "tracts": 6,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 5,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 978.34,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "6 fields · illustration, not live data"
+          }
+        }
+      }
+    },
+    {
+      "name": "topic-neuromodulation-desktop-light",
+      "url": "/t/neuromodulation",
+      "viewport": "desktop",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "topic",
+            "layout": "wide",
+            "viewBox": "608x120",
+            "boxHeight": 120,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "42736497",
+                "r": 5.5
+              },
+              {
+                "pmid": "42809063",
+                "r": 7.72
+              },
+              {
+                "pmid": "42875648",
+                "r": 5.06
+              },
+              {
+                "pmid": "42909654",
+                "r": 4.61
+              },
+              {
+                "pmid": "42929065",
+                "r": 6.83
+              },
+              {
+                "pmid": "42947345",
+                "r": 6.39
+              },
+              {
+                "pmid": "42950002",
+                "r": 7.28
+              },
+              {
+                "pmid": "42953957",
+                "r": 5.94
+              }
+            ],
+            "labelWeights": []
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 20,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 330.33,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "top 8 of 20 papers"
+          }
+        }
+      }
+    },
+    {
+      "name": "topic-neuromodulation-desktop-dark",
+      "url": "/t/neuromodulation",
+      "viewport": "desktop",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "topic",
+            "layout": "wide",
+            "viewBox": "608x120",
+            "boxHeight": 120,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "42736497",
+                "r": 5.5
+              },
+              {
+                "pmid": "42809063",
+                "r": 7.72
+              },
+              {
+                "pmid": "42875648",
+                "r": 5.06
+              },
+              {
+                "pmid": "42909654",
+                "r": 4.61
+              },
+              {
+                "pmid": "42929065",
+                "r": 6.83
+              },
+              {
+                "pmid": "42947345",
+                "r": 6.39
+              },
+              {
+                "pmid": "42950002",
+                "r": 7.28
+              },
+              {
+                "pmid": "42953957",
+                "r": 5.94
+              }
+            ],
+            "labelWeights": []
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 20,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 330.33,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "top 8 of 20 papers"
+          }
+        }
+      }
+    },
+    {
+      "name": "topic-neuromodulation-mobile-light",
+      "url": "/t/neuromodulation",
+      "viewport": "mobile",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "topic",
+            "layout": "compact",
+            "viewBox": "350x104",
+            "boxHeight": 104,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "42736497",
+                "r": 4.5
+              },
+              {
+                "pmid": "42809063",
+                "r": 6.28
+              },
+              {
+                "pmid": "42875648",
+                "r": 4.17
+              },
+              {
+                "pmid": "42909654",
+                "r": 3.78
+              },
+              {
+                "pmid": "42929065",
+                "r": 5.56
+              },
+              {
+                "pmid": "42947345",
+                "r": 5.22
+              },
+              {
+                "pmid": "42950002",
+                "r": 5.94
+              },
+              {
+                "pmid": "42953957",
+                "r": 4.83
+              }
+            ],
+            "labelWeights": []
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 20,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 291.13,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "top 8 of 20 papers"
+          }
+        }
+      }
+    },
+    {
+      "name": "topic-neuromodulation-mobile-dark",
+      "url": "/t/neuromodulation",
+      "viewport": "mobile",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "topic",
+            "layout": "compact",
+            "viewBox": "350x104",
+            "boxHeight": 104,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "42736497",
+                "r": 4.5
+              },
+              {
+                "pmid": "42809063",
+                "r": 6.28
+              },
+              {
+                "pmid": "42875648",
+                "r": 4.17
+              },
+              {
+                "pmid": "42909654",
+                "r": 3.78
+              },
+              {
+                "pmid": "42929065",
+                "r": 5.56
+              },
+              {
+                "pmid": "42947345",
+                "r": 5.22
+              },
+              {
+                "pmid": "42950002",
+                "r": 5.94
+              },
+              {
+                "pmid": "42953957",
+                "r": 4.83
+              }
+            ],
+            "labelWeights": []
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 20,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 291.13,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "top 8 of 20 papers"
+          }
+        }
+      }
+    },
+    {
+      "name": "sign-in-desktop-light",
+      "url": "/sign-in",
+      "viewport": "desktop",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "motif",
+            "layout": "wide",
+            "viewBox": "220x112",
+            "boxHeight": 112,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": []
+          }
+        ],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": null,
+          "signIn": {
+            "hubX": 526,
+            "buttonCentreX": 525.99,
+            "hubY": 375.97,
+            "buttonTop": 375.97,
+            "blockLeft": 416,
+            "headingLeft": 416
+          }
+        }
+      }
+    },
+    {
+      "name": "sign-in-desktop-dark",
+      "url": "/sign-in",
+      "viewport": "desktop",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "motif",
+            "layout": "wide",
+            "viewBox": "220x112",
+            "boxHeight": 112,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": []
+          }
+        ],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": null,
+          "signIn": {
+            "hubX": 526,
+            "buttonCentreX": 525.99,
+            "hubY": 375.97,
+            "buttonTop": 375.97,
+            "blockLeft": 416,
+            "headingLeft": 416
+          }
+        }
+      }
+    },
+    {
+      "name": "sign-in-mobile-light",
+      "url": "/sign-in",
+      "viewport": "mobile",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "motif",
+            "layout": "wide",
+            "viewBox": "220x112",
+            "boxHeight": 112,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": []
+          }
+        ],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": null,
+          "signIn": {
+            "hubX": 130,
+            "buttonCentreX": 129.99,
+            "hubY": 377.66,
+            "buttonTop": 377.66,
+            "blockLeft": 20,
+            "headingLeft": 20
+          }
+        }
+      }
+    },
+    {
+      "name": "sign-in-mobile-dark",
+      "url": "/sign-in",
+      "viewport": "mobile",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "motif",
+            "layout": "wide",
+            "viewBox": "220x112",
+            "boxHeight": 112,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": []
+          }
+        ],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": null,
+          "signIn": {
+            "hubX": 130,
+            "buttonCentreX": 129.99,
+            "hubY": 377.66,
+            "buttonTop": 377.66,
+            "blockLeft": 20,
+            "headingLeft": 20
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-desktop-light",
+      "url": "/dev/radar",
+      "viewport": "desktop",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "wide",
+            "viewBox": "608x232",
+            "boxHeight": 232,
+            "tractLabelClearance": 10.59,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14,
+              "max": 14.75,
+              "overlaps": 1,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 8.78
+              },
+              {
+                "pmid": "40000002",
+                "r": 8.28
+              },
+              {
+                "pmid": "40000003",
+                "r": 7.78
+              },
+              {
+                "pmid": "40000004",
+                "r": 7.28
+              },
+              {
+                "pmid": "40000005",
+                "r": 6.78
+              },
+              {
+                "pmid": "40000006",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000007",
+                "r": 5.78
+              },
+              {
+                "pmid": "40000008",
+                "r": 5.28
+              },
+              {
+                "pmid": "40000009",
+                "r": 4.78
+              },
+              {
+                "pmid": "40000010",
+                "r": 4.28
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 446.33,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        },
+        "thumbGlyph": {
+          "median": "#757575",
+          "pixels": true,
+          "contrastOnPaper": 4.3
+        }
+      }
+    },
+    {
+      "name": "dev-radar-desktop-light-reduced",
+      "url": "/dev/radar",
+      "viewport": "desktop",
+      "scheme": "light",
+      "motion": "reduced",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "wide",
+            "viewBox": "608x232",
+            "boxHeight": 232,
+            "tractLabelClearance": 10.59,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14,
+              "max": 14.75,
+              "overlaps": 1,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 8.78
+              },
+              {
+                "pmid": "40000002",
+                "r": 8.28
+              },
+              {
+                "pmid": "40000003",
+                "r": 7.78
+              },
+              {
+                "pmid": "40000004",
+                "r": 7.28
+              },
+              {
+                "pmid": "40000005",
+                "r": 6.78
+              },
+              {
+                "pmid": "40000006",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000007",
+                "r": 5.78
+              },
+              {
+                "pmid": "40000008",
+                "r": 5.28
+              },
+              {
+                "pmid": "40000009",
+                "r": 4.78
+              },
+              {
+                "pmid": "40000010",
+                "r": 4.28
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 446.33,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-desktop-dark",
+      "url": "/dev/radar",
+      "viewport": "desktop",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "wide",
+            "viewBox": "608x232",
+            "boxHeight": 232,
+            "tractLabelClearance": 10.59,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14,
+              "max": 14.75,
+              "overlaps": 1,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 8.78
+              },
+              {
+                "pmid": "40000002",
+                "r": 8.28
+              },
+              {
+                "pmid": "40000003",
+                "r": 7.78
+              },
+              {
+                "pmid": "40000004",
+                "r": 7.28
+              },
+              {
+                "pmid": "40000005",
+                "r": 6.78
+              },
+              {
+                "pmid": "40000006",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000007",
+                "r": 5.78
+              },
+              {
+                "pmid": "40000008",
+                "r": 5.28
+              },
+              {
+                "pmid": "40000009",
+                "r": 4.78
+              },
+              {
+                "pmid": "40000010",
+                "r": 4.28
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 446.33,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        },
+        "thumbGlyph": {
+          "median": "#7e7f7f",
+          "pixels": true,
+          "contrastOnPaper": 4.78
+        }
+      }
+    },
+    {
+      "name": "dev-radar-desktop-dark-reduced",
+      "url": "/dev/radar",
+      "viewport": "desktop",
+      "scheme": "dark",
+      "motion": "reduced",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "wide",
+            "viewBox": "608x232",
+            "boxHeight": 232,
+            "tractLabelClearance": 10.59,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14,
+              "max": 14.75,
+              "overlaps": 1,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 8.78
+              },
+              {
+                "pmid": "40000002",
+                "r": 8.28
+              },
+              {
+                "pmid": "40000003",
+                "r": 7.78
+              },
+              {
+                "pmid": "40000004",
+                "r": 7.28
+              },
+              {
+                "pmid": "40000005",
+                "r": 6.78
+              },
+              {
+                "pmid": "40000006",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000007",
+                "r": 5.78
+              },
+              {
+                "pmid": "40000008",
+                "r": 5.28
+              },
+              {
+                "pmid": "40000009",
+                "r": 4.78
+              },
+              {
+                "pmid": "40000010",
+                "r": 4.28
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 446.33,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-mobile-light",
+      "url": "/dev/radar",
+      "viewport": "mobile",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "compact",
+            "viewBox": "350x184",
+            "boxHeight": 184,
+            "tractLabelClearance": 11.74,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14.2,
+              "max": 20.6,
+              "overlaps": 0,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000002",
+                "r": 5.94
+              },
+              {
+                "pmid": "40000003",
+                "r": 5.56
+              },
+              {
+                "pmid": "40000004",
+                "r": 5.22
+              },
+              {
+                "pmid": "40000005",
+                "r": 4.83
+              },
+              {
+                "pmid": "40000006",
+                "r": 4.5
+              },
+              {
+                "pmid": "40000007",
+                "r": 4.17
+              },
+              {
+                "pmid": "40000008",
+                "r": 3.78
+              },
+              {
+                "pmid": "40000009",
+                "r": 3.44
+              },
+              {
+                "pmid": "40000010",
+                "r": 3.06
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 375.13,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        },
+        "thumbGlyph": {
+          "median": "#757575",
+          "pixels": true,
+          "contrastOnPaper": 4.3
+        }
+      }
+    },
+    {
+      "name": "dev-radar-mobile-light-reduced",
+      "url": "/dev/radar",
+      "viewport": "mobile",
+      "scheme": "light",
+      "motion": "reduced",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "compact",
+            "viewBox": "350x184",
+            "boxHeight": 184,
+            "tractLabelClearance": 11.74,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14.2,
+              "max": 20.6,
+              "overlaps": 0,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000002",
+                "r": 5.94
+              },
+              {
+                "pmid": "40000003",
+                "r": 5.56
+              },
+              {
+                "pmid": "40000004",
+                "r": 5.22
+              },
+              {
+                "pmid": "40000005",
+                "r": 4.83
+              },
+              {
+                "pmid": "40000006",
+                "r": 4.5
+              },
+              {
+                "pmid": "40000007",
+                "r": 4.17
+              },
+              {
+                "pmid": "40000008",
+                "r": 3.78
+              },
+              {
+                "pmid": "40000009",
+                "r": 3.44
+              },
+              {
+                "pmid": "40000010",
+                "r": 3.06
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 375.13,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-mobile-dark",
+      "url": "/dev/radar",
+      "viewport": "mobile",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "compact",
+            "viewBox": "350x184",
+            "boxHeight": 184,
+            "tractLabelClearance": 11.74,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14.2,
+              "max": 20.6,
+              "overlaps": 0,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000002",
+                "r": 5.94
+              },
+              {
+                "pmid": "40000003",
+                "r": 5.56
+              },
+              {
+                "pmid": "40000004",
+                "r": 5.22
+              },
+              {
+                "pmid": "40000005",
+                "r": 4.83
+              },
+              {
+                "pmid": "40000006",
+                "r": 4.5
+              },
+              {
+                "pmid": "40000007",
+                "r": 4.17
+              },
+              {
+                "pmid": "40000008",
+                "r": 3.78
+              },
+              {
+                "pmid": "40000009",
+                "r": 3.44
+              },
+              {
+                "pmid": "40000010",
+                "r": 3.06
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 375.13,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        },
+        "thumbGlyph": {
+          "median": "#7e7f7f",
+          "pixels": true,
+          "contrastOnPaper": 4.78
+        }
+      }
+    },
+    {
+      "name": "dev-radar-mobile-dark-reduced",
+      "url": "/dev/radar",
+      "viewport": "mobile",
+      "scheme": "dark",
+      "motion": "reduced",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "compact",
+            "viewBox": "350x184",
+            "boxHeight": 184,
+            "tractLabelClearance": 11.74,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14.2,
+              "max": 20.6,
+              "overlaps": 0,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000002",
+                "r": 5.94
+              },
+              {
+                "pmid": "40000003",
+                "r": 5.56
+              },
+              {
+                "pmid": "40000004",
+                "r": 5.22
+              },
+              {
+                "pmid": "40000005",
+                "r": 4.83
+              },
+              {
+                "pmid": "40000006",
+                "r": 4.5
+              },
+              {
+                "pmid": "40000007",
+                "r": 4.17
+              },
+              {
+                "pmid": "40000008",
+                "r": 3.78
+              },
+              {
+                "pmid": "40000009",
+                "r": 3.44
+              },
+              {
+                "pmid": "40000010",
+                "r": 3.06
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 375.13,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-empty-desktop-light",
+      "url": "/dev/radar?empty=1",
+      "viewport": "desktop",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "wide",
+            "viewBox": "608x232",
+            "boxHeight": 232,
+            "tractLabelClearance": 10.59,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "No papers today"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-empty-desktop-dark",
+      "url": "/dev/radar?empty=1",
+      "viewport": "desktop",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "wide",
+            "viewBox": "608x232",
+            "boxHeight": 232,
+            "tractLabelClearance": 10.59,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "No papers today"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-empty-mobile-light",
+      "url": "/dev/radar?empty=1",
+      "viewport": "mobile",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "compact",
+            "viewBox": "350x184",
+            "boxHeight": 184,
+            "tractLabelClearance": 11.74,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "No papers today"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-empty-mobile-dark",
+      "url": "/dev/radar?empty=1",
+      "viewport": "mobile",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "compact",
+            "viewBox": "350x184",
+            "boxHeight": 184,
+            "tractLabelClearance": 11.74,
+            "tracts": 4,
+            "clipped": [],
+            "hitRadius": null,
+            "somaOverlaps": 0,
+            "somaRadii": null,
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "No papers today"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-fields1-desktop-light",
+      "url": "/dev/radar?fields=1",
+      "viewport": "desktop",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "wide",
+            "viewBox": "608x232",
+            "boxHeight": 232,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14,
+              "max": 14.75,
+              "overlaps": 1,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 8.78
+              },
+              {
+                "pmid": "40000002",
+                "r": 8.28
+              },
+              {
+                "pmid": "40000003",
+                "r": 7.78
+              },
+              {
+                "pmid": "40000004",
+                "r": 7.28
+              },
+              {
+                "pmid": "40000005",
+                "r": 6.78
+              },
+              {
+                "pmid": "40000006",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000007",
+                "r": 5.78
+              },
+              {
+                "pmid": "40000008",
+                "r": 5.28
+              },
+              {
+                "pmid": "40000009",
+                "r": 4.78
+              },
+              {
+                "pmid": "40000010",
+                "r": 4.28
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 446.33,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-fields1-desktop-dark",
+      "url": "/dev/radar?fields=1",
+      "viewport": "desktop",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "wide",
+            "viewBox": "608x232",
+            "boxHeight": 232,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14,
+              "max": 14.75,
+              "overlaps": 1,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 8.78
+              },
+              {
+                "pmid": "40000002",
+                "r": 8.28
+              },
+              {
+                "pmid": "40000003",
+                "r": 7.78
+              },
+              {
+                "pmid": "40000004",
+                "r": 7.28
+              },
+              {
+                "pmid": "40000005",
+                "r": 6.78
+              },
+              {
+                "pmid": "40000006",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000007",
+                "r": 5.78
+              },
+              {
+                "pmid": "40000008",
+                "r": 5.28
+              },
+              {
+                "pmid": "40000009",
+                "r": 4.78
+              },
+              {
+                "pmid": "40000010",
+                "r": 4.28
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 446.33,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-fields1-mobile-light",
+      "url": "/dev/radar?fields=1",
+      "viewport": "mobile",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "compact",
+            "viewBox": "350x184",
+            "boxHeight": 184,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14,
+              "max": 16.5,
+              "overlaps": 0,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000002",
+                "r": 5.94
+              },
+              {
+                "pmid": "40000003",
+                "r": 5.56
+              },
+              {
+                "pmid": "40000004",
+                "r": 5.22
+              },
+              {
+                "pmid": "40000005",
+                "r": 4.83
+              },
+              {
+                "pmid": "40000006",
+                "r": 4.5
+              },
+              {
+                "pmid": "40000007",
+                "r": 4.17
+              },
+              {
+                "pmid": "40000008",
+                "r": 3.78
+              },
+              {
+                "pmid": "40000009",
+                "r": 3.44
+              },
+              {
+                "pmid": "40000010",
+                "r": 3.06
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 375.13,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-fields1-mobile-dark",
+      "url": "/dev/radar?fields=1",
+      "viewport": "mobile",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "compact",
+            "viewBox": "350x184",
+            "boxHeight": 184,
+            "tractLabelClearance": null,
+            "tracts": 0,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14,
+              "max": 16.5,
+              "overlaps": 0,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 6.28
+              },
+              {
+                "pmid": "40000002",
+                "r": 5.94
+              },
+              {
+                "pmid": "40000003",
+                "r": 5.56
+              },
+              {
+                "pmid": "40000004",
+                "r": 5.22
+              },
+              {
+                "pmid": "40000005",
+                "r": 4.83
+              },
+              {
+                "pmid": "40000006",
+                "r": 4.5
+              },
+              {
+                "pmid": "40000007",
+                "r": 4.17
+              },
+              {
+                "pmid": "40000008",
+                "r": 3.78
+              },
+              {
+                "pmid": "40000009",
+                "r": 3.44
+              },
+              {
+                "pmid": "40000010",
+                "r": 3.06
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 375.13,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-fields6-desktop-light",
+      "url": "/dev/radar?fields=6",
+      "viewport": "desktop",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "wide",
+            "viewBox": "608x232",
+            "boxHeight": 232,
+            "tractLabelClearance": 10.62,
+            "tracts": 6,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14,
+              "max": 14,
+              "overlaps": 1,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 7.72
+              },
+              {
+                "pmid": "40000002",
+                "r": 7.28
+              },
+              {
+                "pmid": "40000003",
+                "r": 6.83
+              },
+              {
+                "pmid": "40000004",
+                "r": 6.39
+              },
+              {
+                "pmid": "40000005",
+                "r": 5.94
+              },
+              {
+                "pmid": "40000006",
+                "r": 5.5
+              },
+              {
+                "pmid": "40000007",
+                "r": 5.06
+              },
+              {
+                "pmid": "40000008",
+                "r": 4.61
+              },
+              {
+                "pmid": "40000009",
+                "r": 4.17
+              },
+              {
+                "pmid": "40000010",
+                "r": 3.72
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 446.33,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-fields6-desktop-dark",
+      "url": "/dev/radar?fields=6",
+      "viewport": "desktop",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "wide",
+            "viewBox": "608x232",
+            "boxHeight": 232,
+            "tractLabelClearance": 10.62,
+            "tracts": 6,
+            "clipped": [],
+            "hitRadius": {
+              "min": 14,
+              "max": 14,
+              "overlaps": 1,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 7.72
+              },
+              {
+                "pmid": "40000002",
+                "r": 7.28
+              },
+              {
+                "pmid": "40000003",
+                "r": 6.83
+              },
+              {
+                "pmid": "40000004",
+                "r": 6.39
+              },
+              {
+                "pmid": "40000005",
+                "r": 5.94
+              },
+              {
+                "pmid": "40000006",
+                "r": 5.5
+              },
+              {
+                "pmid": "40000007",
+                "r": 5.06
+              },
+              {
+                "pmid": "40000008",
+                "r": 4.61
+              },
+              {
+                "pmid": "40000009",
+                "r": 4.17
+              },
+              {
+                "pmid": "40000010",
+                "r": 3.72
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 440.44,
+            "max": 440.44,
+            "spread": 0
+          },
+          "firstTitleTop": 446.33,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 416,
+            "right": 1024,
+            "mainContentLeft": 416,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-fields6-mobile-light",
+      "url": "/dev/radar?fields=6",
+      "viewport": "mobile",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "compact",
+            "viewBox": "350x292",
+            "boxHeight": 292,
+            "tractLabelClearance": 7.4,
+            "tracts": 6,
+            "clipped": [],
+            "hitRadius": {
+              "min": 16,
+              "max": 22,
+              "overlaps": 0,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 5.61
+              },
+              {
+                "pmid": "40000002",
+                "r": 5.28
+              },
+              {
+                "pmid": "40000003",
+                "r": 4.94
+              },
+              {
+                "pmid": "40000004",
+                "r": 4.67
+              },
+              {
+                "pmid": "40000005",
+                "r": 4.33
+              },
+              {
+                "pmid": "40000006",
+                "r": 4
+              },
+              {
+                "pmid": "40000007",
+                "r": 3.67
+              },
+              {
+                "pmid": "40000008",
+                "r": 3.33
+              },
+              {
+                "pmid": "40000009",
+                "r": 3.06
+              },
+              {
+                "pmid": "40000010",
+                "r": 2.72
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 483.13,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-radar-fields6-mobile-dark",
+      "url": "/dev/radar?fields=6",
+      "viewport": "mobile",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [
+          {
+            "variant": "radar",
+            "layout": "compact",
+            "viewBox": "350x292",
+            "boxHeight": 292,
+            "tractLabelClearance": 7.4,
+            "tracts": 6,
+            "clipped": [],
+            "hitRadius": {
+              "min": 16,
+              "max": 22,
+              "overlaps": 0,
+              "count": 10
+            },
+            "somaOverlaps": 0,
+            "somaRadii": [
+              {
+                "pmid": "40000001",
+                "r": 5.61
+              },
+              {
+                "pmid": "40000002",
+                "r": 5.28
+              },
+              {
+                "pmid": "40000003",
+                "r": 4.94
+              },
+              {
+                "pmid": "40000004",
+                "r": 4.67
+              },
+              {
+                "pmid": "40000005",
+                "r": 4.33
+              },
+              {
+                "pmid": "40000006",
+                "r": 4
+              },
+              {
+                "pmid": "40000007",
+                "r": 3.67
+              },
+              {
+                "pmid": "40000008",
+                "r": 3.33
+              },
+              {
+                "pmid": "40000009",
+                "r": 3.06
+              },
+              {
+                "pmid": "40000010",
+                "r": 2.72
+              }
+            ],
+            "labelWeights": [
+              "600"
+            ]
+          }
+        ],
+        "page": {
+          "dotLeft": {
+            "count": 10,
+            "min": 26.44,
+            "max": 26.44,
+            "spread": 0
+          },
+          "firstTitleTop": 483.13,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": true,
+          "figure": {
+            "left": 20,
+            "right": 370,
+            "mainContentLeft": 20,
+            "caption": "10 papers3 new in 48 h1 marked useful"
+          }
+        }
+      }
+    },
+    {
+      "name": "dev-settings-desktop-light",
+      "url": "/dev/settings",
+      "viewport": "desktop",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": null,
+          "interests": [
+            {
+              "text": "brain-computer interface from Obsidian · +0.80Delete",
+              "height": 49,
+              "actionLines": 1,
+              "weightLeft": 693.08,
+              "weightTop": 18
+            },
+            {
+              "text": "microelectrode learned from your taps · +0.35re-rate to change",
+              "height": 49,
+              "actionLines": 1,
+              "weightLeft": 663.23,
+              "weightTop": 18
+            },
+            {
+              "text": "organoid added by hand · -0.20Delete",
+              "height": 48,
+              "actionLines": 1,
+              "weightLeft": 576.72,
+              "weightTop": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "dev-settings-desktop-dark",
+      "url": "/dev/settings",
+      "viewport": "desktop",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": null,
+          "interests": [
+            {
+              "text": "brain-computer interface from Obsidian · +0.80Delete",
+              "height": 49,
+              "actionLines": 1,
+              "weightLeft": 693.08,
+              "weightTop": 18
+            },
+            {
+              "text": "microelectrode learned from your taps · +0.35re-rate to change",
+              "height": 49,
+              "actionLines": 1,
+              "weightLeft": 663.23,
+              "weightTop": 18
+            },
+            {
+              "text": "organoid added by hand · -0.20Delete",
+              "height": 48,
+              "actionLines": 1,
+              "weightLeft": 576.72,
+              "weightTop": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "dev-settings-mobile-light",
+      "url": "/dev/settings",
+      "viewport": "mobile",
+      "scheme": "light",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": null,
+          "interests": [
+            {
+              "text": "brain-computer interface from Obsidian · +0.80Delete",
+              "height": 65.8,
+              "actionLines": 1,
+              "weightLeft": 104.72,
+              "weightTop": 37
+            },
+            {
+              "text": "microelectrode learned from your taps · +0.35re-rate to change",
+              "height": 65.8,
+              "actionLines": 1,
+              "weightLeft": 150.08,
+              "weightTop": 37
+            },
+            {
+              "text": "organoid added by hand · -0.20Delete",
+              "height": 64.8,
+              "actionLines": 1,
+              "weightLeft": 109.42,
+              "weightTop": 37
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "dev-settings-mobile-dark",
+      "url": "/dev/settings",
+      "viewport": "mobile",
+      "scheme": "dark",
+      "motion": "default",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "cls": 0,
+      "overflowX": false,
+      "metrics": {
+        "maps": [],
+        "page": {
+          "dotLeft": null,
+          "firstTitleTop": null,
+          "oneWeeksOld": 0,
+          "oneWeekOld": 0,
+          "splitTopicNames": 0,
+          "footnote": false,
+          "figure": null,
+          "interests": [
+            {
+              "text": "brain-computer interface from Obsidian · +0.80Delete",
+              "height": 65.8,
+              "actionLines": 1,
+              "weightLeft": 104.72,
+              "weightTop": 37
+            },
+            {
+              "text": "microelectrode learned from your taps · +0.35re-rate to change",
+              "height": 65.8,
+              "actionLines": 1,
+              "weightLeft": 150.08,
+              "weightTop": 37
+            },
+            {
+              "text": "organoid added by hand · -0.20Delete",
+              "height": 64.8,
+              "actionLines": 1,
+              "weightLeft": 109.42,
+              "weightTop": 37
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "summary": {
+    "contrast": {
+      "light": {
+        "paper": "#f9f7f2",
+        "wire": {
+          "value": "#a39d8f",
+          "onPaper": 2.52
+        },
+        "control": {
+          "value": "#8a857a",
+          "onPaper": 3.43
+        },
+        "inkMuted": "#524e47"
+      },
+      "dark": {
+        "paper": "#0e0f11",
+        "wire": {
+          "value": "#565a62",
+          "onPaper": 2.77
+        },
+        "control": {
+          "value": "#62656c",
+          "onPaper": 3.28
+        },
+        "inkMuted": "#aaa69d"
+      }
+    },
+    "tractLabelClearance": {
+      "min": 7.4,
+      "byShot": {
+        "home-desktop-light": 10.51,
+        "home-desktop-dark": 10.51,
+        "home-mobile-light": 7.4,
+        "home-mobile-dark": 7.4,
+        "dev-radar-desktop-light": 10.59,
+        "dev-radar-desktop-light-reduced": 10.59,
+        "dev-radar-desktop-dark": 10.59,
+        "dev-radar-desktop-dark-reduced": 10.59,
+        "dev-radar-mobile-light": 11.74,
+        "dev-radar-mobile-light-reduced": 11.74,
+        "dev-radar-mobile-dark": 11.74,
+        "dev-radar-mobile-dark-reduced": 11.74,
+        "dev-radar-empty-desktop-light": 10.59,
+        "dev-radar-empty-desktop-dark": 10.59,
+        "dev-radar-empty-mobile-light": 11.74,
+        "dev-radar-empty-mobile-dark": 11.74,
+        "dev-radar-fields6-desktop-light": 10.62,
+        "dev-radar-fields6-desktop-dark": 10.62,
+        "dev-radar-fields6-mobile-light": 7.4,
+        "dev-radar-fields6-mobile-dark": 7.4
+      }
+    },
+    "thumbGlyph": {
+      "desktop-light": {
+        "median": "#757575",
+        "pixels": true,
+        "contrastOnPaper": 4.3
+      },
+      "desktop-dark": {
+        "median": "#7e7f7f",
+        "pixels": true,
+        "contrastOnPaper": 4.78
+      },
+      "mobile-light": {
+        "median": "#757575",
+        "pixels": true,
+        "contrastOnPaper": 4.3
+      },
+      "mobile-dark": {
+        "median": "#7e7f7f",
+        "pixels": true,
+        "contrastOnPaper": 4.78
+      }
+    },
+    "tapTest": {
+      "correct": 10,
+      "of": 10,
+      "results": [
+        {
+          "pmid": "40000010",
+          "inView": true,
+          "centreOffset": 163,
+          "lit": true,
+          "ok": true
+        },
+        {
+          "pmid": "40000009",
+          "inView": true,
+          "centreOffset": 12,
+          "lit": true,
+          "ok": true
+        },
+        {
+          "pmid": "40000008",
+          "inView": true,
+          "centreOffset": 12,
+          "lit": true,
+          "ok": true
+        },
+        {
+          "pmid": "40000007",
+          "inView": true,
+          "centreOffset": 12,
+          "lit": true,
+          "ok": true
+        },
+        {
+          "pmid": "40000006",
+          "inView": true,
+          "centreOffset": 12,
+          "lit": true,
+          "ok": true
+        },
+        {
+          "pmid": "40000005",
+          "inView": true,
+          "centreOffset": 12,
+          "lit": true,
+          "ok": true
+        },
+        {
+          "pmid": "40000004",
+          "inView": true,
+          "centreOffset": 12,
+          "lit": true,
+          "ok": true
+        },
+        {
+          "pmid": "40000003",
+          "inView": true,
+          "centreOffset": 12,
+          "lit": true,
+          "ok": true
+        },
+        {
+          "pmid": "40000002",
+          "inView": true,
+          "centreOffset": 12,
+          "lit": true,
+          "ok": true
+        },
+        {
+          "pmid": "40000001",
+          "inView": true,
+          "centreOffset": 12,
+          "lit": true,
+          "ok": true
+        }
+      ]
+    }
+  },
+  "devGate": {
+    "/dev/radar": 404,
+    "/dev/radar?fields=1": 404,
+    "/dev/radar?fields=6": 404,
+    "/dev/settings": 404
+  }
+}
